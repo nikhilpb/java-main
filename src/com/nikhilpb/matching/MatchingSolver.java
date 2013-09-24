@@ -15,23 +15,17 @@ import java.util.Random;
 public abstract class MatchingSolver {
 
     protected MatchingModel model;
-    protected double initPopulationParam;
-    protected int timePeriods;
     protected SamplingPolicy samplingPolicy;
     Random random;
 
     protected void initParams(MatchingModel model,
-                              double initPopulationParam,
-                              int timePeriods,
                               long sampleSeed,
                               SamplingPolicy samplingPolicy) {
         this.model = model;
-        this.initPopulationParam = initPopulationParam;
-        this.timePeriods = timePeriods;
         this.random = new Random(sampleSeed);
         this.samplingPolicy = samplingPolicy;
-        System.out.printf("sampling parameters -\npolicy: %s\ninit pop param: %f\ntime periods: %d\nseed: %d\n\n",
-                          stringFromSamplingPolicy(samplingPolicy),initPopulationParam, timePeriods, sampleSeed);
+        System.out.printf("sampling parameters -\npolicy: %s\nseed: %d\n\n",
+                          stringFromSamplingPolicy(samplingPolicy), sampleSeed);
     }
 
     public abstract boolean solve();
@@ -61,11 +55,11 @@ public abstract class MatchingSolver {
     }
 
     protected MatchingSamplePath samplePath() {
-        return new MatchingSamplePath(model, timePeriods, initPopulationParam, random.nextLong());
+        return new MatchingSamplePath(model, random.nextLong());
     }
 
     protected MatchingSamplePath samplePath(long seed) {
-        return new MatchingSamplePath(model, timePeriods, initPopulationParam, seed);
+        return new MatchingSamplePath(model, seed);
     }
 
     public double evaluate(long sampleSeed) throws Exception {

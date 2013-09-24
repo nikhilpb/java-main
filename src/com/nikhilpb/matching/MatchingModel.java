@@ -15,28 +15,16 @@ import com.moallemi.util.PropertySet;
  */
 
 public class MatchingModel {
-    protected int supplyTypeDim;
-    protected int demandTypeDim;
-    protected int[] supplyTypes;
-    protected int[] demandTypes;
-    protected MultiIndependentDist supplyDistribution;
-    protected MultiIndependentDist demandDistribution;
+    protected int supplyTypeDim, demandTypeDim, timePeriods;
+    protected int[] supplyTypes, demandTypes;
+    protected MultiIndependentDist supplyDistribution, demandDistribution;
     protected RewardFunction rewardFunction;
     protected String modelType;
     protected Random random;
-    protected double supplyDepartureRate, demandDepartureRate, meanArrivalCount, sodBias;
+    protected double supplyDepartureRate, demandDepartureRate, meanArrivalCount, sodBias, initPopParam;
 
     public MatchingModel(PropertySet props) {
         init(props);
-        modelType = "general";
-        supplyDepartureRate = props.getDoubleDefault("supply_departure_rate", 0.1);
-        System.out.println("supply departure rate is " + supplyDepartureRate);
-        demandDepartureRate = props.getDoubleDefault("demand_departure_rate", 0.1);
-        System.out.println("demand departure rate is " + demandDepartureRate);
-        meanArrivalCount = props.getDoubleDefault("mean_arrival_count", 5);
-        System.out.println("mean arrival count " + meanArrivalCount);
-        sodBias = props.getDoubleDefault("sod_bias", 0.5);
-        System.out.println("each arrival is supply type with probability " + sodBias);
     }
 
     public void initiateRandom(long seed) {
@@ -84,6 +72,10 @@ public class MatchingModel {
     public void setDemRandomSeed(long seed) {
         demandDistribution.setRandom(new Random(seed));
     }
+
+    public double getInitPopParam() { return initPopParam; }
+
+    public int getTimePeriods() { return timePeriods; }
 
     public ArrayList<Item> sampleSupplyTypes(int n) {
         ArrayList<Item> supplyTypesSampled = new ArrayList<Item>(n);
@@ -161,6 +153,19 @@ public class MatchingModel {
                 rewardFunction = new SeparableRewardFunction();
             }
         }
+
+        modelType = "general";
+        supplyDepartureRate = props.getDoubleDefault("supply_departure_rate", 0.1);
+        System.out.println("supply departure rate is " + supplyDepartureRate);
+        demandDepartureRate = props.getDoubleDefault("demand_departure_rate", 0.1);
+        System.out.println("demand departure rate is " + demandDepartureRate);
+        meanArrivalCount = props.getDoubleDefault("mean_arrival_count", 5);
+        System.out.println("mean arrival count " + meanArrivalCount);
+        sodBias = props.getDoubleDefault("sod_bias", 0.5);
+        System.out.println("each arrival is supply type with probability " + sodBias);
+        timePeriods = props.getIntDefault("time_periods", 50);
+        System.out.println("time periods " + timePeriods);
+        initPopParam = props.getDoubleDefault("init_pop_param", 0.2);
     }
 
     public double getSupplyDepartureRate() {

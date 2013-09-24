@@ -12,8 +12,6 @@ public class SsgdSolver extends MatchingSolver {
     private int sampleCount;
 
     public SsgdSolver(MatchingModel model,
-                      double initPopulationParam,
-                      int timePeriods,
                       long sampleSeed,
                       MatchingSolver.SamplingPolicy samplingPolicy,
                       int sampleCount,
@@ -27,7 +25,7 @@ public class SsgdSolver extends MatchingSolver {
         System.out.println();
         System.out.printf("solver parameters -\neps: %f\na: %f\nb: %f\n", eps, a, b);
         System.out.println();
-        initParams(model, initPopulationParam, timePeriods, sampleSeed, samplingPolicy);
+        initParams(model, sampleSeed, samplingPolicy);
     }
 
     public boolean solve() {

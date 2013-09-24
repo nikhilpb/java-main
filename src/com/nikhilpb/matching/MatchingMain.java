@@ -126,9 +126,6 @@ public class MatchingMain extends XmlParserMain {
             System.err.print("problem count has to be non-negative");
         }
 
-        final int timePeriods = Integer.parseInt(getPropertyOrDie(props, "periods"));
-        // TODO: this should be part of the model
-        final double initPopParam = Double.parseDouble(getPropertyOrDie(props, "popparam"));
         final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
         MatchingSolver.SamplingPolicy samplingPolicy =
                 MatchingSolver.samplingPolicyFromString(getPropertyOrDie(props, "sampling_policy"));
@@ -144,12 +141,12 @@ public class MatchingMain extends XmlParserMain {
                     final double eps = Double.parseDouble(getPropertyOrDie(props, "eps"));
                     final double a = Double.parseDouble(getPropertyOrDie(props, "a"));
                     final double b = Double.parseDouble(getPropertyOrDie(props, "b"));
-                    solvers.add(new SsgdSolver(model, initPopParam, timePeriods, random.nextLong(), samplingPolicy,
+                    solvers.add(new SsgdSolver(model, random.nextLong(), samplingPolicy,
                                                sampleCount, eps, a, b));
                     success = success && solvers.get(p).solve();
                     break;
                 case GREEDY:
-                    solvers.add(new GreedySolver(model, initPopParam, timePeriods, random.nextLong(), samplingPolicy));
+                    solvers.add(new GreedySolver(model, random.nextLong(), samplingPolicy));
                     break;
                 case SALP_BATCHLP:
                     break;
@@ -174,7 +171,7 @@ public class MatchingMain extends XmlParserMain {
             valueStd = 0.0;
             for (int ss = 0; ss < sampleCount; ++ss) {
                 sampleSeed = random.nextLong();
-                samplePath = new MatchingSamplePath(model, 50, 0.2, sampleSeed);
+                samplePath = new MatchingSamplePath(model, sampleSeed);
                 samplePath.sample();
                 double thisValue = samplePath.offlineMatch();
                 value += thisValue;

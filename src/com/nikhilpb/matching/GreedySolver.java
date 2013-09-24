@@ -10,14 +10,12 @@ package com.nikhilpb.matching;
 public class GreedySolver extends MatchingSolver {
 
     public GreedySolver(MatchingModel model,
-                      double initPopulationParam,
-                      int timePeriods,
                       long sampleSeed,
                       MatchingSolver.SamplingPolicy samplingPolicy) {
         System.out.println();
         System.out.println("creating a greedy solver");
         System.out.println();
-        initParams(model, initPopulationParam, timePeriods, sampleSeed, samplingPolicy);
+        initParams(model, sampleSeed, samplingPolicy);
     }
 
     public boolean solve() {

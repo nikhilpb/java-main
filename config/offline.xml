@@ -2,7 +2,7 @@
 <config>
     <model>
         <type>general</type>
-        <file>data/tissue-types.txt</file>
+        <file>data/model.txt</file>
     </model>
     <evaluate>
         <type>offline</type>

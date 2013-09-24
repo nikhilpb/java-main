@@ -39,19 +39,14 @@ public class MatchingSamplePath {
      * Constructor. Initial population size sampled.
      *
      * @param model                matching model
-     * @param timePeriods          time periods to be sampled
-     * @param ipGeometricParameter geometric parameter for the population sampled initially
      * @param seed                 seed for sampling'
      */
     public MatchingSamplePath(MatchingModel model,
-                              final int timePeriods,
-                              final double ipGeometricParameter,
                               final long seed) {
         this.model = model;
-        this.timePeriods = timePeriods;
+        this.timePeriods = model.getTimePeriods();
         model.initiateRandom(seed);
-        this.initialPopulationSize = Distributions.nextGeometric(model.getRandom(),
-                ipGeometricParameter);
+        this.initialPopulationSize = Distributions.nextGeometric(model.getRandom(), model.getInitPopParam());
     }
 
     public void sample() {
