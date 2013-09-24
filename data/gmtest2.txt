@@ -1,0 +1,12 @@
+supply_demand_equal = TRUE
+supply_type_dimentions = 1
+supply_departure_rate = 0.9
+demand_departure_rate = 0.1
+mean_arrival_count = 4
+sod_bias = 0.16
+st[1] = 2
+sp[1][1] = 0.5
+sp[1][2] = 0.5
+supply_seed = 12436
+demand_seed = 1444
+reward_function = separable

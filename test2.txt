@@ -1,0 +1,668 @@
+
+>>> model online data/tissue-types.txt
+blah
+loading online matching model: data/tissue-types.txt
+supply and demand type dimension is 6
+no of supply types at dimension 0 is 38
+prob of type (0, 0) is 0.239
+prob of type (0, 1) is 0.185
+prob of type (0, 2) is 0.129
+prob of type (0, 3) is 0.076
+prob of type (0, 4) is 0.048
+prob of type (0, 5) is 0.044
+prob of type (0, 6) is 0.042
+prob of type (0, 7) is 0.039
+prob of type (0, 8) is 0.031
+prob of type (0, 9) is 0.022
+prob of type (0, 10) is 0.016
+prob of type (0, 11) is 0.016
+prob of type (0, 12) is 0.015
+prob of type (0, 13) is 0.014
+prob of type (0, 14) is 0.011
+prob of type (0, 15) is 0.009
+prob of type (0, 16) is 0.007
+prob of type (0, 17) is 0.006
+prob of type (0, 18) is 0.005
+prob of type (0, 19) is 0.005
+prob of type (0, 20) is 0.005
+prob of type (0, 21) is 0.004
+prob of type (0, 22) is 0.004
+prob of type (0, 23) is 0.003
+prob of type (0, 24) is 0.003
+prob of type (0, 25) is 0.003
+prob of type (0, 26) is 0.002
+prob of type (0, 27) is 0.002
+prob of type (0, 28) is 0.002
+prob of type (0, 29) is 0.002
+prob of type (0, 30) is 0.002
+prob of type (0, 31) is 0.002
+prob of type (0, 32) is 0.002
+prob of type (0, 33) is 0.001
+prob of type (0, 34) is 0.001
+prob of type (0, 35) is 0.001
+prob of type (0, 36) is 0.001
+prob of type (0, 37) is 0.001
+no of supply types at dimension 1 is 42
+prob of type (1, 0) is 0.153
+prob of type (1, 1) is 0.116
+prob of type (1, 2) is 0.099
+prob of type (1, 3) is 0.093
+prob of type (1, 4) is 0.058
+prob of type (1, 5) is 0.048
+prob of type (1, 6) is 0.041
+prob of type (1, 7) is 0.041
+prob of type (1, 8) is 0.04
+prob of type (1, 9) is 0.025
+prob of type (1, 10) is 0.024
+prob of type (1, 11) is 0.024
+prob of type (1, 12) is 0.023
+prob of type (1, 13) is 0.02
+prob of type (1, 14) is 0.019
+prob of type (1, 15) is 0.019
+prob of type (1, 16) is 0.016
+prob of type (1, 17) is 0.013
+prob of type (1, 18) is 0.011
+prob of type (1, 19) is 0.011
+prob of type (1, 20) is 0.01
+prob of type (1, 21) is 0.01
+prob of type (1, 22) is 0.01
+prob of type (1, 23) is 0.009
+prob of type (1, 24) is 0.008
+prob of type (1, 25) is 0.008
+prob of type (1, 26) is 0.007
+prob of type (1, 27) is 0.007
+prob of type (1, 28) is 0.007
+prob of type (1, 29) is 0.006
+prob of type (1, 30) is 0.005
+prob of type (1, 31) is 0.004
+prob of type (1, 32) is 0.003
+prob of type (1, 33) is 0.002
+prob of type (1, 34) is 0.002
+prob of type (1, 35) is 0.002
+prob of type (1, 36) is 0.001
+prob of type (1, 37) is 0.001
+prob of type (1, 38) is 0.001
+prob of type (1, 39) is 0.001
+prob of type (1, 40) is 0.001
+prob of type (1, 41) is 0.001
+no of supply types at dimension 2 is 16
+prob of type (2, 0) is 0.402
+prob of type (2, 1) is 0.297
+prob of type (2, 2) is 0.133
+prob of type (2, 3) is 0.049
+prob of type (2, 4) is 0.043
+prob of type (2, 5) is 0.015
+prob of type (2, 6) is 0.012
+prob of type (2, 7) is 0.011
+prob of type (2, 8) is 0.011
+prob of type (2, 9) is 0.009
+prob of type (2, 10) is 0.006
+prob of type (2, 11) is 0.004
+prob of type (2, 12) is 0.004
+prob of type (2, 13) is 0.002
+prob of type (2, 14) is 0.001
+prob of type (2, 15) is 0.001
+no of supply types at dimension 3 is 24
+prob of type (3, 0) is 0.159
+prob of type (3, 1) is 0.134
+prob of type (3, 2) is 0.117
+prob of type (3, 3) is 0.092
+prob of type (3, 4) is 0.079
+prob of type (3, 5) is 0.072
+prob of type (3, 6) is 0.064
+prob of type (3, 7) is 0.059
+prob of type (3, 8) is 0.057
+prob of type (3, 9) is 0.048
+prob of type (3, 10) is 0.035
+prob of type (3, 11) is 0.028
+prob of type (3, 12) is 0.02
+prob of type (3, 13) is 0.016
+prob of type (3, 14) is 0.004
+prob of type (3, 15) is 0.004
+prob of type (3, 16) is 0.002
+prob of type (3, 17) is 0.002
+prob of type (3, 18) is 0.002
+prob of type (3, 19) is 0.002
+prob of type (3, 20) is 0.001
+prob of type (3, 21) is 0.001
+prob of type (3, 22) is 0.001
+prob of type (3, 23) is 0.001
+no of supply types at dimension 4 is 18
+prob of type (4, 0) is 0.203
+prob of type (4, 1) is 0.196
+prob of type (4, 2) is 0.181
+prob of type (4, 3) is 0.169
+prob of type (4, 4) is 0.07
+prob of type (4, 5) is 0.052
+prob of type (4, 6) is 0.032
+prob of type (4, 7) is 0.031
+prob of type (4, 8) is 0.018
+prob of type (4, 9) is 0.013
+prob of type (4, 10) is 0.011
+prob of type (4, 11) is 0.005
+prob of type (4, 12) is 0.004
+prob of type (4, 13) is 0.004
+prob of type (4, 14) is 0.004
+prob of type (4, 15) is 0.003
+prob of type (4, 16) is 0.002
+prob of type (4, 17) is 0.002
+no of supply types at dimension 5 is 20
+prob of type (5, 0) is 0.204
+prob of type (5, 1) is 0.157
+prob of type (5, 2) is 0.134
+prob of type (5, 3) is 0.097
+prob of type (5, 4) is 0.069
+prob of type (5, 5) is 0.059
+prob of type (5, 6) is 0.054
+prob of type (5, 7) is 0.049
+prob of type (5, 8) is 0.039
+prob of type (5, 9) is 0.032
+prob of type (5, 10) is 0.028
+prob of type (5, 11) is 0.023
+prob of type (5, 12) is 0.017
+prob of type (5, 13) is 0.016
+prob of type (5, 14) is 0.009
+prob of type (5, 15) is 0.005
+prob of type (5, 16) is 0.003
+prob of type (5, 17) is 0.003
+prob of type (5, 18) is 0.001
+prob of type (5, 19) is 0.001
+weight on dimension 0 is 1.0000000000000002
+weight on dimension 1 is 1.0000000000000004
+weight on dimension 2 is 1.0000000000000002
+weight on dimension 3 is 1.0
+weight on dimension 4 is 1.0000000000000002
+weight on dimension 5 is 1.0000000000000002
+weight on dimension 0 is 1.0000000000000002
+weight on dimension 1 is 1.0000000000000004
+weight on dimension 2 is 1.0000000000000002
+weight on dimension 3 is 1.0
+weight on dimension 4 is 1.0000000000000002
+weight on dimension 5 is 1.0000000000000002
+Elapsed time: 0.02 (secs)
+
+>>> sample supply 50 123
+sampling 50 supply types.
+Elapsed time: 0.00 (secs)
+
+>>> sample matched-pairs-salp offline 100 101
+sampling type is: offline
+no of runs is 100
+seed for sampling is 101
+run no: 1
+run no: 2
+run no: 3
+run no: 4
+run no: 5
+run no: 6
+run no: 7
+run no: 8
+run no: 9
+run no: 10
+run no: 11
+run no: 12
+run no: 13
+run no: 14
+run no: 15
+run no: 16
+run no: 17
+run no: 18
+run no: 19
+run no: 20
+run no: 21
+run no: 22
+run no: 23
+run no: 24
+run no: 25
+run no: 26
+run no: 27
+run no: 28
+run no: 29
+run no: 30
+run no: 31
+run no: 32
+run no: 33
+run no: 34
+run no: 35
+run no: 36
+run no: 37
+run no: 38
+run no: 39
+run no: 40
+run no: 41
+run no: 42
+run no: 43
+run no: 44
+run no: 45
+run no: 46
+run no: 47
+run no: 48
+run no: 49
+run no: 50
+run no: 51
+run no: 52
+run no: 53
+run no: 54
+run no: 55
+run no: 56
+run no: 57
+run no: 58
+run no: 59
+run no: 60
+run no: 61
+run no: 62
+run no: 63
+run no: 64
+run no: 65
+run no: 66
+run no: 67
+run no: 68
+run no: 69
+run no: 70
+run no: 71
+run no: 72
+run no: 73
+run no: 74
+run no: 75
+run no: 76
+run no: 77
+run no: 78
+run no: 79
+run no: 80
+run no: 81
+run no: 82
+run no: 83
+run no: 84
+run no: 85
+run no: 86
+run no: 87
+run no: 88
+run no: 89
+run no: 90
+run no: 91
+run no: 92
+run no: 93
+run no: 94
+run no: 95
+run no: 96
+run no: 97
+run no: 98
+run no: 99
+run no: 100
+Elapsed time: 0.08 (secs)
+
+>>> basis indicator
+Elapsed time: 0.00 (secs)
+
+>>> basis separable demand
+Elapsed time: 0.00 (secs)
+
+>>> solve salp 1
+solving the matching model by salp
+epsilon = 1.0
+Parallel mode: deterministic, using up to 2 threads for concurrent optimization.
+Tried aggregator 1 time.
+LP Presolve eliminated 0 rows and 1 columns.
+Reduced LP has 122500 rows, 122707 columns, and 980000 nonzeros.
+
+Iteration log . . .
+Iteration:     1   Dual infeasibility =        843995.999995
+Iteration:    62   Dual infeasibility =        288075.332917
+Iteration:   257   Dual infeasibility =        161760.894479
+Iteration:   624   Dual infeasibility =        125376.310632
+Iteration:  1212   Dual infeasibility =        121129.997779
+Iteration:  1891   Dual infeasibility =        119389.997566
+Elapsed time =   17.21 sec. (2000 iterations).
+Iteration:  2608   Dual infeasibility =        117957.496006
+Iteration:  3235   Dual infeasibility =        116701.997113
+Iteration:  3924   Dual infeasibility =        115239.477765
+Elapsed time =   32.24 sec. (4000 iterations).
+Iteration:  4637   Dual infeasibility =        113409.996692
+Iteration:  5350   Dual infeasibility =        111984.741953
+Iteration:  6211   Dual infeasibility =        110263.996353
+Iteration:  7190   Dual infeasibility =        108307.402142
+Iteration:  7801   Dual infeasibility =        107083.996044
+Elapsed time =   43.03 sec. (8000 iterations).
+Iteration:  8481   Dual infeasibility =        105727.629715
+Iteration:  9165   Dual infeasibility =        104357.995655
+Iteration:  9846   Dual infeasibility =        102997.995439
+Iteration: 10750   Dual infeasibility =        101191.995223
+Iteration: 11416   Dual infeasibility =         99863.491616
+Elapsed time =   56.16 sec. (12000 iterations).
+Iteration: 12033   Dual infeasibility =         98627.994832
+Iteration: 12808   Dual infeasibility =         97077.994626
+Iteration: 13539   Dual infeasibility =         95615.994355
+Iteration: 14244   Dual infeasibility =         94205.994153
+Iteration: 15353   Dual infeasibility =         91987.994013
+Elapsed time =   67.68 sec. (16000 iterations).
+Iteration: 16049   Dual infeasibility =         90595.993850
+Iteration: 16665   Dual infeasibility =         89365.993647
+Iteration: 17319   Dual infeasibility =         88057.993434
+Iteration: 17942   Dual infeasibility =         86815.993125
+Iteration: 18682   Dual infeasibility =         85337.992960
+Elapsed time =   78.86 sec. (19000 iterations).
+Iteration: 19488   Dual infeasibility =         83726.875523
+Iteration: 20266   Dual infeasibility =         82171.408626
+Iteration: 20929   Dual infeasibility =         80846.851346
+Using devex.
+
+Barrier solved model.
+
+objective = 173379.99999999965
+total reward = 98819.0
+solution successful.
+supply function = 0.0*f_0 + -0.9999999999999956*f_1 + 0.0*f_2 + 0.0*f_3 + 0.0*f_4 + 0.0*f_5 + 0.0*f_6 + -0.9999999999999956*f_7 + 0.0*f_8 + 0.0*f_9 + 0.0*f_10 + 0.0*f_11 + -0.9999999999999956*f_12 + 0.0*f_13 + 0.0*f_14 + 0.0*f_15 + -0.999999999999995*f_16 + 0.0*f_17 + 0.0*f_18 + 0.0*f_19 + 0.0*f_20 + -0.9999999999999956*f_21 + 0.0*f_22 + 0.0*f_23 + -0.9999999999999977*f_24 + 0.0*f_25 + 0.0*f_26 + 0.0*f_27 + 0.0*f_28 + 0.0*f_29 + 0.0*f_30 + -0.9999999999999956*f_31 + 0.0*f_32 + 0.0*f_33 + 0.0*f_34 + 0.0*f_35 + 0.0*f_36 + 0.0*f_37 + -0.9999999999999957*f_38 + -0.999999999999995*f_39 + 0.0*f_40 + 0.0*f_41 + 0.0*f_42 + 0.0*f_43 + -0.999999999999995*f_44 + 0.0*f_45 + 0.0*f_46 + 0.0*f_47 + -0.999999999999995*f_48 + 0.0*f_49 
+demand function = 0.0*f_0 + 0.0*f_1 + 0.0*f_2 + 0.0*f_3 + 0.0*f_4 + 0.0*f_5 + 0.0*f_6 + 0.0*f_7 + 0.0*f_8 + 0.0*f_9 + 0.0*f_10 + 0.0*f_11 + 0.0*f_12 + 0.0*f_13 + 0.0*f_14 + 0.0*f_15 + 0.0*f_16 + 0.0*f_17 + 0.0*f_18 + 0.0*f_19 + 0.0*f_20 + 0.0*f_21 + 0.0*f_22 + 0.0*f_23 + 0.0*f_24 + 0.0*f_25 + 0.0*f_26 + 0.0*f_27 + 0.0*f_28 + 0.0*f_29 + 0.0*f_30 + 0.0*f_31 + 0.0*f_32 + 0.0*f_33 + 0.0*f_34 + 0.0*f_35 + 0.0*f_36 + 0.0*f_37 + 0.0*f_38 + 0.0*f_39 + 0.0*f_40 + 0.0*f_41 + 0.0*f_42 + 0.0*f_43 + 0.0*f_44 + 0.0*f_45 + 0.0*f_46 + 0.0*f_47 + 0.0*f_48 + 0.0*f_49 + 0.0*f_50 + 0.0*f_51 + 0.0*f_52 + 0.0*f_53 + 0.0*f_54 + 0.0*f_55 + 0.0*f_56 + 0.0*f_57 + 0.0*f_58 + 0.0*f_59 + 0.0*f_60 + 0.0*f_61 + 0.0*f_62 + 0.0*f_63 + 0.0*f_64 + 0.0*f_65 + 0.0*f_66 + 0.0*f_67 + 0.0*f_68 + 0.0*f_69 + 0.0*f_70 + 0.0*f_71 + 0.0*f_72 + 0.0*f_73 + 0.0*f_74 + 0.0*f_75 + 0.0*f_76 + 0.0*f_77 + 0.0*f_78 + 0.0*f_79 + 0.9999999999999956*f_80 + 0.999999999999995*f_81 + 0.9999999999999977*f_82 + 0.9999999999999957*f_83 + 0.9999999999999966*f_84 + 1.0*f_85 + 1.0*f_86 + 1.0*f_87 + 1.0*f_88 + 1.0*f_89 + 1.0*f_90 + 1.0*f_91 + 1.0*f_92 + 1.0*f_93 + 1.0*f_94 + 1.0*f_95 + 0.0*f_96 + 0.0*f_97 + 0.0*f_98 + 0.0*f_99 + 0.0*f_100 + 0.0*f_101 + 0.0*f_102 + 0.0*f_103 + 0.0*f_104 + 0.0*f_105 + 0.0*f_106 + 0.0*f_107 + 0.0*f_108 + 0.0*f_109 + 0.0*f_110 + 0.0*f_111 + 0.0*f_112 + 0.0*f_113 + 0.0*f_114 + 0.0*f_115 + 0.0*f_116 + 0.0*f_117 + 0.0*f_118 + 0.0*f_119 + 0.0*f_120 + 0.0*f_121 + 0.0*f_122 + 0.0*f_123 + 0.0*f_124 + 0.0*f_125 + 0.0*f_126 + 0.0*f_127 + 0.0*f_128 + 0.0*f_129 + 0.0*f_130 + 0.0*f_131 + 0.0*f_132 + 0.0*f_133 + 0.0*f_134 + 0.0*f_135 + 0.0*f_136 + 0.0*f_137 + 0.0*f_138 + 0.0*f_139 + 0.0*f_140 + 0.0*f_141 + 0.0*f_142 + 0.0*f_143 + 0.0*f_144 + 0.0*f_145 + 0.0*f_146 + 0.0*f_147 + 0.0*f_148 + 0.0*f_149 + 0.0*f_150 + 0.0*f_151 + 0.0*f_152 + 0.0*f_153 + 0.0*f_154 + 0.0*f_155 + 0.0*f_156 + 0.0*f_157 
+Elapsed time: 94.42 (secs)
+
+>>> policy dualfunction
+Elapsed time: 0.00 (secs)
+
+>>> simvalue dualpolicy-online 300 1
+the total no of sim runs is 300
+simulation with the seed 1
+simulation run 0 - this reward: 122.0, mean reward: 122.0
+simulation run 1 - this reward: 124.0, mean reward: 123.0
+simulation run 2 - this reward: 117.0, mean reward: 121.0
+simulation run 3 - this reward: 121.0, mean reward: 121.0
+simulation run 4 - this reward: 118.0, mean reward: 120.4
+simulation run 5 - this reward: 117.0, mean reward: 119.83333333333333
+simulation run 6 - this reward: 116.0, mean reward: 119.28571428571429
+simulation run 7 - this reward: 121.0, mean reward: 119.5
+simulation run 8 - this reward: 120.0, mean reward: 119.55555555555556
+simulation run 9 - this reward: 121.0, mean reward: 119.7
+simulation run 10 - this reward: 117.0, mean reward: 119.45454545454545
+simulation run 11 - this reward: 119.0, mean reward: 119.41666666666667
+simulation run 12 - this reward: 119.0, mean reward: 119.38461538461539
+simulation run 13 - this reward: 122.0, mean reward: 119.57142857142857
+simulation run 14 - this reward: 115.0, mean reward: 119.26666666666667
+simulation run 15 - this reward: 115.0, mean reward: 119.0
+simulation run 16 - this reward: 123.0, mean reward: 119.23529411764706
+simulation run 17 - this reward: 114.0, mean reward: 118.94444444444444
+simulation run 18 - this reward: 111.0, mean reward: 118.52631578947368
+simulation run 19 - this reward: 121.0, mean reward: 118.65
+simulation run 20 - this reward: 124.0, mean reward: 118.9047619047619
+simulation run 21 - this reward: 112.0, mean reward: 118.5909090909091
+simulation run 22 - this reward: 121.0, mean reward: 118.69565217391305
+simulation run 23 - this reward: 117.0, mean reward: 118.625
+simulation run 24 - this reward: 122.0, mean reward: 118.76
+simulation run 25 - this reward: 123.0, mean reward: 118.92307692307692
+simulation run 26 - this reward: 115.0, mean reward: 118.77777777777777
+simulation run 27 - this reward: 127.0, mean reward: 119.07142857142857
+simulation run 28 - this reward: 112.0, mean reward: 118.82758620689656
+simulation run 29 - this reward: 121.0, mean reward: 118.9
+simulation run 30 - this reward: 122.0, mean reward: 119.0
+simulation run 31 - this reward: 112.0, mean reward: 118.78125
+simulation run 32 - this reward: 121.0, mean reward: 118.84848484848484
+simulation run 33 - this reward: 121.0, mean reward: 118.91176470588235
+simulation run 34 - this reward: 110.0, mean reward: 118.65714285714286
+simulation run 35 - this reward: 123.0, mean reward: 118.77777777777777
+simulation run 36 - this reward: 125.0, mean reward: 118.94594594594595
+simulation run 37 - this reward: 115.0, mean reward: 118.84210526315789
+simulation run 38 - this reward: 123.0, mean reward: 118.94871794871794
+simulation run 39 - this reward: 120.0, mean reward: 118.975
+simulation run 40 - this reward: 122.0, mean reward: 119.04878048780488
+simulation run 41 - this reward: 114.0, mean reward: 118.92857142857143
+simulation run 42 - this reward: 114.0, mean reward: 118.81395348837209
+simulation run 43 - this reward: 119.0, mean reward: 118.81818181818181
+simulation run 44 - this reward: 129.0, mean reward: 119.04444444444445
+simulation run 45 - this reward: 125.0, mean reward: 119.17391304347827
+simulation run 46 - this reward: 109.0, mean reward: 118.95744680851064
+simulation run 47 - this reward: 124.0, mean reward: 119.0625
+simulation run 48 - this reward: 128.0, mean reward: 119.24489795918367
+simulation run 49 - this reward: 120.0, mean reward: 119.26
+simulation run 50 - this reward: 126.0, mean reward: 119.3921568627451
+simulation run 51 - this reward: 121.0, mean reward: 119.42307692307692
+simulation run 52 - this reward: 113.0, mean reward: 119.30188679245283
+simulation run 53 - this reward: 113.0, mean reward: 119.18518518518519
+simulation run 54 - this reward: 119.0, mean reward: 119.18181818181819
+simulation run 55 - this reward: 111.0, mean reward: 119.03571428571429
+simulation run 56 - this reward: 117.0, mean reward: 119.0
+simulation run 57 - this reward: 123.0, mean reward: 119.06896551724138
+simulation run 58 - this reward: 122.0, mean reward: 119.11864406779661
+simulation run 59 - this reward: 119.0, mean reward: 119.11666666666666
+simulation run 60 - this reward: 119.0, mean reward: 119.11475409836065
+simulation run 61 - this reward: 122.0, mean reward: 119.16129032258064
+simulation run 62 - this reward: 109.0, mean reward: 119.0
+simulation run 63 - this reward: 123.0, mean reward: 119.0625
+simulation run 64 - this reward: 125.0, mean reward: 119.15384615384616
+simulation run 65 - this reward: 125.0, mean reward: 119.24242424242425
+simulation run 66 - this reward: 124.0, mean reward: 119.31343283582089
+simulation run 67 - this reward: 122.0, mean reward: 119.3529411764706
+simulation run 68 - this reward: 112.0, mean reward: 119.2463768115942
+simulation run 69 - this reward: 112.0, mean reward: 119.14285714285714
+simulation run 70 - this reward: 121.0, mean reward: 119.16901408450704
+simulation run 71 - this reward: 120.0, mean reward: 119.18055555555556
+simulation run 72 - this reward: 121.0, mean reward: 119.20547945205479
+simulation run 73 - this reward: 121.0, mean reward: 119.22972972972973
+simulation run 74 - this reward: 122.0, mean reward: 119.26666666666667
+simulation run 75 - this reward: 118.0, mean reward: 119.25
+simulation run 76 - this reward: 111.0, mean reward: 119.14285714285714
+simulation run 77 - this reward: 123.0, mean reward: 119.1923076923077
+simulation run 78 - this reward: 119.0, mean reward: 119.18987341772151
+simulation run 79 - this reward: 123.0, mean reward: 119.2375
+simulation run 80 - this reward: 116.0, mean reward: 119.19753086419753
+simulation run 81 - this reward: 122.0, mean reward: 119.23170731707317
+simulation run 82 - this reward: 115.0, mean reward: 119.18072289156626
+simulation run 83 - this reward: 115.0, mean reward: 119.13095238095238
+simulation run 84 - this reward: 121.0, mean reward: 119.15294117647059
+simulation run 85 - this reward: 116.0, mean reward: 119.11627906976744
+simulation run 86 - this reward: 119.0, mean reward: 119.11494252873563
+simulation run 87 - this reward: 119.0, mean reward: 119.11363636363636
+simulation run 88 - this reward: 118.0, mean reward: 119.10112359550561
+simulation run 89 - this reward: 112.0, mean reward: 119.02222222222223
+simulation run 90 - this reward: 119.0, mean reward: 119.02197802197803
+simulation run 91 - this reward: 120.0, mean reward: 119.03260869565217
+simulation run 92 - this reward: 111.0, mean reward: 118.94623655913979
+simulation run 93 - this reward: 113.0, mean reward: 118.88297872340425
+simulation run 94 - this reward: 120.0, mean reward: 118.89473684210526
+simulation run 95 - this reward: 113.0, mean reward: 118.83333333333333
+simulation run 96 - this reward: 115.0, mean reward: 118.79381443298969
+simulation run 97 - this reward: 115.0, mean reward: 118.75510204081633
+simulation run 98 - this reward: 119.0, mean reward: 118.75757575757575
+simulation run 99 - this reward: 123.0, mean reward: 118.8
+simulation run 100 - this reward: 120.0, mean reward: 118.81188118811882
+simulation run 101 - this reward: 125.0, mean reward: 118.87254901960785
+simulation run 102 - this reward: 122.0, mean reward: 118.90291262135922
+simulation run 103 - this reward: 114.0, mean reward: 118.85576923076923
+simulation run 104 - this reward: 122.0, mean reward: 118.88571428571429
+simulation run 105 - this reward: 125.0, mean reward: 118.94339622641509
+simulation run 106 - this reward: 117.0, mean reward: 118.92523364485982
+simulation run 107 - this reward: 116.0, mean reward: 118.89814814814815
+simulation run 108 - this reward: 116.0, mean reward: 118.87155963302752
+simulation run 109 - this reward: 120.0, mean reward: 118.88181818181818
+simulation run 110 - this reward: 118.0, mean reward: 118.87387387387388
+simulation run 111 - this reward: 121.0, mean reward: 118.89285714285714
+simulation run 112 - this reward: 110.0, mean reward: 118.8141592920354
+simulation run 113 - this reward: 121.0, mean reward: 118.83333333333333
+simulation run 114 - this reward: 117.0, mean reward: 118.81739130434782
+simulation run 115 - this reward: 110.0, mean reward: 118.74137931034483
+simulation run 116 - this reward: 117.0, mean reward: 118.72649572649573
+simulation run 117 - this reward: 118.0, mean reward: 118.72033898305085
+simulation run 118 - this reward: 113.0, mean reward: 118.67226890756302
+simulation run 119 - this reward: 118.0, mean reward: 118.66666666666667
+simulation run 120 - this reward: 117.0, mean reward: 118.65289256198348
+simulation run 121 - this reward: 117.0, mean reward: 118.63934426229508
+simulation run 122 - this reward: 116.0, mean reward: 118.6178861788618
+simulation run 123 - this reward: 115.0, mean reward: 118.58870967741936
+simulation run 124 - this reward: 118.0, mean reward: 118.584
+simulation run 125 - this reward: 118.0, mean reward: 118.57936507936508
+simulation run 126 - this reward: 117.0, mean reward: 118.56692913385827
+simulation run 127 - this reward: 105.0, mean reward: 118.4609375
+simulation run 128 - this reward: 113.0, mean reward: 118.4186046511628
+simulation run 129 - this reward: 119.0, mean reward: 118.42307692307692
+simulation run 130 - this reward: 120.0, mean reward: 118.43511450381679
+simulation run 131 - this reward: 118.0, mean reward: 118.43181818181819
+simulation run 132 - this reward: 114.0, mean reward: 118.3984962406015
+simulation run 133 - this reward: 122.0, mean reward: 118.42537313432835
+simulation run 134 - this reward: 126.0, mean reward: 118.48148148148148
+simulation run 135 - this reward: 126.0, mean reward: 118.53676470588235
+simulation run 136 - this reward: 121.0, mean reward: 118.55474452554745
+simulation run 137 - this reward: 114.0, mean reward: 118.52173913043478
+simulation run 138 - this reward: 129.0, mean reward: 118.59712230215827
+simulation run 139 - this reward: 118.0, mean reward: 118.59285714285714
+simulation run 140 - this reward: 110.0, mean reward: 118.53191489361703
+simulation run 141 - this reward: 125.0, mean reward: 118.5774647887324
+simulation run 142 - this reward: 117.0, mean reward: 118.56643356643356
+simulation run 143 - this reward: 112.0, mean reward: 118.52083333333333
+simulation run 144 - this reward: 118.0, mean reward: 118.51724137931035
+simulation run 145 - this reward: 111.0, mean reward: 118.46575342465754
+simulation run 146 - this reward: 119.0, mean reward: 118.46938775510205
+simulation run 147 - this reward: 117.0, mean reward: 118.45945945945945
+simulation run 148 - this reward: 119.0, mean reward: 118.46308724832215
+simulation run 149 - this reward: 116.0, mean reward: 118.44666666666667
+simulation run 150 - this reward: 110.0, mean reward: 118.3907284768212
+simulation run 151 - this reward: 115.0, mean reward: 118.36842105263158
+simulation run 152 - this reward: 120.0, mean reward: 118.37908496732027
+simulation run 153 - this reward: 120.0, mean reward: 118.3896103896104
+simulation run 154 - this reward: 128.0, mean reward: 118.45161290322581
+simulation run 155 - this reward: 117.0, mean reward: 118.4423076923077
+simulation run 156 - this reward: 118.0, mean reward: 118.43949044585987
+simulation run 157 - this reward: 113.0, mean reward: 118.40506329113924
+simulation run 158 - this reward: 123.0, mean reward: 118.43396226415095
+simulation run 159 - this reward: 115.0, mean reward: 118.4125
+simulation run 160 - this reward: 127.0, mean reward: 118.46583850931677
+simulation run 161 - this reward: 108.0, mean reward: 118.40123456790124
+simulation run 162 - this reward: 117.0, mean reward: 118.39263803680981
+simulation run 163 - this reward: 121.0, mean reward: 118.40853658536585
+simulation run 164 - this reward: 120.0, mean reward: 118.41818181818182
+simulation run 165 - this reward: 120.0, mean reward: 118.42771084337349
+simulation run 166 - this reward: 112.0, mean reward: 118.38922155688623
+simulation run 167 - this reward: 118.0, mean reward: 118.38690476190476
+simulation run 168 - this reward: 120.0, mean reward: 118.39644970414201
+simulation run 169 - this reward: 108.0, mean reward: 118.33529411764705
+simulation run 170 - this reward: 116.0, mean reward: 118.32163742690058
+simulation run 171 - this reward: 126.0, mean reward: 118.36627906976744
+simulation run 172 - this reward: 124.0, mean reward: 118.39884393063583
+simulation run 173 - this reward: 122.0, mean reward: 118.41954022988506
+simulation run 174 - this reward: 115.0, mean reward: 118.4
+simulation run 175 - this reward: 125.0, mean reward: 118.4375
+simulation run 176 - this reward: 120.0, mean reward: 118.44632768361582
+simulation run 177 - this reward: 118.0, mean reward: 118.4438202247191
+simulation run 178 - this reward: 119.0, mean reward: 118.44692737430168
+simulation run 179 - this reward: 119.0, mean reward: 118.45
+simulation run 180 - this reward: 117.0, mean reward: 118.44198895027624
+simulation run 181 - this reward: 118.0, mean reward: 118.43956043956044
+simulation run 182 - this reward: 117.0, mean reward: 118.43169398907104
+simulation run 183 - this reward: 108.0, mean reward: 118.375
+simulation run 184 - this reward: 120.0, mean reward: 118.38378378378378
+simulation run 185 - this reward: 121.0, mean reward: 118.39784946236558
+simulation run 186 - this reward: 119.0, mean reward: 118.40106951871658
+simulation run 187 - this reward: 119.0, mean reward: 118.40425531914893
+simulation run 188 - this reward: 119.0, mean reward: 118.4074074074074
+simulation run 189 - this reward: 125.0, mean reward: 118.4421052631579
+simulation run 190 - this reward: 118.0, mean reward: 118.43979057591623
+simulation run 191 - this reward: 124.0, mean reward: 118.46875
+simulation run 192 - this reward: 112.0, mean reward: 118.43523316062176
+simulation run 193 - this reward: 124.0, mean reward: 118.4639175257732
+simulation run 194 - this reward: 125.0, mean reward: 118.49743589743589
+simulation run 195 - this reward: 113.0, mean reward: 118.46938775510205
+simulation run 196 - this reward: 119.0, mean reward: 118.47208121827411
+simulation run 197 - this reward: 119.0, mean reward: 118.47474747474747
+simulation run 198 - this reward: 114.0, mean reward: 118.45226130653266
+simulation run 199 - this reward: 118.0, mean reward: 118.45
+simulation run 200 - this reward: 118.0, mean reward: 118.44776119402985
+simulation run 201 - this reward: 116.0, mean reward: 118.43564356435644
+simulation run 202 - this reward: 114.0, mean reward: 118.41379310344827
+simulation run 203 - this reward: 121.0, mean reward: 118.42647058823529
+simulation run 204 - this reward: 121.0, mean reward: 118.4390243902439
+simulation run 205 - this reward: 123.0, mean reward: 118.46116504854369
+simulation run 206 - this reward: 120.0, mean reward: 118.46859903381643
+simulation run 207 - this reward: 121.0, mean reward: 118.48076923076923
+simulation run 208 - this reward: 115.0, mean reward: 118.46411483253588
+simulation run 209 - this reward: 120.0, mean reward: 118.47142857142858
+simulation run 210 - this reward: 135.0, mean reward: 118.54976303317535
+simulation run 211 - this reward: 123.0, mean reward: 118.57075471698113
+simulation run 212 - this reward: 120.0, mean reward: 118.5774647887324
+simulation run 213 - this reward: 120.0, mean reward: 118.58411214953271
+simulation run 214 - this reward: 118.0, mean reward: 118.5813953488372
+simulation run 215 - this reward: 114.0, mean reward: 118.56018518518519
+simulation run 216 - this reward: 126.0, mean reward: 118.59447004608295
+simulation run 217 - this reward: 114.0, mean reward: 118.57339449541284
+simulation run 218 - this reward: 125.0, mean reward: 118.6027397260274
+simulation run 219 - this reward: 118.0, mean reward: 118.6
+simulation run 220 - this reward: 124.0, mean reward: 118.62443438914028
+simulation run 221 - this reward: 122.0, mean reward: 118.63963963963964
+simulation run 222 - this reward: 120.0, mean reward: 118.6457399103139
+simulation run 223 - this reward: 118.0, mean reward: 118.64285714285714
+simulation run 224 - this reward: 115.0, mean reward: 118.62666666666667
+simulation run 225 - this reward: 122.0, mean reward: 118.64159292035399
+simulation run 226 - this reward: 112.0, mean reward: 118.61233480176212
+simulation run 227 - this reward: 123.0, mean reward: 118.63157894736842
+simulation run 228 - this reward: 116.0, mean reward: 118.62008733624454
+simulation run 229 - this reward: 118.0, mean reward: 118.61739130434782
+simulation run 230 - this reward: 116.0, mean reward: 118.60606060606061
+simulation run 231 - this reward: 118.0, mean reward: 118.60344827586206
+simulation run 232 - this reward: 122.0, mean reward: 118.61802575107296
+simulation run 233 - this reward: 115.0, mean reward: 118.6025641025641
+simulation run 234 - this reward: 110.0, mean reward: 118.56595744680851
+simulation run 235 - this reward: 127.0, mean reward: 118.60169491525424
+simulation run 236 - this reward: 121.0, mean reward: 118.61181434599156
+simulation run 237 - this reward: 119.0, mean reward: 118.61344537815125
+simulation run 238 - this reward: 115.0, mean reward: 118.59832635983264
+simulation run 239 - this reward: 124.0, mean reward: 118.62083333333334
+simulation run 240 - this reward: 121.0, mean reward: 118.63070539419087
+simulation run 241 - this reward: 112.0, mean reward: 118.60330578512396
+simulation run 242 - this reward: 122.0, mean reward: 118.61728395061728
+simulation run 243 - this reward: 121.0, mean reward: 118.62704918032787
+simulation run 244 - this reward: 114.0, mean reward: 118.60816326530612
+simulation run 245 - this reward: 115.0, mean reward: 118.59349593495935
+simulation run 246 - this reward: 118.0, mean reward: 118.5910931174089
+simulation run 247 - this reward: 129.0, mean reward: 118.63306451612904
+simulation run 248 - this reward: 128.0, mean reward: 118.6706827309237
+simulation run 249 - this reward: 118.0, mean reward: 118.668
+simulation run 250 - this reward: 127.0, mean reward: 118.7011952191235
+simulation run 251 - this reward: 130.0, mean reward: 118.74603174603175
+simulation run 252 - this reward: 129.0, mean reward: 118.78656126482214
+simulation run 253 - this reward: 118.0, mean reward: 118.78346456692914
+simulation run 254 - this reward: 115.0, mean reward: 118.76862745098039
+simulation run 255 - this reward: 127.0, mean reward: 118.80078125
+simulation run 256 - this reward: 114.0, mean reward: 118.78210116731518
+simulation run 257 - this reward: 128.0, mean reward: 118.81782945736434
+simulation run 258 - this reward: 123.0, mean reward: 118.83397683397683
+simulation run 259 - this reward: 116.0, mean reward: 118.82307692307693
+simulation run 260 - this reward: 113.0, mean reward: 118.80076628352491
+simulation run 261 - this reward: 125.0, mean reward: 118.82442748091603
+simulation run 262 - this reward: 112.0, mean reward: 118.79847908745248
+simulation run 263 - this reward: 122.0, mean reward: 118.81060606060606
+simulation run 264 - this reward: 117.0, mean reward: 118.80377358490566
+simulation run 265 - this reward: 115.0, mean reward: 118.78947368421052
+simulation run 266 - this reward: 119.0, mean reward: 118.79026217228464
+simulation run 267 - this reward: 115.0, mean reward: 118.77611940298507
+simulation run 268 - this reward: 122.0, mean reward: 118.78810408921933
+simulation run 269 - this reward: 120.0, mean reward: 118.7925925925926
+simulation run 270 - this reward: 124.0, mean reward: 118.81180811808117
+simulation run 271 - this reward: 116.0, mean reward: 118.80147058823529
+simulation run 272 - this reward: 123.0, mean reward: 118.81684981684981
+simulation run 273 - this reward: 112.0, mean reward: 118.7919708029197
+simulation run 274 - this reward: 122.0, mean reward: 118.80363636363636
+simulation run 275 - this reward: 124.0, mean reward: 118.82246376811594
+simulation run 276 - this reward: 113.0, mean reward: 118.8014440433213
+simulation run 277 - this reward: 114.0, mean reward: 118.7841726618705
+simulation run 278 - this reward: 116.0, mean reward: 118.7741935483871
+simulation run 279 - this reward: 119.0, mean reward: 118.775
+simulation run 280 - this reward: 129.0, mean reward: 118.81138790035587
+simulation run 281 - this reward: 120.0, mean reward: 118.81560283687944
+simulation run 282 - this reward: 123.0, mean reward: 118.8303886925795
+simulation run 283 - this reward: 117.0, mean reward: 118.82394366197182
+simulation run 284 - this reward: 115.0, mean reward: 118.81052631578947
+simulation run 285 - this reward: 111.0, mean reward: 118.78321678321679
+simulation run 286 - this reward: 114.0, mean reward: 118.76655052264809
+simulation run 287 - this reward: 116.0, mean reward: 118.75694444444444
+simulation run 288 - this reward: 117.0, mean reward: 118.75086505190312
+simulation run 289 - this reward: 124.0, mean reward: 118.76896551724138
+simulation run 290 - this reward: 116.0, mean reward: 118.7594501718213
+simulation run 291 - this reward: 117.0, mean reward: 118.75342465753425
+simulation run 292 - this reward: 111.0, mean reward: 118.72696245733789
+simulation run 293 - this reward: 121.0, mean reward: 118.73469387755102
+simulation run 294 - this reward: 115.0, mean reward: 118.72203389830509
+simulation run 295 - this reward: 117.0, mean reward: 118.71621621621621
+simulation run 296 - this reward: 122.0, mean reward: 118.72727272727273
+simulation run 297 - this reward: 106.0, mean reward: 118.68456375838926
+simulation run 298 - this reward: 112.0, mean reward: 118.66220735785953
+simulation run 299 - this reward: 116.0, mean reward: 118.65333333333334
+mean reward: 118.65333333333334, variance of the reward: 23.053155555555563
+Elapsed time: 0.44 (secs)
+
+COMMAND SUCCESSFUL
+TOTAL ELAPSED TIME: 94.97 (secs)

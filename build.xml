@@ -1,0 +1,64 @@
+<project name="ccm-java-main" default="compile" basedir=".">
+
+  <property name="src"         value="src"/>
+  <property name="build"       value="classes"/>
+  <property name="dist"        value="dist"/>
+<!--   <property name="depcache"    value="depcache"/> -->
+  <property name="javadoc"     value="javadoc"/>
+  <property name="nowarn"      value="off"/>
+
+  <target name="all" depends="clean,prepare,compile,jar"/>
+  
+  <target name="prepare">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+    <mkdir dir="${dist}"/>
+<!--     <mkdir dir="${depcache}"/> -->
+    <mkdir dir="${javadoc}"/>
+  </target>
+  
+  <target name="jar" depends="compile">
+    <jar destfile="${dist}/${ant.project.name}-${DSTAMP}.jar">
+      <fileset dir="${build}"/>
+    </jar>
+  </target>
+
+  <target name="compile" depends="prepare">
+<!--     <depend srcdir="${src}" -->
+<!--             destdir="${classes}" -->
+<!--             cache="${depcache}" -->
+<!--             closure="yes" -->
+<!--             dump="true" -->
+<!--             /> -->
+    <javac srcdir="${src}"
+           destdir="${build}"
+           debug="on"
+           nowarn="${nowarn}"
+           optimize="off"
+           deprecation="on">
+      <compilerarg value="-Xlint:unchecked"/>
+      <classpath>
+	<pathelement location="${build}" />
+	<fileset dir="lib">
+          <include name="**/*.jar"/>
+          <include name="**/*.zip"/>
+	</fileset>
+      </classpath>
+    </javac>
+  </target>
+  
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+<!--     <delete dir="${depcache}"/> -->
+    <delete dir="${javadoc}"/>
+  </target>
+
+  <target name="superclean" depends="clean">
+    <delete>
+      <fileset dir="." includes="**/*~" defaultexcludes="no"/>
+      <fileset dir="." includes="**/.#*"/>
+    </delete>
+  </target>
+  
+</project>

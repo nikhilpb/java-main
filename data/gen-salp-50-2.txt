@@ -1,0 +1,1 @@
+sge_run --grid_submit=batch --grid_mem=3g --grid_priority=normal "./salp.sh > results-23-01-13/gen-salp-50-2.txt"
