@@ -26,7 +26,7 @@ public class MatchingSamplePath {
     private ArrayList<ArrayList<Integer>> states;
     private ArrayList<ArrayList<Pair<Integer, Integer>>> matchedPairs;
     private int timePeriods, initialPopulationSize;
-    private GeneralMatchingModel model;
+    private MatchingModel model;
     private boolean isSampled = false, isMatched = false;
     private LawlerBipartiteMatcher biparMatcher;
 
@@ -43,7 +43,7 @@ public class MatchingSamplePath {
      * @param ipGeometricParameter geometric parameter for the population sampled initially
      * @param seed                 seed for sampling'
      */
-    public MatchingSamplePath(GeneralMatchingModel model,
+    public MatchingSamplePath(MatchingModel model,
                               final int timePeriods,
                               final double ipGeometricParameter,
                               final long seed) {

@@ -11,7 +11,7 @@ public class SsgdSolver extends MatchingSolver {
     private double eps, a , b;
     private int sampleCount;
 
-    public SsgdSolver(GeneralMatchingModel model,
+    public SsgdSolver(MatchingModel model,
                       double initPopulationParam,
                       int timePeriods,
                       long sampleSeed,

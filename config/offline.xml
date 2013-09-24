@@ -4,15 +4,8 @@
         <type>general</type>
         <file>data/tissue-types.txt</file>
     </model>
-    <solve>
-        <method>greedy</method>
-        <periods>50</periods>
-        <popparam>0.2</popparam>
-        <seed>123</seed>
-        <sampling_policy>offline</sampling_policy>
-        <problem_count>1</problem_count>
-    </solve>
     <evaluate>
+        <type>offline</type>
         <sample_count>300</sample_count>
         <sample_seed>456</sample_seed>
     </evaluate>

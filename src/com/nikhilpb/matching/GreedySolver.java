@@ -9,7 +9,7 @@ package com.nikhilpb.matching;
  */
 public class GreedySolver extends MatchingSolver {
 
-    public GreedySolver(GeneralMatchingModel model,
+    public GreedySolver(MatchingModel model,
                       double initPopulationParam,
                       int timePeriods,
                       long sampleSeed,

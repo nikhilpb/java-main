@@ -75,7 +75,7 @@ public class MatchingMain extends XmlParserMain {
 
         System.out.println("reading model from file " + fileName + ", with type " + modelType);
         if (modelType.equals("general")) {
-            model = new GeneralMatchingModel(modelParams);
+            model = new MatchingModel(modelParams);
         } else {
             throw new RuntimeException("improper model type");
         }
@@ -144,15 +144,12 @@ public class MatchingMain extends XmlParserMain {
                     final double eps = Double.parseDouble(getPropertyOrDie(props, "eps"));
                     final double a = Double.parseDouble(getPropertyOrDie(props, "a"));
                     final double b = Double.parseDouble(getPropertyOrDie(props, "b"));
-                    solvers.add((MatchingSolver) new SsgdSolver((GeneralMatchingModel) model,
-                            initPopParam, timePeriods, random.nextLong(),
-                            samplingPolicy, sampleCount, eps, a, b));
+                    solvers.add(new SsgdSolver(model, initPopParam, timePeriods, random.nextLong(), samplingPolicy,
+                                               sampleCount, eps, a, b));
                     success = success && solvers.get(p).solve();
                     break;
                 case GREEDY:
-                    solvers.add(new GreedySolver((GeneralMatchingModel) model,
-                            initPopParam, timePeriods, random.nextLong(),
-                            samplingPolicy));
+                    solvers.add(new GreedySolver(model, initPopParam, timePeriods, random.nextLong(), samplingPolicy));
                     break;
                 case SALP_BATCHLP:
                     break;
@@ -177,7 +174,7 @@ public class MatchingMain extends XmlParserMain {
             valueStd = 0.0;
             for (int ss = 0; ss < sampleCount; ++ss) {
                 sampleSeed = random.nextLong();
-                samplePath = new MatchingSamplePath((GeneralMatchingModel)model, 50, 0.2, sampleSeed);
+                samplePath = new MatchingSamplePath(model, 50, 0.2, sampleSeed);
                 samplePath.sample();
                 double thisValue = samplePath.offlineMatch();
                 value += thisValue;

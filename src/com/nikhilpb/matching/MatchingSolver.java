@@ -14,13 +14,13 @@ import java.util.Random;
  */
 public abstract class MatchingSolver {
 
-    protected GeneralMatchingModel model;
+    protected MatchingModel model;
     protected double initPopulationParam;
     protected int timePeriods;
     protected SamplingPolicy samplingPolicy;
     Random random;
 
-    protected void initParams(GeneralMatchingModel model,
+    protected void initParams(MatchingModel model,
                               double initPopulationParam,
                               int timePeriods,
                               long sampleSeed,
