@@ -365,13 +365,13 @@ public class MatchingSamplePath {
             }
             biparMatcher = new LawlerBipartiteMatcher(n);
             biparMatcher.computeMax(w);
-            totalReward += biparMatcher.getMatchingWeight();
             int[] sMatch = biparMatcher.getMatchingSource();
             for (int i = 0; i < supplyItems.size(); i++) {
                 if (sMatch[i] > -1 && sMatch[i] < demandItems.size()) {
                     matched[supplyIMap.get(i)] = true;
                     matched[demandIMap.get(sMatch[i])] = true;
                     matchedPairs.get(t).add(new Pair<Integer, Integer>(supplyIMap.get(i), demandIMap.get(sMatch[i])));
+                    totalReward += model.getRewardFunction().evaluate(supplyItems.get(i), demandItems.get(sMatch[i]));
                 }
             }
         }

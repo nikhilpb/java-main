@@ -79,7 +79,7 @@ public abstract class MatchingSolver {
     public double evaluate(long sampleSeed) throws Exception {
         MatchingSamplePath samplePath = samplePath(sampleSeed);
         samplePath.sample();
-        return samplePath.dualPolicyEvaluate(getSupplyFunction(), getDemandFunction());
+        return samplePath.dualPolicyEvaluate(getSupplyFunction(), getDemandFunction(), new CplexFactory());
     }
 
     public static SamplingPolicy samplingPolicyFromString(String typeName) throws RuntimeException {

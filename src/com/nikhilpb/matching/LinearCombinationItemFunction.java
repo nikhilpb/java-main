@@ -30,6 +30,13 @@ public class LinearCombinationItemFunction implements ItemFunction {
         return out;
     }
 
+    public void scale(double scale) {
+        for (int i = 0; i < r.length; ++i) {
+            r[i] *= scale;
+        }
+        return;
+    }
+
     public String toString() {
         String name = "";
         for (int i = 0; i < r.length; i++) {

@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class ItemMatcher {
     private ArrayList<Item> supplySide, demandSide;
+    private ItemFunction supplyFunction, demandFunction;
+    boolean lastOne;
     private RewardFunction rewardFun;
     private double[][] w;
     private LawlerBipartiteMatcher biparMatcher;
@@ -28,6 +30,24 @@ public class ItemMatcher {
     public ItemMatcher(ArrayList<Item> supplySide,
                        ArrayList<Item> demandSide,
                        RewardFunction rewardFun) {
+        init(supplySide, demandSide, rewardFun);
+    }
+
+    public ItemMatcher(ArrayList<Item> supplySide,
+                       ArrayList<Item> demandSide,
+                       RewardFunction rewardFun,
+                       ItemFunction supplyFunction,
+                       ItemFunction demandFunction,
+                       boolean lastOne)  {
+        this.supplyFunction = supplyFunction;
+        this.demandFunction = demandFunction;
+        this.lastOne = lastOne;
+        init(supplySide, demandSide, rewardFun);
+    }
+
+    private void init(ArrayList<Item> supplySide,
+                      ArrayList<Item> demandSide,
+                      RewardFunction rewardFun) {
         //initialize
         this.supplySide = supplySide;
         this.demandSide = demandSide;
@@ -48,6 +68,10 @@ public class ItemMatcher {
                     w[i][j] = 0.0;
                 } else {
                     w[i][j] = this.rewardFun.evaluate(supplySide.get(i), demandSide.get(j));
+                    if (supplyFunction != null && demandFunction != null && !lastOne) {
+                        w[i][j] -= supplyFunction.evaluate(supplySide.get(i));
+                        w[i][j] -= demandFunction.evaluate(demandSide.get(j));
+                    }
                 }
             }
         }

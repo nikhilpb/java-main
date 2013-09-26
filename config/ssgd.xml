@@ -16,7 +16,9 @@
         <sampling_policy>offline</sampling_policy>
         <eps>0.1</eps>
         <a>1000</a>
-        <b>1000</b>
+        <b>1</b>
+        <step_count>10</step_count>
+        <check_per_steps>100</check_per_steps>
         <problem_count>1</problem_count>
     </solve>
     <evaluate>
