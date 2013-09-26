@@ -62,6 +62,20 @@ public abstract class MatchingSolver {
         return new MatchingSamplePath(model, seed);
     }
 
+    protected MatchingSamplePath samplePathMatched(long seed) {
+        MatchingSamplePath samplePath = new MatchingSamplePath(model, seed);
+        samplePath.sample();
+        switch (samplingPolicy) {
+            case OFFLINE:
+                samplePath.offlineMatch();
+                break;
+            case GREEDY:
+                samplePath.greedyMatch();
+                break;
+        }
+        return samplePath;
+    }
+
     public double evaluate(long sampleSeed) throws Exception {
         MatchingSamplePath samplePath = samplePath(sampleSeed);
         samplePath.sample();

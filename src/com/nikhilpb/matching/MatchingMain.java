@@ -137,12 +137,25 @@ public class MatchingMain extends XmlParserMain {
             System.out.println("solving problem no: " + p);
             switch (solverType) {
                 case SALP_SSGD:
+                    if (basisSetSupply == null || basisSetDemand == null) {
+                        throw new RuntimeException("basis must be initialized");
+                    }
                     final int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
+
                     final double eps = Double.parseDouble(getPropertyOrDie(props, "eps"));
                     final double a = Double.parseDouble(getPropertyOrDie(props, "a"));
                     final double b = Double.parseDouble(getPropertyOrDie(props, "b"));
-                    solvers.add(new SsgdSolver(model, random.nextLong(), samplingPolicy,
-                                               sampleCount, eps, a, b));
+                    final int stepCount = Integer.parseInt(getPropertyOrDie(props, "step_count"));
+                    final int checkPerSteps = Integer.parseInt(getPropertyOrDie(props, "check_per_steps"));
+                    SsgdSolver.Config config = new SsgdSolver.Config();
+                    config.aConfig = a;
+                    config.bConfig = b;
+                    config.epsConfig = eps;
+                    config.stepCountConfig = stepCount;
+                    config.checkPerStepsConfig = checkPerSteps;
+                    solvers.add(new SsgdSolver(model, basisSetSupply, basisSetDemand,
+                                               random.nextLong(), samplingPolicy,
+                                               sampleCount, config));
                     success = success && solvers.get(p).solve();
                     break;
                 case GREEDY:
