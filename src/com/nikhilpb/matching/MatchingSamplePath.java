@@ -389,6 +389,7 @@ public class MatchingSamplePath {
             throw new RuntimeException("must be sampled");
         }
         IloCplex cplex = factory.getCplex();
+        cplex.setOut(null);
         IloNumVar[][] piVar;
         ArrayList<Item> supplyItems = new ArrayList<Item>();
         ArrayList<Item> demandItems = new ArrayList<Item>();
