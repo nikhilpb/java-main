@@ -380,8 +380,10 @@ public class MatchingSamplePath {
                     if (t != timePeriods) {
                         coeff -= (1 - qs) * sf.evaluate(sItem) + (1 - qd) * df.evaluate(dItem);
                     }
+                    System.out.println(coeff + " ");
                     obj.addTerm(coeff, piVar[i][j]);
                 }
+                System.out.println();
             }
             cplex.addMaximize(obj);
             cplex.solve();
