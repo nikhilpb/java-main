@@ -445,7 +445,6 @@ public class MatchingSamplePath {
             }
 
             obj = cplex.linearNumExpr();
-            System.out.println("Coefficients");
             for (int i = 0; i < supplySize; i++) {
                 for (int j = 0; j < demandSize; j++) {
                     sItem = supplyItems.get(i);
