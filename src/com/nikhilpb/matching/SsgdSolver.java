@@ -1,6 +1,7 @@
 package com.nikhilpb.matching;
 
 import com.moallemi.util.data.Pair;
+import ilog.cplex.IloCplex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,6 @@ public class SsgdSolver extends MatchingSolver {
                       ItemFunctionSet basisSetDemand,
                       long sampleSeed,
                       MatchingSolver.SamplingPolicy samplingPolicy,
-                      int sampleCount,
                       Config config) {
         this.eps = config.epsConfig;
         this.a = config.aConfig;
@@ -72,55 +72,66 @@ public class SsgdSolver extends MatchingSolver {
     protected void findSubgrad(MatchingSamplePath samplePath,
                                double[] sgSupply,
                                double[] sgDemand) {
-        for (int i = 0; i < sgSupply.length; ++i) {
-            sgSupply[i] = 0.0;
-        }
-        for (int i = 0; i < sgDemand.length; ++i) {
-            sgDemand[i] = 0.0;
-        }
+        Arrays.fill(sgSupply, 0.0);
+        Arrays.fill(sgDemand, 0.0);
         int tp = samplePath.getTimePeriods();
-        ItemMatcher matcher;
         ArrayList<Item> states, supItems = new ArrayList<Item>(), demItems = new ArrayList<Item>();
-        LinearCombinationItemFunction supplyFunction =
-                (LinearCombinationItemFunction)basisSetSupply.getLinearCombination(kappaSupply);
-        supplyFunction.scale(1.0 - model.supplyDepartureRate);
-        LinearCombinationItemFunction demandFunction =
-                (LinearCombinationItemFunction)basisSetDemand.getLinearCombination(kappaDemand);
-        demandFunction.scale(1.0 - model.demandDepartureRate);
+        ItemFunction supplyFunction = basisSetSupply.getLinearCombination(kappaSupply);
+        ItemFunction demandFunction = basisSetDemand.getLinearCombination(kappaDemand);
         double thisEps;
-        for (int t = 0; t < tp; ++t) {
-            states = samplePath.getStates(t);
-            supItems.clear(); demItems.clear();
-            for (Item s : states) {
-                if (s.isSod() == 1) {
-                    supItems.add(s);
+        double qs = model.getSupplyDepartureRate(), qd = model.getDemandDepartureRate();
+        try {
+            IloCplex cplex = new IloCplex();
+            cplex.setOut(null);
+            for (int t = 0; t <= tp; ++t) {
+                states = samplePath.getStates(t);
+                supItems.clear(); demItems.clear();
+                for (Item s : states) {
+                    if (s.isSod() == 1) {
+                        supItems.add(s);
+                    } else {
+                        demItems.add(s);
+                    }
+                }
+                int supplySize = supItems.size();
+                int demandSize = demItems.size();
+                double[][] w = new double[supplySize][demandSize];
+                for (int i = 0; i < supplySize; ++i) {
+                    for (int j = 0; j < demandSize; ++j) {
+                        w[i][j] = model.getRewardFunction().evaluate(supItems.get(i), demItems.get(j));
+                        if ( t < tp) {
+                            w[i][j] = w[i][j] - (1. - qs)*supplyFunction.evaluate(supItems.get(i))
+                                              - (1. - qd)*demandFunction.evaluate(demItems.get(j));
+                        }
+                    }
+                }
+                AsymmetricMatcher matcher = new AsymmetricMatcher(w, cplex);
+                if (!matcher.solve()) {
+                    throw new RuntimeException("problem solving asymmetric matcher");
+                }
+                ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairs();
+                ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
+                for (Pair<Integer, Integer> p : pairs) {
+                    matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
+                }
+                SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
+                                                               states, matchedPairs, t == tp);
+                if (!constraint.satisfied(kappaSupply, kappaDemand)) {
+                    thisEps = eps;
                 } else {
-                    demItems.add(s);
+                    thisEps = 0.0;
+                }
+                double[] coeffKappaS = constraint.getKappa1Coeff();
+                double[] coeddKappaD = constraint.getKappa2Coeff();
+                for (int i = 0; i < sgSupply.length; ++i) {
+                    sgSupply[i] += (1.0 - thisEps) * coeffKappaS[i];
+                }
+                for (int j = 0; j < sgDemand.length; ++j) {
+                    sgDemand[j] += (1.0 - thisEps) * coeddKappaD[j];
                 }
             }
-            matcher = new ItemMatcher(supItems, demItems, model.getRewardFunction(),
-                                      supplyFunction, demandFunction, t == tp);
-            matcher.solve();
-            ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairInds();
-            ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
-            for (Pair<Integer, Integer> p : pairs) {
-                matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
-            }
-            SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
-                                                           states, matchedPairs, t == tp);
-            if (!constraint.satisfied(kappaSupply, kappaDemand)) {
-                thisEps = eps;
-            } else {
-                thisEps = 0.0;
-            }
-            double[] coeffKappaS = constraint.getKappa1Coeff();
-            double[] coeddKappaD = constraint.getKappa2Coeff();
-            for (int i = 0; i < sgSupply.length; ++i) {
-                sgSupply[i] += (1.0 - thisEps) * coeffKappaS[i];
-            }
-            for (int j = 0; j < sgDemand.length; ++j) {
-                sgDemand[j] += (1.0 - thisEps) * coeddKappaD[j];
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

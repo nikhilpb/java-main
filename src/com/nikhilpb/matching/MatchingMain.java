@@ -140,8 +140,6 @@ public class MatchingMain extends XmlParserMain {
                     if (basisSetSupply == null || basisSetDemand == null) {
                         throw new RuntimeException("basis must be initialized");
                     }
-                    final int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
-
                     final double eps = Double.parseDouble(getPropertyOrDie(props, "eps"));
                     final double a = Double.parseDouble(getPropertyOrDie(props, "a"));
                     final double b = Double.parseDouble(getPropertyOrDie(props, "b"));
@@ -154,8 +152,7 @@ public class MatchingMain extends XmlParserMain {
                     config.stepCountConfig = stepCount;
                     config.checkPerStepsConfig = checkPerSteps;
                     solvers.add(new SsgdSolver(model, basisSetSupply, basisSetDemand,
-                                               random.nextLong(), samplingPolicy,
-                                               sampleCount, config));
+                                               random.nextLong(), samplingPolicy, config));
                     success = success && solvers.get(p).solve();
                     break;
                 case GREEDY:

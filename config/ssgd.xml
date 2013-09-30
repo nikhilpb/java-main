@@ -9,7 +9,6 @@
     </basis>
     <solve>
         <method>ssgd</method>
-        <sample_count>1</sample_count>
         <periods>50</periods>
         <popparam>0.2</popparam>
         <seed>123</seed>
