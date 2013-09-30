@@ -70,14 +70,14 @@ public abstract class MatchingSolver {
                 samplePath.offlineMatch();
                 break;
             case GREEDY:
-                samplePath.greedyMatch();
+                System.err.println("NOT IMPLEMENTED"); // TODO: Implement
                 break;
         }
         return samplePath;
     }
 
     public double evaluate(long sampleSeed) throws Exception {
-        System.out.print("evaluating with sample seed: " + sampleSeed);
+        System.out.print("evaluating with sample seed: " + sampleSeed + ", ");
         MatchingSamplePath samplePath = samplePath(sampleSeed);
         samplePath.sample();
         double reward = samplePath.dualPolicyEvaluate(getSupplyFunction(), getDemandFunction(), new CplexFactory());

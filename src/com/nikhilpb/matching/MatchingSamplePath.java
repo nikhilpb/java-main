@@ -86,10 +86,6 @@ public class MatchingSamplePath {
         isSampled = true;
     }
 
-    public double greedyMatch() {
-        return dualPolicyEvaluate(new ConstantItemFunction(0.0), new ConstantItemFunction(0.0));
-    }
-
     public double offlineMatch() {
         if (!isSampled) {
             System.out.println("the instance is not yet sampled");
@@ -305,80 +301,6 @@ public class MatchingSamplePath {
             }
         }
         return demandItems;
-    }
-
-    public double dualPolicyEvaluate(ItemFunction sf, ItemFunction df) {
-        matchedPairs = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
-        states = new ArrayList<ArrayList<Integer>>();
-        LawlerBipartiteMatcher biparMatcher;
-        ArrayList<Item> supplyItems = new ArrayList<Item>();
-        ArrayList<Item> demandItems = new ArrayList<Item>();
-        ArrayList<Integer> supplyIMap = new ArrayList<Integer>();
-        ArrayList<Integer> demandIMap = new ArrayList<Integer>();
-        boolean[] matched = new boolean[allExistingItems.size()];
-        Arrays.fill(matched, false);
-        int supplySize, demandSize;
-        Item sItem, dItem;
-        double totalReward = 0.0;
-        double qs, qd;
-        qs = model.getSupplyDepartureRate();
-        qd = model.getDemandDepartureRate();
-        double[][] w;
-        for (int t = 0; t <= timePeriods; t++) {
-            states.add(new ArrayList<Integer>());
-            matchedPairs.add(new ArrayList<Pair<Integer, Integer>>());
-            supplyItems.clear();
-            demandItems.clear();
-            supplyIMap.clear();
-            demandIMap.clear();
-            for (int i = 0; i < allExistingItems.size(); i++) {
-                if (!matched[i] && arrivalTimes.get(i) <= t && departureTimes.get(i) >= t) {
-                    Item item = allExistingItems.get(i);
-                    if (item.isSod() == 1) {
-                        supplyItems.add(item);
-                        supplyIMap.add(i);
-                    } else {
-                        demandItems.add(item);
-                        demandIMap.add(i);
-                    }
-                    states.get(t).add(i);
-                }
-            }
-            supplySize = supplyItems.size();
-            demandSize = demandItems.size();
-            int n = Math.max(supplySize, demandSize);
-            w = new double[n][n];
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (i >= supplySize || j >= demandSize) {
-                        w[i][j] = 0.0;
-                    } else {
-                        sItem = supplyItems.get(i);
-                        dItem = demandItems.get(j);
-                        w[i][j] = model.getRewardFunction().evaluate(sItem, dItem);
-                        if (t != timePeriods) {
-                            w[i][j] -= (1 - qs) * sf.evaluate(sItem) + (1 - qd) * df.evaluate(dItem);
-                        }
-                    }
-                }
-            }
-
-            biparMatcher = new LawlerBipartiteMatcher(n);
-
-            int[] sMatch = biparMatcher.getMatchingSource();
-            int count = 0;
-            for (int i = 0; i < supplyItems.size(); i++) {
-                if (sMatch[i] > -1 && sMatch[i] < demandItems.size()) {
-                    matched[supplyIMap.get(i)] = true;
-                    matched[demandIMap.get(sMatch[i])] = true;
-                    matchedPairs.get(t).add(new Pair<Integer, Integer>(supplyIMap.get(i), demandIMap.get(sMatch[i])));
-                    count++;
-                    totalReward += model.getRewardFunction().evaluate(supplyItems.get(i), demandItems.get(sMatch[i]));
-                }
-            }
-        }
-        isMatched = true;
-        return totalReward;
     }
 
     public double dualPolicyEvaluate(ItemFunction sf,
