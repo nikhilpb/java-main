@@ -345,6 +345,9 @@ public class MatchingSamplePath {
                     }
                 }
             }
+            System.out.println("Time "+ t);
+            System.out.println("supply items: " + supplyItems.toString());
+            System.out.println("demand items: " + demandItems.toString());
             supplySize = supplyItems.size();
             demandSize = demandItems.size();
             piVar = new IloNumVar[supplySize][];
