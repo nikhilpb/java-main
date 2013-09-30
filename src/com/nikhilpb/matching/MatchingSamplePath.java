@@ -86,7 +86,6 @@ public class MatchingSamplePath {
         isSampled = true;
     }
 
-    // TODO: Implement
     public double greedyMatch() {
         return dualPolicyEvaluate(new ConstantItemFunction(0.0), new ConstantItemFunction(0.0));
     }
@@ -363,14 +362,17 @@ public class MatchingSamplePath {
                     }
                 }
             }
+
             biparMatcher = new LawlerBipartiteMatcher(n);
-            biparMatcher.computeMax(w);
+
             int[] sMatch = biparMatcher.getMatchingSource();
+            int count = 0;
             for (int i = 0; i < supplyItems.size(); i++) {
                 if (sMatch[i] > -1 && sMatch[i] < demandItems.size()) {
                     matched[supplyIMap.get(i)] = true;
                     matched[demandIMap.get(sMatch[i])] = true;
                     matchedPairs.get(t).add(new Pair<Integer, Integer>(supplyIMap.get(i), demandIMap.get(sMatch[i])));
+                    count++;
                     totalReward += model.getRewardFunction().evaluate(supplyItems.get(i), demandItems.get(sMatch[i]));
                 }
             }

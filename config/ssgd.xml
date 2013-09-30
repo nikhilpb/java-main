@@ -9,15 +9,15 @@
     </basis>
     <solve>
         <method>ssgd</method>
-        <sample_count>100</sample_count>
+        <sample_count>1</sample_count>
         <periods>50</periods>
         <popparam>0.2</popparam>
         <seed>123</seed>
         <sampling_policy>offline</sampling_policy>
         <eps>0.1</eps>
-        <a>1000</a>
-        <b>1</b>
-        <step_count>10</step_count>
+        <a>1</a>
+        <b>10000</b>
+        <step_count>0</step_count>
         <check_per_steps>100</check_per_steps>
         <problem_count>1</problem_count>
     </solve>

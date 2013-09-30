@@ -3,6 +3,7 @@ package com.nikhilpb.matching;
 import com.moallemi.util.data.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +33,9 @@ public class SsgdSolver extends MatchingSolver {
         this.basisSetSupply = basisSetSupply;
         this.basisSetDemand = basisSetDemand;
         kappaSupply = new double[this.basisSetSupply.size()];
+        Arrays.fill(kappaSupply, 1000.0);
         kappaDemand = new double[this.basisSetDemand.size()];
+        Arrays.fill(kappaDemand, 1000.0);
         System.out.println();
         System.out.println("SALP with stochastic sub-gradient method");
         System.out.println();
@@ -47,9 +50,12 @@ public class SsgdSolver extends MatchingSolver {
         double[] sgDemand = new double[kappaDemand.length];
         MatchingSamplePath samplePath;
         for (int i = 0; i < sampleCount; ++i) {
+
             stepSize = a / (b + (double) i);
-            System.out.println("sampled instance: " + i
-                    + ", step size: " + stepSize);
+            if (i % checkPerSteps == 0) {
+                System.out.println("sampled instance: " + i
+                        + ", step size: " + stepSize);
+            }
             samplePath = samplePathMatched(random.nextLong());
             findSubgrad(samplePath, sgSupply, sgDemand);
             // Minimize objective, subtract sub-gradient

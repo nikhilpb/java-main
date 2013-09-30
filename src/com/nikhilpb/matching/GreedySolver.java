@@ -23,10 +23,10 @@ public class GreedySolver extends MatchingSolver {
     }
 
     public ItemFunction getSupplyFunction() {
-        return new ConstantItemFunction(0.0);
+        return new ConstantItemFunction(10000.0);
     }
 
     public ItemFunction getDemandFunction() {
-        return new ConstantItemFunction(0.0);
+        return new ConstantItemFunction(10000.0);
     }
 }
