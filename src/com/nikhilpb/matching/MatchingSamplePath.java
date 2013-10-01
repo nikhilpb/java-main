@@ -422,7 +422,8 @@ public class MatchingSamplePath {
         IloLinearNumExpr tempExp, obj;
         Item sItem, dItem;
         double totalReward = 0.0;
-        states.clear(); matchedPairs.clear();
+        states = new ArrayList<ArrayList<Integer>>();
+        matchedPairs = new ArrayList<ArrayList<Pair<Integer, Integer>>>();
         for (int t = 0; t <= timePeriods; t++) {
             cplex.clearModel();
             supplyItems.clear();
