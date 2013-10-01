@@ -27,7 +27,9 @@ public class AsymmetricMatcher {
         this.weights = weights;
         this.cplex = cplex;
         supplySize = weights.length;
-        System.out.println(supplySize);
+        if (supplySize == 0) {
+            return;
+        }
         demandSize = weights[0].length;
         for (int i = 0; i < weights.length; ++i) {
             if (weights[i].length != demandSize) {
@@ -37,6 +39,9 @@ public class AsymmetricMatcher {
     }
 
     boolean solve() throws IloException {
+        if (supplySize == 0 || demandSize == 0) {
+            return true;
+        }
         cplex.clearModel();
         piVar = new IloNumVar[supplySize][demandSize];
         double[] lb = new double[demandSize], ub = new double[demandSize],ones = new double[demandSize];
