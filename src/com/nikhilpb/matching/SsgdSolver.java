@@ -110,7 +110,6 @@ public class SsgdSolver extends MatchingSolver {
                 }
                 ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairs();
                 ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
-                System.out.println(pairs);
                 for (Pair<Integer, Integer> p : pairs) {
                     matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
                 }
