@@ -146,10 +146,10 @@ public class SsgdSolver extends MatchingSolver {
                     double[] coeffKappaS = constraint.getKappa1Coeff();
                     double[] coeddKappaD = constraint.getKappa2Coeff();
                     for (int i = 0; i < sgSupply.length; ++i) {
-                        sgSupply[i] -= eps * coeffKappaS[i];
+                        sgSupply[i] -= (1.0 + eps) * coeffKappaS[i];
                     }
                     for (int j = 0; j < sgDemand.length; ++j) {
-                        sgDemand[j] -= eps * coeddKappaD[j];
+                        sgDemand[j] -= (1.0 + eps) * coeddKappaD[j];
                     }
                 }
             }
