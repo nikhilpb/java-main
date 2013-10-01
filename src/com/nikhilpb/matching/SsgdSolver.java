@@ -70,6 +70,7 @@ public class SsgdSolver extends MatchingSolver {
                     kappaDemand[j] -= stepSize * sgDemand[j];
                 }
             }
+            out.close();
 
         } catch (Exception e) {
             e.printStackTrace();
