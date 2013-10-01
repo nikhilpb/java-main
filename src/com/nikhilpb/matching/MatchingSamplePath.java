@@ -399,6 +399,107 @@ public class MatchingSamplePath {
         return totalReward;
     }
 
+    public double dualPolicyMatch(ItemFunction sf,
+                                  ItemFunction df)
+            throws Exception {
+        if (!isSampled) {
+            throw new RuntimeException("must be sampled");
+        }
+        IloCplex cplex = (new CplexFactory()).getCplex();
+        cplex.setOut(null);
+        IloNumVar[][] piVar;
+        ArrayList<Item> supplyItems = new ArrayList<Item>();
+        ArrayList<Item> demandItems = new ArrayList<Item>();
+        ArrayList<Integer> supplyIMap = new ArrayList<Integer>();
+        ArrayList<Integer> demandIMap = new ArrayList<Integer>();
+        boolean[] matched = new boolean[allExistingItems.size()];
+        Arrays.fill(matched, false);
+        int supplySize, demandSize;
+        double[] lb, ub, ones;
+        double coeff;
+        double[] pi;
+        double tol = 1E-5, qs, qd;
+        IloLinearNumExpr tempExp, obj;
+        Item sItem, dItem;
+        double totalReward = 0.0;
+        states.clear(); matchedPairs.clear();
+        for (int t = 0; t <= timePeriods; t++) {
+            cplex.clearModel();
+            supplyItems.clear();
+            demandItems.clear();
+            supplyIMap.clear();
+            demandIMap.clear();
+            states.add(new ArrayList<Integer>());
+            for (int i = 0; i < allExistingItems.size(); i++) {
+                if (!matched[i] && arrivalTimes.get(i) <= t && departureTimes.get(i) >= t) {
+                    states.get(t).add(i);
+                    Item item = allExistingItems.get(i);
+                    if (item.isSod() == 1) {
+                        supplyItems.add(item);
+                        supplyIMap.add(i);
+                    } else {
+                        demandItems.add(item);
+                        demandIMap.add(i);
+                    }
+                }
+            }
+            supplySize = supplyItems.size();
+            demandSize = demandItems.size();
+            piVar = new IloNumVar[supplySize][];
+            lb = new double[demandSize];
+            ub = new double[demandSize];
+            ones = new double[demandSize];
+            Arrays.fill(lb, 0.0);
+            Arrays.fill(ub, 1.0);
+            Arrays.fill(ones, 1.0);
+            for (int i = 0; i < supplySize; i++) {
+                piVar[i] = cplex.numVarArray(demandSize, lb, ub);
+                cplex.addLe(cplex.scalProd(ones, piVar[i]), 1.0);
+            }
+            for (int j = 0; j < demandSize; j++) {
+                tempExp = cplex.linearNumExpr();
+                for (int i = 0; i < supplySize; i++) {
+                    tempExp.addTerm(1.0, piVar[i][j]);
+                }
+                cplex.addLe(tempExp, 1.0);
+            }
+
+            obj = cplex.linearNumExpr();
+            for (int i = 0; i < supplySize; i++) {
+                for (int j = 0; j < demandSize; j++) {
+                    sItem = supplyItems.get(i);
+                    dItem = demandItems.get(j);
+                    qs = model.getSupplyDepartureRate();
+                    qd = model.getDemandDepartureRate();
+                    coeff = model.getRewardFunction().evaluate(sItem, dItem);
+                    if (t != timePeriods) {
+                        coeff -= (1 - qs) * sf.evaluate(sItem) + (1 - qd) * df.evaluate(dItem);
+                    }
+                    obj.addTerm(coeff, piVar[i][j]);
+                }
+            }
+            cplex.addMaximize(obj);
+            cplex.solve();
+
+            matchedPairs.add(new ArrayList<Pair<Integer, Integer>>());
+            for (int i = 0; i < supplySize; i++) {
+                pi = cplex.getValues(piVar[i]);
+                for (int j = 0; j < demandSize; j++) {
+                    if (pi[j] > 1 - tol) {
+                        matchedPairs.get(t).add(new Pair<Integer, Integer>(supplyIMap.get(i), demandIMap.get(j)));
+                        matched[supplyIMap.get(i)] = true;
+                        matched[demandIMap.get(j)] = true;
+                        sItem = supplyItems.get(i);
+                        dItem = demandItems.get(j);
+                        totalReward += model.getRewardFunction().evaluate(sItem, dItem);
+                    }
+                }
+            }
+        }
+        isMatched = true;
+        return totalReward;
+    }
+
     public double[] getSupplyValues(CplexFactory factory)
             throws IloException {
         if (!foundValues) {

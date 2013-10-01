@@ -51,7 +51,7 @@ public abstract class MatchingSolver {
     }
 
     public enum SamplingPolicy {
-        OFFLINE, GREEDY
+        OFFLINE, GREEDY, OPTIMISTIC
     }
 
     protected MatchingSamplePath samplePath() {
@@ -62,7 +62,7 @@ public abstract class MatchingSolver {
         return new MatchingSamplePath(model, seed);
     }
 
-    protected MatchingSamplePath samplePathMatched(long seed) {
+    protected MatchingSamplePath samplePathMatched(long seed) throws Exception {
         MatchingSamplePath samplePath = new MatchingSamplePath(model, seed);
         samplePath.sample();
         switch (samplingPolicy) {
@@ -72,6 +72,8 @@ public abstract class MatchingSolver {
             case GREEDY:
                 System.err.println("NOT IMPLEMENTED"); // TODO: Implement
                 break;
+            case OPTIMISTIC:
+                samplePath.dualPolicyMatch(getSupplyFunction(), getDemandFunction());
         }
         return samplePath;
     }
@@ -88,6 +90,8 @@ public abstract class MatchingSolver {
             return SamplingPolicy.OFFLINE;
         } else if (typeName.equals("greedy")) {
             return SamplingPolicy.GREEDY;
+        } else if (typeName.equals("optimistic")) {
+            return SamplingPolicy.OPTIMISTIC;
         } else {
             throw new RuntimeException("Unknown match type");
         }
@@ -99,6 +103,8 @@ public abstract class MatchingSolver {
                 return "offline";
             case GREEDY:
                 return "greedy";
+            case OPTIMISTIC:
+                return "optimistic";
         }
         return "";
     }
