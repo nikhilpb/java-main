@@ -65,9 +65,15 @@ public class SsgdSolver extends MatchingSolver {
                 // Minimize objective, subtract sub-gradient
                 for (int j = 0; j < kappaSupply.length; ++j) {
                     kappaSupply[j] -= stepSize * sgSupply[j];
+                    if (kappaSupply[j] < 0.) {
+                        kappaSupply[j] = 0.;
+                    }
                 }
                 for (int j = 0; j < kappaDemand.length; ++j) {
                     kappaDemand[j] -= stepSize * sgDemand[j];
+                    if (kappaDemand[j] < 0.) {
+                        kappaDemand[j] = 0.;
+                    }
                 }
             }
             out.close();
@@ -91,8 +97,7 @@ public class SsgdSolver extends MatchingSolver {
         double qs = model.getSupplyDepartureRate(), qd = model.getDemandDepartureRate();
         try {
             IloCplex cplex = new IloCplex();
-            cplex.setOut(null);
-
+            cplex.setOut(null); // no printing to stdout
             for (int t = 0; t <= tp; ++t) {
                 states = samplePath.getStates(t);
                 supItems.clear(); demItems.clear();
