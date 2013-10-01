@@ -111,7 +111,7 @@ public class SsgdSolver extends MatchingSolver {
                         w[i][j] = model.getRewardFunction().evaluate(supItems.get(i), demItems.get(j));
                         if ( t < tp) {
                             w[i][j] = w[i][j] - (1. - qs)*supplyFunction.evaluate(supItems.get(i))
-                                              - (1. - qd)*demandFunction.evaluate(demItems.get(j));
+                                    - (1. - qd)*demandFunction.evaluate(demItems.get(j));
                         }
                     }
                 }
@@ -125,9 +125,9 @@ public class SsgdSolver extends MatchingSolver {
                     matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
                 }
                 SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
-                                                               states, matchedPairs, t == tp);
+                        states, matchedPairs, t == tp);
                 if (!constraint.satisfied(kappaSupply, kappaDemand)) {
-                    mult = - eps;
+                    mult = -eps;
                 } else {
                     mult = 1.0;
                 }
@@ -139,9 +139,7 @@ public class SsgdSolver extends MatchingSolver {
                 for (int j = 0; j < sgDemand.length; ++j) {
                     sgDemand[j] += mult * coeddKappaD[j];
                 }
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

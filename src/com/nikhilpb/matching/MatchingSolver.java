@@ -70,7 +70,7 @@ public abstract class MatchingSolver {
                 samplePath.offlineMatch();
                 break;
             case GREEDY:
-                System.err.println("NOT IMPLEMENTED"); // TODO: Implement
+                samplePath.dualPolicyMatch(new ConstantItemFunction(0.), new ConstantItemFunction(0.));
                 break;
             case OPTIMISTIC:
                 samplePath.dualPolicyMatch(getSupplyFunction(), getDemandFunction());
