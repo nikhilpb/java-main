@@ -99,7 +99,7 @@ public class SalpConstraint {
         for (int i = 0; i < kappaD.length; ++i) {
             value += kappaD[i] * coeffKappaD[i];
         }
-        return value <= rhs;
+        return value >= rhs;
     }
 
 }

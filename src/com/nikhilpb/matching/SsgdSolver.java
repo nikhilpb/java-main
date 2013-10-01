@@ -77,7 +77,7 @@ public class SsgdSolver extends MatchingSolver {
         ArrayList<Item> states, supItems = new ArrayList<Item>(), demItems = new ArrayList<Item>();
         ItemFunction supplyFunction = basisSetSupply.getLinearCombination(kappaSupply);
         ItemFunction demandFunction = basisSetDemand.getLinearCombination(kappaDemand);
-        double thisEps;
+        double mult;
         double qs = model.getSupplyDepartureRate(), qd = model.getDemandDepartureRate();
         try {
             IloCplex cplex = new IloCplex();
@@ -92,10 +92,8 @@ public class SsgdSolver extends MatchingSolver {
                         demItems.add(s);
                     }
                 }
-                System.out.println("time period: " + t);
                 int supplySize = supItems.size();
                 int demandSize = demItems.size();
-                System.out.printf("time period: %d, supply size: %d, demand size: %d\n", t, supplySize, demandSize);
                 double[][] w = new double[supplySize][demandSize];
                 for (int i = 0; i < supplySize; ++i) {
                     for (int j = 0; j < demandSize; ++j) {
@@ -104,9 +102,7 @@ public class SsgdSolver extends MatchingSolver {
                             w[i][j] = w[i][j] - (1. - qs)*supplyFunction.evaluate(supItems.get(i))
                                               - (1. - qd)*demandFunction.evaluate(demItems.get(j));
                         }
-                        System.out.print(w[i][j] + " ");
                     }
-                    System.out.println();
                 }
                 AsymmetricMatcher matcher = new AsymmetricMatcher(w, cplex);
                 if (!matcher.solve()) {
@@ -121,17 +117,17 @@ public class SsgdSolver extends MatchingSolver {
                 SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
                                                                states, matchedPairs, t == tp);
                 if (!constraint.satisfied(kappaSupply, kappaDemand)) {
-                    thisEps = eps;
+                    mult = -eps;
                 } else {
-                    thisEps = 0.0;
+                    mult = 1.0;
                 }
                 double[] coeffKappaS = constraint.getKappa1Coeff();
                 double[] coeddKappaD = constraint.getKappa2Coeff();
                 for (int i = 0; i < sgSupply.length; ++i) {
-                    sgSupply[i] += (1.0 - thisEps) * coeffKappaS[i];
+                    sgSupply[i] += mult * coeffKappaS[i];
                 }
                 for (int j = 0; j < sgDemand.length; ++j) {
-                    sgDemand[j] += (1.0 - thisEps) * coeddKappaD[j];
+                    sgDemand[j] += mult * coeddKappaD[j];
                 }
             }
         } catch (Exception e) {

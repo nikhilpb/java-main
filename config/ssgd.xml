@@ -13,7 +13,7 @@
         <popparam>0.2</popparam>
         <seed>123</seed>
         <sampling_policy>offline</sampling_policy>
-        <eps>0.1</eps>
+        <eps>1.0</eps>
         <a>1</a>
         <b>10000</b>
         <step_count>1</step_count>
