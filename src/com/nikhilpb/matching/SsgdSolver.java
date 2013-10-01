@@ -118,6 +118,7 @@ public class SsgdSolver extends MatchingSolver {
                 SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
                                                                states, matchedPairs, t == tp);
                 if (!constraint.satisfied(kappaSupply, kappaDemand)) {
+                    System.out.println("satisfied!");
                     mult = -eps;
                 } else {
                     mult = 1.0;
