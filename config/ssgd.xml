@@ -16,12 +16,12 @@
         <eps>1.0</eps>
         <a>1</a>
         <b>10000</b>
-        <step_count>1</step_count>
+        <step_count>10000</step_count>
         <check_per_steps>100</check_per_steps>
         <problem_count>1</problem_count>
     </solve>
     <evaluate>
-        <sample_count>1</sample_count>
+        <sample_count>300</sample_count>
         <sample_seed>456</sample_seed>
     </evaluate>
 </config>
