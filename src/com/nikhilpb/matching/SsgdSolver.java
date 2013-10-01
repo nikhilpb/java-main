@@ -92,8 +92,10 @@ public class SsgdSolver extends MatchingSolver {
                         demItems.add(s);
                     }
                 }
+                System.out.println("time period: " + t);
                 int supplySize = supItems.size();
                 int demandSize = demItems.size();
+                System.out.printf("time period: %d, supply size: %d, demand size: %d", t, supplySize, demandSize);
                 double[][] w = new double[supplySize][demandSize];
                 for (int i = 0; i < supplySize; ++i) {
                     for (int j = 0; j < demandSize; ++j) {
@@ -102,7 +104,9 @@ public class SsgdSolver extends MatchingSolver {
                             w[i][j] = w[i][j] - (1. - qs)*supplyFunction.evaluate(supItems.get(i))
                                               - (1. - qd)*demandFunction.evaluate(demItems.get(j));
                         }
+                        System.out.print(w[i][j] + " ");
                     }
+                    System.out.println();
                 }
                 AsymmetricMatcher matcher = new AsymmetricMatcher(w, cplex);
                 if (!matcher.solve()) {
@@ -110,6 +114,7 @@ public class SsgdSolver extends MatchingSolver {
                 }
                 ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairs();
                 ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
+                System.out.println(pairs);
                 for (Pair<Integer, Integer> p : pairs) {
                     matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
                 }
