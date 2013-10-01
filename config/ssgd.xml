@@ -21,7 +21,7 @@
         <problem_count>1</problem_count>
     </solve>
     <evaluate>
-        <sample_count>1</sample_count>
+        <sample_count>300</sample_count>
         <sample_seed>456</sample_seed>
     </evaluate>
 </config>
