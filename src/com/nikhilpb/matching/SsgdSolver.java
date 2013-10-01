@@ -95,22 +95,6 @@ public class SsgdSolver extends MatchingSolver {
             cplex.setOut(null); // no printing to stdout
             for (int t = 0; t <= tp; ++t) {
                 states = samplePath.getStates(t);
-                if (t == 0) {
-                    double[] itemCoeff;
-                    for (Item s : states) {
-                        if (s.isSod() == 1) {
-                            itemCoeff = basisSetSupply.evaluate(s);
-                            for (int i = 0; i < basisSetSupply.size(); ++i) {
-                                sgSupply[i] += itemCoeff[i];
-                            }
-                        } else {
-                            itemCoeff = basisSetDemand.evaluate(s);
-                            for (int i = 0; i < basisSetDemand.size(); ++i) {
-                                sgDemand[i] += itemCoeff[i];
-                            }
-                        }
-                    }
-                }
                 supItems.clear(); demItems.clear();
                 for (Item s : states) {
                     if (s.isSod() == 1) {
@@ -143,15 +127,19 @@ public class SsgdSolver extends MatchingSolver {
                 SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
                                                                states, matchedPairs, t == tp);
                 if (!constraint.satisfied(kappaSupply, kappaDemand)) {
-                    double[] coeffKappaS = constraint.getKappa1Coeff();
-                    double[] coeddKappaD = constraint.getKappa2Coeff();
-                    for (int i = 0; i < sgSupply.length; ++i) {
-                        sgSupply[i] -= (1.0 + eps) * coeffKappaS[i];
-                    }
-                    for (int j = 0; j < sgDemand.length; ++j) {
-                        sgDemand[j] -= (1.0 + eps) * coeddKappaD[j];
-                    }
+                    mult = - eps;
+                } else {
+                    mult = 1.0;
                 }
+                double[] coeffKappaS = constraint.getKappa1Coeff();
+                double[] coeddKappaD = constraint.getKappa2Coeff();
+                for (int i = 0; i < sgSupply.length; ++i) {
+                    sgSupply[i] += mult * coeffKappaS[i];
+                }
+                for (int j = 0; j < sgDemand.length; ++j) {
+                    sgDemand[j] += mult * coeddKappaD[j];
+                }
+
             }
 
         } catch (Exception e) {
