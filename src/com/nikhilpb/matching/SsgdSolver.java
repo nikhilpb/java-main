@@ -58,7 +58,7 @@ public class SsgdSolver extends MatchingSolver {
                 stepSize = a / (b + (double) i);
                 if (i % checkPerSteps == 0) {
                     System.out.println("sampled instance: " + i
-                            + ", step size: " + stepSize + ", value: " + evaluator.evaluate("sampled instance" + i));
+                            + ", step size: " + stepSize + ", value: " + evaluator.evaluate("sampled instance: " + i));
                 }
                 samplePath = samplePathMatched(random.nextLong());
                 findSubgrad(samplePath, sgSupply, sgDemand);
