@@ -310,8 +310,6 @@ public class MatchingSamplePath {
         if (!isSampled) {
             throw new RuntimeException("must be sampled");
         }
-        System.out.println(sf.toString());
-        System.out.println(df.toString());
         IloCplex cplex = factory.getCplex();
         cplex.setOut(null);
         IloNumVar[][] piVar;

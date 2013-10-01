@@ -136,11 +136,13 @@ public class SsgdSolver extends MatchingSolver {
     }
 
     public ItemFunction getSupplyFunction() {
+        System.out.println("kappa supply" + kappaSupply);
         return basisSetSupply.getLinearCombination(kappaSupply);
     }
 
     public ItemFunction getDemandFunction() {
-       return basisSetDemand.getLinearCombination(kappaDemand);
+        System.out.println("kappa demand" + kappaDemand);
+        return basisSetDemand.getLinearCombination(kappaDemand);
     }
 
     public static class Config {
