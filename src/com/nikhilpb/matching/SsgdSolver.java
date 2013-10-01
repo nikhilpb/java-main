@@ -95,7 +95,7 @@ public class SsgdSolver extends MatchingSolver {
                 System.out.println("time period: " + t);
                 int supplySize = supItems.size();
                 int demandSize = demItems.size();
-                System.out.printf("time period: %d, supply size: %d, demand size: %d", t, supplySize, demandSize);
+                System.out.printf("time period: %d, supply size: %d, demand size: %d\n", t, supplySize, demandSize);
                 double[][] w = new double[supplySize][demandSize];
                 for (int i = 0; i < supplySize; ++i) {
                     for (int j = 0; j < demandSize; ++j) {
