@@ -27,6 +27,7 @@ public class AsymmetricMatcher {
         this.weights = weights;
         this.cplex = cplex;
         supplySize = weights.length;
+        System.out.println(supplySize);
         demandSize = weights[0].length;
         for (int i = 0; i < weights.length; ++i) {
             if (weights[i].length != demandSize) {
