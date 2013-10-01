@@ -126,19 +126,28 @@ public class SsgdSolver extends MatchingSolver {
                 }
                 SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
                         states, matchedPairs, t == tp);
+                double[] coeffKappaS, coeddKappaD;
                 if (!constraint.satisfied(kappaSupply, kappaDemand)) {
-                    mult = -eps;
-                } else {
-                    mult = 1.0;
+                    coeffKappaS = constraint.getKappa1Coeff();
+                    coeddKappaD = constraint.getKappa2Coeff();
+                    for (int i = 0; i < sgSupply.length; ++i) {
+                        sgSupply[i] -= (1.+eps) * coeffKappaS[i];
+                    }
+                    for (int j = 0; j < sgDemand.length; ++j) {
+                        sgDemand[j] -= (1.+eps) * coeddKappaD[j];
+                    }
                 }
-                double[] coeffKappaS = constraint.getKappa1Coeff();
-                double[] coeddKappaD = constraint.getKappa2Coeff();
+                constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand, states,
+                                                samplePath.getMatchedPairs(t), (t == tp));
+                coeffKappaS = constraint.getKappa1Coeff();
+                coeddKappaD = constraint.getKappa2Coeff();
                 for (int i = 0; i < sgSupply.length; ++i) {
-                    sgSupply[i] += mult * coeffKappaS[i];
+                    sgSupply[i] += coeffKappaS[i];
                 }
                 for (int j = 0; j < sgDemand.length; ++j) {
-                    sgDemand[j] += mult * coeddKappaD[j];
+                    sgDemand[j] += coeddKappaD[j];
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
