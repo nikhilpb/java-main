@@ -196,7 +196,7 @@ public class MatchingMain extends XmlParserMain {
             for (int s = 0; s < solvers.size(); s++) {
                 System.out.println("evaluating solver no: " + s);
                 Evaluator evaluator = new Evaluator(solvers.get(0), System.out, sampleCount, seed);
-                evaluator.evaluate();
+                evaluator.evaluate("solver no: " + s);
             }
         }
         return true;

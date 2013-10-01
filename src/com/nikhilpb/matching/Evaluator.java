@@ -22,7 +22,7 @@ public class Evaluator {
         this.seed = seed;
     }
 
-    public double evaluate() throws Exception {
+    public double evaluate(String prefix) throws Exception {
         double value = 0.0;
         double valueStd = 0.0;
         long sampleSeed;
@@ -36,7 +36,7 @@ public class Evaluator {
         value = value / ((double)sampleCount);
         valueStd = valueStd / ((double)sampleCount);
         valueStd = valueStd - value * value;
-        out.printf("\nvalue: %f, std dev:%f\n\n", value, valueStd);
+        out.printf("%s, value: %f, std dev:%f\n", prefix, value, valueStd);
         return value;
     }
 }
