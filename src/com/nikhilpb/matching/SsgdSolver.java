@@ -94,7 +94,6 @@ public class SsgdSolver extends MatchingSolver {
                 }
                 int supplySize = supItems.size();
                 int demandSize = demItems.size();
-                System.out.printf("time period: %d, supply size: %d, demand size: %d\n", t, supplySize, demandSize);
                 double[][] w = new double[supplySize][demandSize];
                 for (int i = 0; i < supplySize; ++i) {
                     for (int j = 0; j < demandSize; ++j) {
@@ -110,7 +109,6 @@ public class SsgdSolver extends MatchingSolver {
                     throw new RuntimeException("problem solving asymmetric matcher");
                 }
                 ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairs();
-                System.out.println(pairs);
                 ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
                 for (Pair<Integer, Integer> p : pairs) {
                     matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
@@ -120,7 +118,6 @@ public class SsgdSolver extends MatchingSolver {
                 if (!constraint.satisfied(kappaSupply, kappaDemand)) {
                     mult = -eps;
                 } else {
-                    System.out.println("satisfied!");
                     mult = 1.0;
                 }
                 double[] coeffKappaS = constraint.getKappa1Coeff();
