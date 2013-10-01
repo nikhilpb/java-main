@@ -50,7 +50,6 @@ public class SsgdSolver extends MatchingSolver {
         double[] sgDemand = new double[kappaDemand.length];
         MatchingSamplePath samplePath;
         for (int i = 0; i < sampleCount; ++i) {
-
             stepSize = a / (b + (double) i);
             if (i % checkPerSteps == 0) {
                 System.out.println("sampled instance: " + i
