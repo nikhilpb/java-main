@@ -310,6 +310,8 @@ public class MatchingSamplePath {
         if (!isSampled) {
             throw new RuntimeException("must be sampled");
         }
+        System.out.println(sf.toString());
+        System.out.println(df.toString());
         IloCplex cplex = factory.getCplex();
         cplex.setOut(null);
         IloNumVar[][] piVar;
@@ -345,9 +347,6 @@ public class MatchingSamplePath {
                     }
                 }
             }
-            System.out.println("Time "+ t);
-            System.out.println("supply items: " + supplyItems.toString());
-            System.out.println("demand items: " + demandItems.toString());
             supplySize = supplyItems.size();
             demandSize = demandItems.size();
             piVar = new IloNumVar[supplySize][];
@@ -380,10 +379,8 @@ public class MatchingSamplePath {
                     if (t != timePeriods) {
                         coeff -= (1 - qs) * sf.evaluate(sItem) + (1 - qd) * df.evaluate(dItem);
                     }
-                    System.out.print(coeff + " ");
                     obj.addTerm(coeff, piVar[i][j]);
                 }
-                System.out.println();
             }
             cplex.addMaximize(obj);
             cplex.solve();
