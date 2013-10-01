@@ -33,9 +33,9 @@ public class SsgdSolver extends MatchingSolver {
         this.basisSetSupply = basisSetSupply;
         this.basisSetDemand = basisSetDemand;
         kappaSupply = new double[this.basisSetSupply.size()];
-        Arrays.fill(kappaSupply, 1000.0);
+        Arrays.fill(kappaSupply, 0.0);
         kappaDemand = new double[this.basisSetDemand.size()];
-        Arrays.fill(kappaDemand, 1000.0);
+        Arrays.fill(kappaDemand, 0.0);
         System.out.println();
         System.out.println("SALP with stochastic sub-gradient method");
         System.out.println();
@@ -136,12 +136,10 @@ public class SsgdSolver extends MatchingSolver {
     }
 
     public ItemFunction getSupplyFunction() {
-        System.out.println("kappa supply" + kappaSupply);
         return basisSetSupply.getLinearCombination(kappaSupply);
     }
 
     public ItemFunction getDemandFunction() {
-        System.out.println("kappa demand" + kappaDemand);
         return basisSetDemand.getLinearCombination(kappaDemand);
     }
 
