@@ -3,6 +3,8 @@ package com.nikhilpb.matching;
 import com.moallemi.util.data.Pair;
 import ilog.cplex.IloCplex;
 
+import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -49,21 +51,28 @@ public class SsgdSolver extends MatchingSolver {
         double[] sgSupply = new double[kappaSupply.length];
         double[] sgDemand = new double[kappaDemand.length];
         MatchingSamplePath samplePath;
-        for (int i = 0; i < sampleCount; ++i) {
-            stepSize = a / (b + (double) i);
-            if (i % checkPerSteps == 0) {
-                System.out.println("sampled instance: " + i
-                        + ", step size: " + stepSize);
+        try {
+            PrintStream out = new PrintStream(new File("ssgd-results.txt"));
+            Evaluator evaluator = new Evaluator(this, out, 300, 456);
+            for (int i = 0; i < sampleCount; ++i) {
+                stepSize = a / (b + (double) i);
+                if (i % checkPerSteps == 0) {
+                    System.out.println("sampled instance: " + i
+                            + ", step size: " + stepSize + ", value: " + evaluator.evaluate());
+                }
+                samplePath = samplePathMatched(random.nextLong());
+                findSubgrad(samplePath, sgSupply, sgDemand);
+                // Minimize objective, subtract sub-gradient
+                for (int j = 0; j < kappaSupply.length; ++j) {
+                    kappaSupply[j] -= stepSize * sgSupply[j];
+                }
+                for (int j = 0; j < kappaDemand.length; ++j) {
+                    kappaDemand[j] -= stepSize * sgDemand[j];
+                }
             }
-            samplePath = samplePathMatched(random.nextLong());
-            findSubgrad(samplePath, sgSupply, sgDemand);
-            // Minimize objective, subtract sub-gradient
-            for (int j = 0; j < kappaSupply.length; ++j) {
-                kappaSupply[j] -= stepSize * sgSupply[j];
-            }
-            for (int j = 0; j < kappaDemand.length; ++j) {
-                kappaDemand[j] -= stepSize * sgDemand[j];
-            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return true;
     }
@@ -82,6 +91,7 @@ public class SsgdSolver extends MatchingSolver {
         try {
             IloCplex cplex = new IloCplex();
             cplex.setOut(null);
+
             for (int t = 0; t <= tp; ++t) {
                 states = samplePath.getStates(t);
                 supItems.clear(); demItems.clear();

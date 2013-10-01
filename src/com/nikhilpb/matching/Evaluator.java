@@ -14,18 +14,19 @@ public class Evaluator {
     private MatchingSolver solver;
     private PrintStream out;
     private int sampleCount;
-    Random random;
-    public Evaluator(MatchingSolver solver, PrintStream out, int sampleCount, Random random) {
+    long seed;
+    public Evaluator(MatchingSolver solver, PrintStream out, int sampleCount, long seed) {
         this.solver = solver;
         this.out = out;
         this.sampleCount = sampleCount;
-        this.random = random;
+        this.seed = seed;
     }
 
     public double evaluate() throws Exception {
         double value = 0.0;
         double valueStd = 0.0;
         long sampleSeed;
+        Random random = new Random(seed);
         for (int ss = 0; ss < sampleCount; ++ss) {
             sampleSeed = random.nextLong();
             double thisValue = solver.evaluate(sampleSeed);
