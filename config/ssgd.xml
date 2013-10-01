@@ -16,7 +16,7 @@
         <eps>0.1</eps>
         <a>1</a>
         <b>10000</b>
-        <step_count>100000</step_count>
+        <step_count>10000</step_count>
         <check_per_steps>100</check_per_steps>
         <problem_count>1</problem_count>
     </solve>
