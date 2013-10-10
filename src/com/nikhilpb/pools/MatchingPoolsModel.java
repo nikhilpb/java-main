@@ -10,7 +10,7 @@ import com.moallemi.math.Distributions;
 import com.moallemi.util.PropertySet;
 
 public class MatchingPoolsModel {
-	protected int dimension;
+	protected int dimension, timePeriods;
     protected int[] tissues;
     protected MultiIndependentDist distribution;
 	protected RewardFunction rewardFunction;
@@ -39,6 +39,10 @@ public class MatchingPoolsModel {
 	public int getDimentsion(){
 		return dimension;
 	}
+
+    public int getTimePeriods(){
+        return timePeriods;
+    }
 	
 	public int[] getTissues(){
 		return tissues;
@@ -63,6 +67,7 @@ public class MatchingPoolsModel {
 	public MatchingPoolsModel(PropertySet props){
 		double[][] probs;
 		dimension = props.getInt("supply_type_dimentions");
+        timePeriods = props.getInt("time_periods");
 		tissues = new int[dimension];
 		probs = new double[dimension][];
 		for (int i = 0; i < dimension; i++){

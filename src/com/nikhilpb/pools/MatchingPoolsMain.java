@@ -35,7 +35,7 @@ public class MatchingPoolsMain extends CommandLineMain {
 			System.out.println("problem size: " + problemSize);
 			long sampleSeed = cmd.nextLong();
 			System.out.println("sample seed is: " + sampleSeed);
-			instances = new InstanceSet(model, problemSize, sampleSeed);
+			instances = new InstanceSet(model, sampleSeed);
 			instances.sample(sampleSize);
 			instances.match("greedy", getCplexFactory());
 		}
@@ -106,7 +106,7 @@ public class MatchingPoolsMain extends CommandLineMain {
 			IloCplex cplex = factory.getCplex();
 			double mean = 0.0, std = 0.0, sterr = 0.0;
 			for (int s=0; s < runCount; s++){
-				inst = new SampleInstance(model, timePeriods, svRandom.nextLong());
+				inst = new SampleInstance(model, svRandom.nextLong());
 				inst.sample();
 				if (policyType.equals("offline")){
 					value[s] = inst.offlineMatch(cplex);

@@ -206,11 +206,5 @@ public class MatchingMain extends XmlParserMain {
         return true;
     }
 
-    private static String getPropertyOrDie(Properties props, String tag) throws RuntimeException {
-        String prop = props.getProperty(tag);
-        if (prop == null) {
-            throw new RuntimeException(tag + " is required");
-        }
-        return prop;
-    }
+
 }

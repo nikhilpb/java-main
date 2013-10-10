@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <model>
+        <type>general</type>
+        <file>data/model.txt</file>
+    </model>
+    <evaluate>
+        <type>greedy</type>
+        <run_count>300</run_count>
+        <seed>456</seed>
+    </evaluate>
+</config>

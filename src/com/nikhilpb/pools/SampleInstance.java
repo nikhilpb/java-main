@@ -23,11 +23,10 @@ public class SampleInstance {
 	double[] nodeValues;
 	boolean foundValues = false;
 	
-	public SampleInstance(MatchingPoolsModel model, 
-			int timePeriods,
+	public SampleInstance(MatchingPoolsModel model,
 			long seed){
 		this.model = model;
-		this.timePeriods = timePeriods;
+		this.timePeriods = model.getTimePeriods();
 		model.initiateRandom(seed);
 	}
 	

@@ -100,4 +100,12 @@ public abstract class XmlParserMain {
         }
         return failedCommands.isEmpty();
     }
+
+    protected static String getPropertyOrDie(Properties props, String tag) throws RuntimeException {
+        String prop = props.getProperty(tag);
+        if (prop == null) {
+            throw new RuntimeException(tag + " is required");
+        }
+        return prop;
+    }
 }
