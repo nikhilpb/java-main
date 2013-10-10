@@ -19,7 +19,7 @@ public interface StateSet {
     /**
      * Get a state.
      *
-     * @param the state
+     * @param state
      * @return the copy of the state in this set, or <code>null</code>
      * if non exists.
      */
