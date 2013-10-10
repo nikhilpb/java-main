@@ -13,7 +13,7 @@ public class Regression {
     public static double[] LinLeastSq(double[][] xData, double[] yData) {
         Matrix xMatrix = new Matrix(xData);
         double[][] yDataAlt = new double[yData.length][1];
-        for (int i = 0; i <yData.length; ++i) {
+        for (int i = 0; i < yData.length; ++i) {
             yDataAlt[i][0] = yData[i];
         }
         Matrix yMatrix = new Matrix(yDataAlt);

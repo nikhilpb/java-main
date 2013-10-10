@@ -1,4 +1,4 @@
-package com.moallemi.matchingpools;
+package com.nikhilpb.pools;
 
 import ilog.cplex.IloCplex;
 
@@ -125,91 +125,6 @@ public class MatchingPoolsMain extends CommandLineMain {
 			System.out.println("mean reward: " + mean 
 								+ ", standard deviation: " + std
 								+ ", standard error: " + sterr);
-		}
-		// tests from here on
-		else if (base.equals("test")){
-			String testName = cmd.next();
-			if (testName.equals("matcher-test")){
-				System.out.println("starting matcher test");
-				
-				// made up example
-				Item item1 = new Item(new Integer[]{4,0,2}, 1);
-				Item item2 = new Item(new Integer[]{4,1,3}, 0);
-				Item item3 = new Item(new Integer[]{0,1,0}, 1);
-				Item item4 = new Item(new Integer[]{2,2,2}, 0);
-				Item item5 = new Item(new Integer[]{1,2,3}, 1);
-				Item item6 = new Item(new Integer[]{2,3,2}, 0);
-				Item item7 = new Item(new Integer[]{1,2,3}, 1);
-				Item item8 = new Item(new Integer[]{4,5,6}, 0);
-				Node node1 = new Node(item1, item2);
-				Node node2 = new Node(item3, item4);
-				Node node3 = new Node(item1, item4);
-				Node node4 = new Node(item5, item6);
-				Node node5 = new Node(item5, item2);
-				Node node6 = new Node(item7, item8);
-				ArrayList<Node> nodeList = new ArrayList<Node>();
-				nodeList.add(node1); nodeList.add(node2); nodeList.add(node3);
-				nodeList.add(node4); nodeList.add(node5);
-				nodeList.add(node6);
-				
-				System.out.println("nodes to be matched are: " + nodeList.toString());
-				KidneyPoolsMatcher matcher = new KidneyPoolsMatcher(getCplexFactory(),
-																	nodeList,
-																	model.getNodeRewardFunction());
-				
-				System.out.println("printing objective coefficients");
-				matcher.printCoeffs();
-				matcher.solve();
-				System.out.println("the optimal solution is:");
-				matcher.printPi();
-				
-				System.out.println("printing matched node indices");
-				Boolean[] matches = matcher.findMatches();
-				for (int i = 0; i < nodeList.size(); i++){
-					if (matches[i]){
-						System.out.println("node " + i + " is matched");
-					}
-				}
-				
-				System.out.println("printing the pairs matched");
-				ArrayList<Pair<Integer,Integer>> matchedPairs = matcher.findMatchedPairs();
-				for (int i = 0; i < matchedPairs.size(); i++){
-					System.out.println(matchedPairs.get(i).getFirst() + 
-										" -> " + 
-										matchedPairs.get(i).getSecond());
-				}
-			}
-			else if (testName.equals("sample-test")){
-				SampleInstance sInstance = instances.get(0);
-				sInstance.printStates();
-			}
-			else if (testName.equals("greedy-match")){
-				int problemSize = 10;
-				long problemSeed = 101;
-				System.out.println("performing greedy matching test of problem size: " 
-									+ problemSize 
-									+ ", with seed: "
-									+ problemSeed);
-				SampleInstance instance = new SampleInstance(model, 
-															problemSize, 
-															problemSeed);
-				instance.sample();
-				instance.printStates();
-				instance.match("greedy", getCplexFactory());
-				instance.printMatchedStates();
-			}
-			else if (testName.equals("basis")){
-				Item item1 = new Item(new Integer[]{0,0,1,2,0,1});
-				Item item2 = new Item(new Integer[]{1,1,0,2,1,1});
-				Node node = new Node(item1, item2);
-				System.out.println("evaluating node " + node.toString() + " on the basis set: ");
-				for (int i = 0; i < basisSet.size(); i++){
-					System.out.println("function, "
-									+ basisSet.getFunction(i).toString()
-									+ ", "
-									+ basisSet.getFunction(i).evaluate(node));
-				}
-			}
 		}
 		else {
 			return false;

@@ -1,6 +1,6 @@
-package com.moallemi.matchingpools;
+package com.nikhilpb.pools;
 
-import com.moallemi.matching.Item;
+import com.nikhilpb.matching.Item;
 
 public class Node {
 	Item sItem, dItem;
