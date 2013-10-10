@@ -17,7 +17,8 @@ import java.util.Arrays;
  */
 public class SsgdSolver extends MatchingSolver {
     private final double eps, a , b;
-    private final int sampleCount, checkPerSteps;
+    private final int sampleCount, checkPerSteps, simSteps;
+    private final long simSeed;
     private double[] kappaSupply, kappaDemand;
     private final ItemFunctionSet  basisSetSupply, basisSetDemand;
 
@@ -32,6 +33,8 @@ public class SsgdSolver extends MatchingSolver {
         this.b = config.bConfig;
         this.checkPerSteps = config.checkPerStepsConfig;
         this.sampleCount = config.stepCountConfig;
+        this.simSteps = config.simSteps;
+        this.simSeed = config.simSeed;
         this.basisSetSupply = basisSetSupply;
         this.basisSetDemand = basisSetDemand;
         kappaSupply = new double[this.basisSetSupply.size()];
@@ -42,6 +45,7 @@ public class SsgdSolver extends MatchingSolver {
         System.out.println("SALP with stochastic sub-gradient method");
         System.out.println();
         System.out.printf("solver parameters -\neps: %f\na: %f\nb: %f\n", eps, a, b);
+        System.out.printf("sim steps: %d\nsim seed: %d", simSteps, simSeed);
         System.out.println();
         initParams(model, sampleSeed, samplingPolicy);
     }
@@ -51,15 +55,20 @@ public class SsgdSolver extends MatchingSolver {
         double[] sgSupply = new double[kappaSupply.length];
         double[] sgDemand = new double[kappaDemand.length];
         MatchingSamplePath samplePath;
+        double maxValue = 0.0;
         try {
             PrintStream out = new PrintStream(new File("ssgd-results.txt"));
-            Evaluator evaluator = new Evaluator(this, out, 300, 456);
+            Evaluator evaluator = new Evaluator(this, out, simSteps, simSeed);
             for (int i = 0; i < sampleCount; ++i) {
                 stepSize = a / (b + (double) i);
                 if (i % checkPerSteps == 0) {
+                    double value = evaluator.evaluate("sampled instance: " + i);
+                    if (value >= maxValue) {
+                        maxValue = value;
+                    }
                     System.out.println("sampled instance: " + i
                             + ", step size: " + stepSize + ", value: "
-                            + evaluator.evaluate("sampled instance: " + i));
+                            + value + ", max value: " + maxValue);
                 }
                 samplePath = samplePathMatched(random.nextLong());
                 findSubgrad(samplePath, sgSupply, sgDemand);
@@ -164,6 +173,7 @@ public class SsgdSolver extends MatchingSolver {
 
     public static class Config {
         public double epsConfig, aConfig, bConfig;
-        public int stepCountConfig, checkPerStepsConfig;
+        public int stepCountConfig, checkPerStepsConfig, simSteps;
+        public long simSeed;
     }
 }

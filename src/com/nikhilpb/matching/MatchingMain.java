@@ -145,12 +145,16 @@ public class MatchingMain extends XmlParserMain {
                     final double b = Double.parseDouble(getPropertyOrDie(props, "b"));
                     final int stepCount = Integer.parseInt(getPropertyOrDie(props, "step_count"));
                     final int checkPerSteps = Integer.parseInt(getPropertyOrDie(props, "check_per_steps"));
+                    final int simSteps = Integer.parseInt(getPropertyOrDie(props, "sim_steps"));
+                    final long simSeed = Long.parseLong(getPropertyOrDie(props, "sim_seed"));
                     SsgdSolver.Config config = new SsgdSolver.Config();
                     config.aConfig = a;
                     config.bConfig = b;
                     config.epsConfig = eps;
                     config.stepCountConfig = stepCount;
                     config.checkPerStepsConfig = checkPerSteps;
+                    config.simSteps = simSteps;
+                    config.simSeed = simSeed;
                     solvers.add(new SsgdSolver(model, basisSetSupply, basisSetDemand,
                                                random.nextLong(), samplingPolicy, config));
                     success = success && solvers.get(p).solve();
