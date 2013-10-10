@@ -2,17 +2,17 @@ package com.nikhilpb.pools;
 
 import java.util.*;
 
-import com.moallemi.matching.Item;
-import com.moallemi.matching.MultiDiscreteDistribution;
-import com.moallemi.matching.RewardFunction;
-import com.moallemi.matching.SeparableRewardFunction;
+import com.nikhilpb.matching.Item;
+import com.nikhilpb.matching.MultiIndependentDist;
+import com.nikhilpb.matching.RewardFunction;
+import com.nikhilpb.matching.SeparableRewardFunction;
 import com.moallemi.math.Distributions;
 import com.moallemi.util.PropertySet;
 
 public class MatchingPoolsModel {
 	protected int dimension;
     protected int[] tissues;
-    protected MultiDiscreteDistribution distribution;
+    protected MultiIndependentDist distribution;
 	protected RewardFunction rewardFunction;
 	protected NodeRewardFunction nrf;
 	protected String modelType;
@@ -73,7 +73,7 @@ public class MatchingPoolsModel {
 			}
 		}
 		random = new Random(props.getLongDefault("supply_seed",123L));
-		distribution = new MultiDiscreteDistribution(probs, random);	    
+		distribution = new MultiIndependentDist(probs, random);
 		if (props.getStringDefault("reward_function","separable").equals("separable")){
 			rewardFunction = new SeparableRewardFunction();
 			nrf = new NodeRewardFunction(rewardFunction);

@@ -1,6 +1,6 @@
 package com.nikhilpb.pools;
 
-import com.moallemi.matching.RewardFunction;
+import com.nikhilpb.matching.RewardFunction;
 
 public class NodeRewardFunction {
 	private RewardFunction rf;
