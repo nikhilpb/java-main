@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.nikhilpb.matching.RewardFunction;
 import ilog.concert.*;
 import ilog.cplex.*;
 
@@ -22,7 +23,7 @@ public class KidneyPoolsMatcher {
 	IloNumVar[][] piVar;
 	
 	public KidneyPoolsMatcher(CplexFactory factory,
-								NodeRewardFunction nrf)
+							  NodeRewardFunction nrf)
 	throws IloException{
 		this.nrf = nrf;
 		cplex = factory.getCplex();
@@ -74,6 +75,17 @@ public class KidneyPoolsMatcher {
 		}
 		return matchPairs;
 	}
+
+    public ArrayList<Node> findMatchedNodes() throws Exception {
+        ArrayList<Node> matchedNodes = new ArrayList<Node>();
+        Boolean[] mat = findMatches();
+        for (int i = 0; i < nodes.size(); ++i) {
+            if (mat[i]) {
+                matchedNodes.add(nodes.get(i));
+            }
+        }
+        return matchedNodes;
+    }
 	
 	public void printPi() 
 	throws IloException{
@@ -159,7 +171,20 @@ public class KidneyPoolsMatcher {
 			cplex.addLe(incoming, 1.0);
 		}
 	}
-	
+
+    public double value(NodeRewardFunction nrf)  throws Exception {
+        double value = 0.;
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                if (cplex.getValue(piVar[i][j]) > TOL){
+                    value += nrf.evaluate(nodes.get(i), nodes.get(j));
+                    break;
+                }
+            }
+        }
+        return value;
+    }
+
 	public class NullOutputStream extends OutputStream {
 		@Override
 		 public void write(int b) throws IOException {

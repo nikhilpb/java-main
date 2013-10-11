@@ -31,8 +31,6 @@ public class MatchingPoolsMain extends CommandLineMain {
 			System.out.println("sampling kidney pools");
 			int sampleSize = cmd.nextInt();
 			System.out.println("sample size: " + sampleSize);
-			int problemSize = cmd.nextInt();
-			System.out.println("problem size: " + problemSize);
 			long sampleSeed = cmd.nextLong();
 			System.out.println("sample seed is: " + sampleSeed);
 			instances = new InstanceSet(model, sampleSeed);
@@ -72,7 +70,25 @@ public class MatchingPoolsMain extends CommandLineMain {
 					System.out.println("successfully solved model");
 				}
 				valueFunction = solver.getValue();
-			}
+			} else if (solverType.equals("ssgd")) {
+                long sampleSeed = cmd.nextLong();
+                System.out.println("solving salp");
+                double eps = cmd.nextDouble();
+                System.out.println("epsilon = " + eps);
+                SsgdSolver.Config config = new SsgdSolver.Config();
+                config.aConfig = cmd.nextDouble();
+                config.bConfig = cmd.nextDouble();
+                config.stepCountConfig = cmd.nextInt();
+                config.checkPerStepsConfig = cmd.nextInt();
+                config.simSteps = cmd.nextInt();
+                config.simSeed = cmd.nextLong();
+                SsgdSolver ssgdSolver = new SsgdSolver(model, basisSet, sampleSeed, config);
+                boolean status = ssgdSolver.solve();
+                if (status){
+                    System.out.println("successfully solved model");
+                }
+
+            }
 			else {
 				System.err.println("incorect solver type");
 			}
@@ -95,8 +111,6 @@ public class MatchingPoolsMain extends CommandLineMain {
 			}
 			int runCount = cmd.nextInt();
 			System.out.println("number of sample runs is " + runCount);
-			int timePeriods = cmd.nextInt();
-			System.out.println("time periods is " + timePeriods);
 			long simValueSeed = cmd.nextLong();
 			System.out.println("using seed " + simValueSeed);
 			Random svRandom = new Random(simValueSeed);

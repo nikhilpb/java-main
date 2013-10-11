@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LpSolver {
-	private ArrayList<Constraint> constrSet;
+	private ArrayList<SalpConstraint> constrSet;
 	private MatchingPoolsModel model;
 	private NodeFunctionSet basisSet;
 	private InstanceSet instances;
@@ -63,8 +63,8 @@ public class LpSolver {
 		SampleInstance thisInstance;
 		int tp;
 		ArrayList<Node> state, matchedNodes;
-		Constraint thisConstraint;
-		constrSet = new ArrayList<Constraint>();
+		SalpConstraint thisConstraint;
+		constrSet = new ArrayList<SalpConstraint>();
 		double rhs;
 		IloLinearNumExpr lhs, obj;
 		obj = cplex.linearNumExpr();
@@ -77,7 +77,7 @@ public class LpSolver {
 				state = thisInstance.getState(t);
 				matchedNodes = thisInstance.getMatches(t);
 				rhs = thisInstance.getReward(t);
-				thisConstraint = new Constraint(state, matchedNodes, (t==tp));
+				thisConstraint = new SalpConstraint(state, matchedNodes, (t==tp), model, basisSet);
 				constrSet.add(thisConstraint);
 				lhs = cplex.scalProd(thisConstraint.getCoeff(), kappaVar);
 				lhs.addTerm(sVar[acc + t], 1.0);
@@ -103,52 +103,5 @@ public class LpSolver {
         return basisSet.getLinearCombination(kappa);
     }
 	
-	public class Constraint {	
-		private double[] coeff;
-			
-		public Constraint (ArrayList<Node> nodes,
-							ArrayList<Node> matchedNodes,
-							boolean lastOne){
-			
-			coeff = new double[basisSet.size()];
-			Arrays.fill(coeff, 0.0);
-			double depRate;
-			if (!lastOne){
-				depRate = model.getDepartureRate();
-			}
-			else {
-				depRate = 1;
-			}
-			
-			for (int i = 0; i < nodes.size(); i++){
-				Node node = nodes.get(i);
-				double[] eval = basisSet.evaluate(node);
-				for (int j = 0; j < basisSet.size(); j++){
-					coeff[j] += eval[j]*depRate;
-				}
-			}
-			for (int i = 0; i < matchedNodes.size(); i++){
-				Node node = matchedNodes.get(i);
-				double[] eval = basisSet.evaluate(node);
-				for (int j = 0; j < basisSet.size(); j++){
-					coeff[j] += eval[j]*(1-depRate);
-				}
-			}
-		}
-		
-		public double[] getCoeff(){
-			return coeff;
-		}
-		
-		public String toString(){
-			String ts = "";
-			for (int i = 0; i < coeff.length; i++){
-				if (coeff[i] > 0.0){
-					ts += "coeff[" + i + "]: " + coeff[i] + ", ";
-				}
-			}
-			ts += "\n";
-			return ts;
-		}
-	}
+
 }

@@ -99,7 +99,7 @@ public class SampleInstance {
 	
 	public void match(String matchType, CplexFactory factory)
 	throws IloException{
-		if (matchType.equals(matchType)){
+		if (matchType.equals("greedy")){
 			greedyMatch(factory, model.getNodeRewardFunction());
 		}
 		else {
