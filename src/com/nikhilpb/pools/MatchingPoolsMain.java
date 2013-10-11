@@ -73,9 +73,8 @@ public class MatchingPoolsMain extends CommandLineMain {
 			} else if (solverType.equals("ssgd")) {
                 long sampleSeed = cmd.nextLong();
                 System.out.println("solving salp");
-                double eps = cmd.nextDouble();
-                System.out.println("epsilon = " + eps);
                 SsgdSolver.Config config = new SsgdSolver.Config();
+                config.epsConfig = cmd.nextDouble();
                 config.aConfig = cmd.nextDouble();
                 config.bConfig = cmd.nextDouble();
                 config.stepCountConfig = cmd.nextInt();
