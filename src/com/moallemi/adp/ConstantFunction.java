@@ -15,5 +15,5 @@ public class ConstantFunction implements StateFunction {
         return value;
     }
 
-    public String toString() { return "constant"; }
+    public String toString() { return "constant: " + value; }
 }

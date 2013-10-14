@@ -26,7 +26,7 @@ public class StateDistribution {
                              State[] nextStates)
     {
         this.distribution = distribution;
-	this.nextStates = nextStates;
+	    this.nextStates = nextStates;
         if (distribution.size() != nextStates.length)
             throw new IllegalArgumentException("size mismatch");
     }
