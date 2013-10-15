@@ -1,5 +1,6 @@
 package com.nikhilpb.stopping;
 
+import com.nikhilpb.adp.State;
 import com.nikhilpb.adp.StateFunction;
 import com.nikhilpb.adp.StateDistribution;
 
@@ -17,9 +18,9 @@ public class GaussianDistribution extends StateDistribution {
 
     }
 
-    public com.nikhilpb.adp.State nextSample() {
+    public State nextSample() {
         double[] prices = {0., 0.};
-        State pr = new State(prices);
+        State pr = new StoppingState.Vector(prices);
         return pr;
     }
 
