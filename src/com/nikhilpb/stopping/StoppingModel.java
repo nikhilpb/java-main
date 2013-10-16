@@ -14,10 +14,9 @@ import com.nikhilpb.adp.StateDistribution;
  */
 public class StoppingModel implements MarkovDecisionProcess {
 
-    private GaussianDistribution gDist;
+    private GaussianTransition gDist;
 
-    public StoppingModel() {
-        gDist = new GaussianDistribution();
+    public StoppingModel(String) {
     }
 
     public StateDistribution getDistribution(State state, Action action) {

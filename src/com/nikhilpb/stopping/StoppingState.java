@@ -11,18 +11,49 @@ import com.nikhilpb.adp.State;
  */
 public abstract class StoppingState implements State {
 
+    // singleton class denoting the absorbing state
     public static final class Nil extends StoppingState {
+        private static Nil NIL = new Nil();
+        private Nil() { }
+
+        public static Nil get() {
+            return NIL;
+        }
+
         public StateType getStateType() {
             return StateType.NIL;
+        }
+
+        public String toString() {
+            return "nil";
         }
     }
 
     public static final class Vector extends StoppingState {
+
         public StateType getStateType() {
             return StateType.VECTOR;
         }
+
         public double[] vector;
-        public Vector(double[] vector) { this.vector = vector; }
+        public int time;
+
+        public Vector(double[] vector, int time) {
+            this.vector = vector;
+            this.time = time;
+        }
+
+        public String toString() {
+            String str = "time: " + time + ", vector: [";
+            for (int i = 0; i < vector.length; ++i) {
+                str += vector[i];
+                if (i < vector.length-1) {
+                    str += " ";
+                }
+            }
+            str += "]";
+            return str;
+        }
     }
 
     public abstract StateType getStateType();

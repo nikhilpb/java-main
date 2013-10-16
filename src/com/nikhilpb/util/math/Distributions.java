@@ -16,6 +16,7 @@ public final class Distributions {
     public static class GaussianVectorGen {
         private Matrix mean, sqrtSigma;
         private Random random;
+        private int size;
 
         public GaussianVectorGen(Matrix mean, PSDMatrix sigma, long seed) {
             if (mean.getColumnDimension() != 1) {
@@ -26,6 +27,7 @@ public final class Distributions {
             sqrtSigma = sigma.sqrt();
             if (sqrtSigma.getRowDimension() != mean.getRowDimension())
                 throw new IllegalArgumentException("mean and sigma dimensions don't match");
+            size = sqrtSigma.getRowDimension();
             random = new Random(seed);
         }
 
@@ -44,5 +46,7 @@ public final class Distributions {
             out = out.transpose();
             return out.getArray()[0];
         }
+
+        public int size() { return size; }
     }
 }
