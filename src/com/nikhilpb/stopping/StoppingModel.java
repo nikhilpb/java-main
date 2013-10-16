@@ -1,9 +1,12 @@
 package com.nikhilpb.stopping;
 
+import Jama.Matrix;
 import com.nikhilpb.adp.Action;
 import com.nikhilpb.adp.MarkovDecisionProcess;
 import com.nikhilpb.adp.State;
 import com.nikhilpb.adp.StateDistribution;
+import com.nikhilpb.util.math.Distributions;
+import com.nikhilpb.util.math.PSDMatrix;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,13 +16,27 @@ import com.nikhilpb.adp.StateDistribution;
  * To change this template use File | Settings | File Templates.
  */
 public class StoppingModel implements MarkovDecisionProcess {
+    private Distributions.GaussianVectorGen gaussianVectorGen;
+    private int timePeriods;
 
-    private GaussianTransition gDist;
-
-    public StoppingModel(String) {
+    public StoppingModel(Matrix meanMatrix, PSDMatrix covarMatrix, int timePeriods, long seed) {
+        this.timePeriods = timePeriods;
+        gaussianVectorGen = new Distributions.GaussianVectorGen(meanMatrix, covarMatrix, seed);
     }
 
     public StateDistribution getDistribution(State state, Action action) {
-        return gDist;
+        StoppingState stoppingState = (StoppingState)state;
+        if (stoppingState.time >= timePeriods  - 1) {
+            return null;
+        }
+        return new GaussianTransition(gaussianVectorGen, stoppingState.vector, stoppingState.time + 1);
+    }
+
+    public void reset(long seed) {
+        gaussianVectorGen.resetSeed(seed);
+    }
+
+    public State getBaseState() {
+        return (State) new StoppingState(gaussianVectorGen.nextValue(), 0); // Todo: fix this
     }
 }

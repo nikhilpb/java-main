@@ -1,6 +1,5 @@
 package com.nikhilpb.util.math;
 
-import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
 
 import java.util.Random;
@@ -48,5 +47,9 @@ public final class Distributions {
         }
 
         public int size() { return size; }
+
+        public void resetSeed(long seed) {
+            random = new Random(seed);
+        }
     }
 }

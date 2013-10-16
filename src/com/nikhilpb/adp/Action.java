@@ -7,6 +7,4 @@ package com.nikhilpb.adp;
  * Time: 11:08 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface Action {
-    public boolean isCompatible(State state);
-}
+public interface Action { }

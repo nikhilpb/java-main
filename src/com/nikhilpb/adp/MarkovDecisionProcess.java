@@ -8,5 +8,7 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface MarkovDecisionProcess {
+    public State getBaseState();
     public StateDistribution getDistribution(State state, Action action);
+    public void reset(long seed);
 }

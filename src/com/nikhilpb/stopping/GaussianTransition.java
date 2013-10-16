@@ -33,7 +33,11 @@ public class GaussianTransition extends StateDistribution {
     }
 
     public State nextSample() {
-        return new StoppingState.Vector(gen.nextValue(), timePeriod);
+        double[] nextState = gen.nextValue();
+        for (int i = 0; i < nextState.length; ++i) {
+            nextState[i] += baseState[i];
+        }
+        return new StoppingState(nextState, timePeriod);
     }
 
 }
