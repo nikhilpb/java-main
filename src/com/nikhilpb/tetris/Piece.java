@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class Piece {
     public static final int kPieceSize = 4;
-    static final Piece SQR, ELL, REVELL, TEE, ESS, ZEE, LINE;
-    static final ArrayList<Piece> PIECES;
+    public static final Piece SQR, ELL, REVELL, TEE, ESS, ZEE, LINE;
+    public static final ArrayList<Piece> PIECES;
     static {
         PIECES = new ArrayList<Piece>();
 
