@@ -26,7 +26,8 @@ public class StoppingModel implements MarkovDecisionProcess {
 
     public StateDistribution getDistribution(State state, Action action) {
         StoppingState stoppingState = (StoppingState)state;
-        if (stoppingState.time >= timePeriods  - 1) {
+        StoppingAction stoppingAction = (StoppingAction)action;
+        if (stoppingState.time >= timePeriods  - 1 || action == StoppingAction.STOP) {
             return null;
         }
         return new GaussianTransition(gaussianVectorGen, stoppingState.vector, stoppingState.time + 1);

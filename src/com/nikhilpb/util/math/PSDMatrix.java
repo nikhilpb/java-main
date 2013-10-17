@@ -21,6 +21,10 @@ public class PSDMatrix {
         init(mat);
     }
 
+    public PSDMatrix(double[][] matArray) {
+        init(new Matrix(matArray));
+    }
+
     public PSDMatrix(final String fileName) throws IOException {
         Properties props = new Properties();
         FileInputStream fin = new FileInputStream(new File(fileName));

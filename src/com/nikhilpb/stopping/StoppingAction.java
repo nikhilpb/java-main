@@ -13,17 +13,4 @@ import com.nikhilpb.adp.State;
  */
 public enum StoppingAction implements Action {
     STOP, CONTINUE;
-
-    @Override
-    public boolean isCompatible(State state) {
-        try {
-            StoppingState sState = (StoppingState)state;
-            if (sState.getStateType() == StoppingState.StateType.NIL && this == CONTINUE) {
-                return false;
-            }
-        } catch (ClassCastException e) {
-            return false;
-        }
-        return true;
-    }
 }

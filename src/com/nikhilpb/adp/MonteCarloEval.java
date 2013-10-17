@@ -27,23 +27,22 @@ public class MonteCarloEval {
         SamplePath samplePath = new SamplePath();
         State curState = null;
         Action curAction = null;
-        int time = 1;
+        int time = 0;
         do {
-            if (time == 1) {
+            if (time == 0) {
                 curState = mdp.getBaseState();
 
             } else {
                 StateDistribution distribution = mdp.getDistribution(curState,  curAction);
-                if (distribution == null) {
+                if (distribution == null)
                     break;
-                }
                 curState = distribution.nextSample();
             }
             curAction = policy.getAction(curState);
-            samplePath.stateList.add(curState);
-            samplePath.actionList.add(curAction);
+            samplePath.stateActions.add(new StateAction(curState, curAction));
             samplePath.reward += rewardFunction.value(curState, curAction);
-        } while (time >= timePeriods);
+            time += 1;
+        } while (time < timePeriods);
         return samplePath;
     }
 

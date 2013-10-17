@@ -10,13 +10,21 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class SamplePath {
-    public ArrayList<State> stateList;
-    public ArrayList<Action> actionList;
-    public Double reward;
+    public ArrayList<StateAction> stateActions;
+    public double reward;
 
     public SamplePath() {
-        stateList = new ArrayList<State>();
-        actionList = new ArrayList<Action>();
+        stateActions = new ArrayList<StateAction>();
         reward = 0.0;
+    }
+
+    @Override
+    public String toString() {
+        String string = "";
+        for (StateAction sa : stateActions) {
+            string += "state : " + sa.getState().toString()
+                    + "\naction : " + sa.getAction().toString() + "\n";
+        }
+        return string;
     }
 }
