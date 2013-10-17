@@ -9,9 +9,7 @@ import java.util.Random;
  * Time: 11:11 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class StateDistribution {
-    protected Util.DistType distType;
-    protected Random random;
-    abstract public State nextSample();
-    abstract public double expectedValue(StateFunction sf);
+public interface StateDistribution {
+    public State nextSample();
+    public double expectedValue(StateFunction sf);
 }

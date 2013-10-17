@@ -12,7 +12,7 @@ import com.nikhilpb.util.math.Distributions;
  * Time: 8:10 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GaussianTransition extends StateDistribution {
+public class GaussianTransition implements StateDistribution {
     Distributions.GaussianVectorGen gen;
     double[] baseState;
     int timePeriod;
