@@ -35,4 +35,11 @@ public class TetrisAction implements Action {
         this.colInd = colInd;
         this.rotation = rotation;
     }
+
+    @Override
+    public String toString() {
+        return "row index: " + rowInd +
+               ", column index: " + colInd +
+               ", rotation: " + rotation;
+    }
 }

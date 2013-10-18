@@ -35,10 +35,12 @@ public class TetrisState implements State {
     }
 
     public boolean isCompatible(TetrisAction action) {
-        if (action.rotation >= piece.configCount())
+        if (action.rotation >= piece.configCount()) {
             return false;
-        if (checkOverflow(action))
+        }
+        if (!checkOverflow(action)) {
             return false;
+        }
         return true;
     }
 
@@ -49,7 +51,7 @@ public class TetrisState implements State {
                 if (pieceConfig[i][j] > 0) {
                     int xInd = i + action.rowInd;
                     int yInd = j + action.colInd;
-                    if (0 > xInd || xInd < kRows || 0 > yInd || yInd > kColumns)
+                    if (0 > xInd || xInd >= kRows || 0 > yInd || yInd >= kColumns)
                         return false;
                 }
             }
