@@ -16,6 +16,7 @@ public class StoppingTest {
     private static final int kTimePeriods = 5;
     private static final double[][] kMeanArray = {{1.}, {1.}}, kCovArray = {{1., .5},{.5, 1.}};
     private static final long kSeed = 123l;
+    private static final double kTol = 1E-4;
 
     @Test
     public void baseTest() throws Exception {
@@ -39,5 +40,15 @@ public class StoppingTest {
         MonteCarloEval eval = new MonteCarloEval(model, policy, rewardFunction, kSeed);
         SamplePath samplePath = eval.samplePath(kSeed, kTimePeriods);
         System.out.print(samplePath.toString());
+    }
+
+    @Test
+    public void kernelTest() throws Exception {
+        double[] stateVec1 = {0., 0.}, stateVec2 = {0., 1.};
+        StoppingState sState1 = new StoppingState(stateVec1, 1),
+                      sState2 = new StoppingState(stateVec2, 2);
+        StateKernel kernel = new GaussianStateKernel(1.0);
+        assert Math.abs(kernel.value(sState1, sState1) - 1.0) < kTol;
+        assert Math.abs(kernel.value(sState1, sState2) - Math.exp(-1.)) < kTol;
     }
 }
