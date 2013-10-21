@@ -32,12 +32,13 @@ public class StoppingTest {
                 return StoppingAction.CONTINUE;
             }
         };
-        StoppingModel model = new StoppingModel(meanMatrix, covMatrix, kTimePeriods, kSeed);
         RewardFunction rewardFunction = new RewardFunction() {
             @Override
             public double value(State state, Action action) { return 0.; }
         };
-        MonteCarloEval eval = new MonteCarloEval(model, policy, rewardFunction, kSeed);
+        StoppingModel model = new StoppingModel(meanMatrix, covMatrix, kTimePeriods, rewardFunction, kSeed);
+
+        MonteCarloEval eval = new MonteCarloEval(model, policy, model.getRewardFunction(), kSeed);
         SamplePath samplePath = eval.samplePath(kSeed, kTimePeriods);
         System.out.print(samplePath.toString());
     }
@@ -47,8 +48,8 @@ public class StoppingTest {
         double[] stateVec1 = {0., 0.}, stateVec2 = {0., 1.};
         StoppingState sState1 = new StoppingState(stateVec1, 1),
                       sState2 = new StoppingState(stateVec2, 2);
-        StateKernel kernel = new GaussianStateKernel(1.0);
-        assert Math.abs(kernel.value(sState1, sState1) - 1.0) < kTol;
+        StateKernel kernel = new GaussianStateKernel(1.);
+        assert Math.abs(kernel.value(sState1, sState1) - 1.) < kTol;
         assert Math.abs(kernel.value(sState1, sState2) - Math.exp(-1.)) < kTol;
     }
 }

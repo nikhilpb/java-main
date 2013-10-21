@@ -1,10 +1,7 @@
 package com.nikhilpb.stopping;
 
 import Jama.Matrix;
-import com.nikhilpb.adp.Action;
-import com.nikhilpb.adp.MarkovDecisionProcess;
-import com.nikhilpb.adp.State;
-import com.nikhilpb.adp.StateDistribution;
+import com.nikhilpb.adp.*;
 import com.nikhilpb.util.math.Distributions;
 import com.nikhilpb.util.math.PSDMatrix;
 
@@ -17,10 +14,27 @@ import com.nikhilpb.util.math.PSDMatrix;
  */
 public class StoppingModel implements MarkovDecisionProcess {
     private Distributions.GaussianVectorGen gaussianVectorGen;
+    private RewardFunction rewardFunction;
+
+    public RewardFunction getRewardFunction() {
+        return rewardFunction;
+    }
+
+
+
+    public int getTimePeriods() {
+        return timePeriods;
+    }
+
     private int timePeriods;
 
-    public StoppingModel(Matrix meanMatrix, PSDMatrix covarMatrix, int timePeriods, long seed) {
+    public StoppingModel(Matrix meanMatrix,
+                         PSDMatrix covarMatrix,
+                         int timePeriods,
+                         RewardFunction rewardFunction,
+                         long seed) {
         this.timePeriods = timePeriods;
+        this.rewardFunction = rewardFunction;
         gaussianVectorGen = new Distributions.GaussianVectorGen(meanMatrix, covarMatrix, seed);
     }
 

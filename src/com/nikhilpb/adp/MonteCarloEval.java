@@ -1,5 +1,6 @@
 package com.nikhilpb.adp;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -44,6 +45,14 @@ public class MonteCarloEval {
             time += 1;
         } while (time < timePeriods);
         return samplePath;
+    }
+
+    public ArrayList<SamplePath> getSamplePaths(int pathsCount, int timePeriods) {
+        ArrayList<SamplePath> samplePaths = new ArrayList<SamplePath>();
+        for (int i = 0; i < pathsCount; ++i) {
+            samplePaths.add(samplePath(random.nextLong(), timePeriods));
+        }
+        return samplePaths;
     }
 
 }
