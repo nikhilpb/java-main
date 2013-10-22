@@ -40,7 +40,7 @@ public class StoppingTest {
 
         MonteCarloEval eval = new MonteCarloEval(model, policy, model.getRewardFunction(), kSeed);
         SamplePath samplePath = eval.samplePath(kSeed, kTimePeriods);
-        System.out.print(samplePath.toString());
+        // System.out.print(samplePath.toString());
     }
 
     @Test
@@ -50,6 +50,17 @@ public class StoppingTest {
                       sState2 = new StoppingState(stateVec2, 2);
         StateKernel kernel = new GaussianStateKernel(1.);
         assert Math.abs(kernel.value(sState1, sState1) - 1.) < kTol;
-        assert Math.abs(kernel.value(sState1, sState2) - Math.exp(-1.)) < kTol;
+        assert Math.abs(kernel.value(sState1, sState2) - Math.exp(-.5)) < kTol;
+    }
+
+    @Test
+    public void meanGaussianKernelTest() throws Exception {
+        PSDMatrix sigma = new PSDMatrix(new Matrix(kCovArray));
+        double bw = 2.;
+        MeanGaussianKernel mgk = new MeanGaussianKernel(sigma, bw);
+        double[] mean = {0., 0.};
+        assert Math.abs(mgk.eval(mean) - 0.676123) < kTol; // computed separately
+        double[] mean2 = {1., 0.};
+        assert Math.abs(mgk.eval(mean2) - 0.569607) < kTol; // computed separately
     }
 }

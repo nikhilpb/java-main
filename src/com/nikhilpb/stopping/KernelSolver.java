@@ -14,18 +14,25 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class KernelSolver implements Solver {
-    private StoppingModel model;
+    private final StoppingModel model;
     private final double gamma;
-    private ArrayList<ArrayList<State>> sampleStates;
-    private double[][] lambdaC, lambdaS;
-    private double[][] gradC, gradS;
+    private final StateKernel kernel;
+    private ArrayList<ArrayList<StoppingState>> sampleStates;
+    private ArrayList<Lambda> lambdas;
+    private final int timePeriods;
+    private final int sampleCount;
 
     public KernelSolver(StoppingModel model,
                         double gamma,
+                        double bandWidth,
                         int sampleCount,
                         long sampleSeed) {
         this.model = model;
         this.gamma = gamma;
+        this.kernel = new GaussianStateKernel(bandWidth);
+        timePeriods = model.getTimePeriods();
+        lambdas = new ArrayList<Lambda>();
+        this.sampleCount = sampleCount;
 
         Policy policy = new Policy() {
             @Override
@@ -34,37 +41,34 @@ public class KernelSolver implements Solver {
 
         System.out.println("sampling " + sampleCount + " sample paths");
         MonteCarloEval sampler = new MonteCarloEval(model, policy, model.getRewardFunction(), sampleSeed);
-        ArrayList<SamplePath> samplePaths = sampler.getSamplePaths(sampleCount, model.getTimePeriods());
-        sampleStates = new ArrayList<ArrayList<State>>();
-        lambdaC = new double[model.getTimePeriods()][];
-        lambdaS = new double[model.getTimePeriods()][];
-        gradC = new double[model.getTimePeriods()][];
-        gradS = new double[model.getTimePeriods()][];
-        for (int i = 0; i < model.getTimePeriods(); ++i) {
-            sampleStates.add(new ArrayList<State>());
+        ArrayList<SamplePath> samplePaths = sampler.getSamplePaths(sampleCount, timePeriods);
+        sampleStates = new ArrayList<ArrayList<StoppingState>>();
+        for (int t = 0; t < timePeriods; ++t) {
+            sampleStates.add(new ArrayList<StoppingState>());
         }
 
         System.out.println("aggregating states");
         for (SamplePath sp : samplePaths) {
-            for (int t = 0; t < sp.stateActions.size(); ++t) {
-                sampleStates.get(t).add(sp.stateActions.get(t).getState());
+            for (int t = 0; t < sampleCount; ++t) {
+                sampleStates.get(t).add((StoppingState)sp.stateActions.get(t).getState());
             }
         }
 
         System.out.println("initializing the dual variables");
-        for (int t = 0; t < model.getTimePeriods(); ++t) {
-            int lmdSize = sampleStates.get(t).size();
-            lambdaC[t] = new double[lmdSize];
-            Arrays.fill(lambdaC[t], 1./sampleStates.size());
-            lambdaS[t] = new double[lmdSize];
-            Arrays.fill(lambdaS, 0.);
-
-            gradC[t] = new double[lmdSize];
-            gradS[t] = new double[lmdSize];
+        for (int t = 0; t < timePeriods; ++t) {
+            lambdas.add(new Lambda(sampleStates.get(t)));
         }
 
         System.out.println("initializing the gradient");
         initializeGrad();
+    }
+
+    public double getGamma() {
+        return gamma;
+    }
+
+    public StateKernel getKernel() {
+        return kernel;
     }
 
     @Override
@@ -79,22 +83,10 @@ public class KernelSolver implements Solver {
 
     // TODO
     private void initializeGrad() {
-        // Gamma * \sum \lambda_{x,s} g_t(x) term
-        for (int i = 0; i < gradS.length; ++i) {
-            for (int j = 0; j < gradS[i].length; ++j) {
-                gradS[i][j] = gamma * model.getRewardFunction().value(
-                        sampleStates.get(i).get(j),
-                        StoppingAction.STOP);
-            }
-        }
 
-        // Q0 \lambda_0 + R_0 term
-        for (int i = 0; i < gradS[0].length; ++i) {
-
-        }
     }
 
     private double[] que0(int i) {
-
+        return null;
     }
 }

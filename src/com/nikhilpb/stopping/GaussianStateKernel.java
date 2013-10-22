@@ -24,8 +24,12 @@ public class GaussianStateKernel implements StateKernel {
             val +=   (sState1.vector[i] - sState2.vector[i])
                     *(sState1.vector[i] - sState2.vector[i]);
         }
-        val = Math.exp(- val / bandWidth);
+        val = Math.exp(- val / (2. * bandWidth));
         return val;
+    }
+
+    public double getBandWidth() {
+        return bandWidth;
     }
 
 }
