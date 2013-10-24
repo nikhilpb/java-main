@@ -13,8 +13,10 @@ import com.nikhilpb.util.math.PSDMatrix;
  * To change this template use File | Settings | File Templates.
  */
 public class StoppingModel implements MarkovDecisionProcess {
-    private Distributions.GaussianVectorGen gaussianVectorGen;
-    private RewardFunction rewardFunction;
+    private final Distributions.GaussianVectorGen gaussianVectorGen;
+    private final RewardFunction rewardFunction;
+    private final PSDMatrix covarMatrix;
+    private final Matrix meanMatrix;
 
     public RewardFunction getRewardFunction() {
         return rewardFunction;
@@ -33,6 +35,8 @@ public class StoppingModel implements MarkovDecisionProcess {
                          int timePeriods,
                          RewardFunction rewardFunction,
                          long seed) {
+        this.meanMatrix = meanMatrix;
+        this.covarMatrix = covarMatrix;
         this.timePeriods = timePeriods;
         this.rewardFunction = rewardFunction;
         gaussianVectorGen = new Distributions.GaussianVectorGen(meanMatrix, covarMatrix, seed);
@@ -53,5 +57,13 @@ public class StoppingModel implements MarkovDecisionProcess {
 
     public State getBaseState() {
         return (State) new StoppingState(gaussianVectorGen.nextValue(), 0); // Todo: fix this
+    }
+
+    public Matrix getMeanMatrix() {
+        return meanMatrix;
+    }
+
+    public PSDMatrix getCovarMatrix() {
+        return covarMatrix;
     }
 }

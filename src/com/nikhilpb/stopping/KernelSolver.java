@@ -2,9 +2,10 @@ package com.nikhilpb.stopping;
 
 
 import com.nikhilpb.adp.*;
+import com.nikhilpb.util.math.PSDMatrix;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,7 @@ public class KernelSolver implements Solver {
     private ArrayList<ArrayList<StoppingState>> sampleStates;
     private ArrayList<Lambda> lambdas;
     private final int timePeriods;
-    private final int sampleCount;
+    private final MeanGaussianKernel oneExp, twoExp;
 
     public KernelSolver(StoppingModel model,
                         double gamma,
@@ -28,11 +29,13 @@ public class KernelSolver implements Solver {
                         int sampleCount,
                         long sampleSeed) {
         this.model = model;
+        oneExp = new MeanGaussianKernel(model.getCovarMatrix(), bandWidth);
+        twoExp = new MeanGaussianKernel(PSDMatrix.times(model.getCovarMatrix(), 2.),
+                                        bandWidth);
         this.gamma = gamma;
         this.kernel = new GaussianStateKernel(bandWidth);
         timePeriods = model.getTimePeriods();
         lambdas = new ArrayList<Lambda>();
-        this.sampleCount = sampleCount;
 
         Policy policy = new Policy() {
             @Override
@@ -59,16 +62,7 @@ public class KernelSolver implements Solver {
             lambdas.add(new Lambda(sampleStates.get(t)));
         }
 
-        System.out.println("initializing the gradient");
-        initializeGrad();
-    }
-
-    public double getGamma() {
-        return gamma;
-    }
-
-    public StateKernel getKernel() {
-        return kernel;
+        System.out.println("Computing the Q matrix");
     }
 
     @Override
@@ -89,4 +83,19 @@ public class KernelSolver implements Solver {
     private double[] que0(int i) {
         return null;
     }
+
+    public static class QPColumn {
+        public double[] thisQS, thisQC;
+        public double[] nextQS, nextQC;
+        public double[] prevQC;
+    }
+
+    public double getGamma() {
+        return gamma;
+    }
+
+    public StateKernel getKernel() {
+        return kernel;
+    }
+
 }

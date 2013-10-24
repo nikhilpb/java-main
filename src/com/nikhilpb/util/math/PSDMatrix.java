@@ -104,4 +104,11 @@ public class PSDMatrix {
         }
         sqrtMat = vMat.times(dMat);
     }
+
+    public static PSDMatrix times(PSDMatrix psdMatrix, double multiple) {
+        if (multiple < 0.) {
+            throw new RuntimeException("can't scale the matrix by a negative number");
+        }
+        return new PSDMatrix(psdMatrix.mat().times(multiple));
+    }
 }
