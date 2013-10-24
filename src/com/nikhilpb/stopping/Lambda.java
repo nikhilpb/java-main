@@ -16,6 +16,7 @@ public class Lambda {
 
     public Lambda(ArrayList<StoppingState> states) {
         this.states = states;
+        init();
     }
 
     private void init() {
