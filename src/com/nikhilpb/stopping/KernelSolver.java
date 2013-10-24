@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class KernelSolver implements Solver {
     private final StoppingModel model;
     private final double gamma;
-    private final StateKernel kernel;
+    private final GaussianStateKernel kernel;
     private ArrayList<ArrayList<StoppingState>> sampleStates;
     private ArrayList<Lambda> lambdas;
     private QPColumnStore columnStore;
@@ -64,6 +64,14 @@ public class KernelSolver implements Solver {
         }
 
         System.out.println("Computing the Q matrix");
+        ColumnStoreArguments args = new ColumnStoreArguments();
+        args.stoppingModel = model;
+        args.oneExp = oneExp;
+        args.twoExp = twoExp;
+        args.kernel = kernel;
+        args.stateList = sampleStates;
+        columnStore = new CompleteQPStore();
+        columnStore.initialize(args);
     }
 
     @Override
