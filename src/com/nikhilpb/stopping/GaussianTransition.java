@@ -40,4 +40,13 @@ public class GaussianTransition implements StateDistribution {
         return new StoppingState(nextState, timePeriod);
     }
 
+    public double[] getMean() {
+        double[][] meanArray = gen.getMean().getArray();
+        double[] mean = new double[meanArray.length];
+        for (int i = 0; i < mean.length; ++i) {
+            mean[i] = baseState[i] + meanArray[i][0];
+        }
+        return mean;
+    }
+
 }

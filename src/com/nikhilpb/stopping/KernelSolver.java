@@ -20,6 +20,7 @@ public class KernelSolver implements Solver {
     private final StateKernel kernel;
     private ArrayList<ArrayList<StoppingState>> sampleStates;
     private ArrayList<Lambda> lambdas;
+    private QPColumnStore columnStore;
     private final int timePeriods;
     private final MeanGaussianKernel oneExp, twoExp;
 
@@ -84,12 +85,6 @@ public class KernelSolver implements Solver {
         return null;
     }
 
-    public static class QPColumn {
-        public double[] thisQS, thisQC;
-        public double[] nextQS, nextQC;
-        public double[] prevQC;
-    }
-
     public double getGamma() {
         return gamma;
     }
@@ -97,5 +92,8 @@ public class KernelSolver implements Solver {
     public StateKernel getKernel() {
         return kernel;
     }
+
+
+
 
 }

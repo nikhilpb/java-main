@@ -51,5 +51,9 @@ public final class Distributions {
         public void resetSeed(long seed) {
             random = new Random(seed);
         }
+
+        public Matrix getMean() {
+            return mean;
+        }
     }
 }
