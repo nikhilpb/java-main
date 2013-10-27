@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class StoppingTest {
     private static final int kTimePeriods = 3;
     private static final double[][] kMeanArray = {{1.}, {1.}}, kCovArray = {{1., .5},{.5, 1.}};
+    private static final double[] kInitValue = {0., 0.};
     private static final long kSeed = 123l;
     private static final double kTol = 1E-4;
     private static final StoppingModel model;
@@ -28,7 +29,7 @@ public class StoppingTest {
             @Override
             public double value(State state, Action action) { return 0.; }
         };
-        model = new StoppingModel(meanMatrix, covMatrix, kTimePeriods, rewardFunction, kSeed);
+        model = new StoppingModel(meanMatrix, covMatrix, kInitValue, kTimePeriods, rewardFunction, kSeed);
     }
 
     @Test
@@ -45,7 +46,7 @@ public class StoppingTest {
         };
         MonteCarloEval eval = new MonteCarloEval(model, policy, model.getRewardFunction(), kSeed);
         SamplePath samplePath = eval.samplePath(kSeed, kTimePeriods);
-        // System.out.print(samplePath.toString());
+        System.out.print(samplePath.toString());
     }
 
     @Test
