@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <model>
+        <type>general</type>
+        <file>data/model.txt</file>
+    </model>
+    <evaluate>
+        <type>offline</type>
+        <sample_count>300</sample_count>
+        <sample_seed>456</sample_seed>
+    </evaluate>
+</config>

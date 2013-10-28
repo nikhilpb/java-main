@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <model>
+        <type>general</type>
+        <file>data/model.txt</file>
+    </model>
+    <basis>
+        <type>separable</type>
+    </basis>
+    <solve>
+        <method>ssgd</method>
+        <seed>123</seed>
+        <sampling_policy>optimistic</sampling_policy>
+        <eps>1.0</eps>
+        <a>10.0</a>
+        <b>1000.0</b>
+        <step_count>5000</step_count>
+        <check_per_steps>100</check_per_steps>
+        <problem_count>1</problem_count>
+        <sim_steps>300</sim_steps>
+        <sim_seed>456</sim_seed>
+    </solve>
+</config>
