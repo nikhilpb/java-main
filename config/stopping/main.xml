@@ -11,4 +11,8 @@
         <K>100.0</K>
         <seed>123</seed>
     </model>
+    <basis>
+        <type>polynomial</type>
+        <degree>2</degree>
+    </basis>
 </config>

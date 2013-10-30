@@ -1,6 +1,7 @@
 package com.nikhilpb.stopping;
 
 import Jama.Matrix;
+import com.nikhilpb.adp.BasisSet;
 import com.nikhilpb.adp.RewardFunction;
 import com.nikhilpb.adp.SamplePath;
 import com.nikhilpb.util.XmlParserMain;
@@ -21,10 +22,12 @@ import java.util.Properties;
 public class StoppingMain extends XmlParserMain {
     private static StoppingModel model;
     private static RewardFunction rewardFunction;
+    private static BasisSet basisSet;
     private static ArrayList<SamplePath> samplePath;
 
     public static void main(String[] args) {
         HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
+
         CommandProcessor modelProcessor = new CommandProcessor() {
             @Override
             public boolean processCommand(Properties props) throws Exception {
@@ -32,6 +35,14 @@ public class StoppingMain extends XmlParserMain {
             }
         };
         cmdMap.put("model", modelProcessor);
+
+        CommandProcessor basisProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return basisCommand(props);
+            }
+        };
+        cmdMap.put("basis", basisProcessor);
 
         parseCommandLine(args, null);
         executeCommands(cmdMap);
@@ -64,6 +75,28 @@ public class StoppingMain extends XmlParserMain {
         }
         long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
         model = new StoppingModel(mu, covar, initValue, timPeriods, rewardFunction, seed);
+        return true;
+    }
+
+    public static boolean basisCommand(Properties props) {
+        if (model == null) {
+            throw new RuntimeException("model must be initialized");
+        }
+        String basisType = getPropertyOrDie(props, "type");
+        if (basisType.equals("polynomial")) {
+            int degree = Integer.parseInt(getPropertyOrDie(props, "degree"));
+            basisSet = new BasisSet();
+            basisSet.add(new ConstantStateFunction(1.));
+            int modelDim = model.dimension();
+            for (int d = 1; d <= degree; ++d) {
+                for (int i = 0; i < modelDim; ++i) {
+                    basisSet.add(new PolyStateFunction(d, i));
+                }
+            }
+        } else {
+            throw new RuntimeException("unknown basis type" + basisType);
+        }
+        System.out.println(basisSet.toString());
         return true;
     }
 }

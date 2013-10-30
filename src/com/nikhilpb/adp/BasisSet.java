@@ -37,4 +37,14 @@ public class BasisSet {
         }
         return value;
     }
+
+    @Override
+    public String toString() {
+        String string = "";
+        for (int i = 0; i < basis.size(); ++i) {
+            string += basis.get(i).toString() + "\n";
+        }
+        return string;
+    }
+
 }

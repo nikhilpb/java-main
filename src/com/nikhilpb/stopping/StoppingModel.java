@@ -69,4 +69,8 @@ public class StoppingModel implements MarkovDecisionProcess {
     public PSDMatrix getCovarMatrix() {
         return covarMatrix;
     }
+
+    public int dimension() {
+        return meanMatrix.getRowDimension();
+    }
 }
