@@ -61,7 +61,9 @@ public abstract class XmlParserMain {
                     parseTree.add(p);
                 }
             }
-            handler.handleCommandLine(args);
+            if (handler != null) {
+                handler.handleCommandLine(args);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
