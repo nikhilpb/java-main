@@ -47,4 +47,8 @@ public class BasisSet {
         return string;
     }
 
+    public StateFunction getLinComb(double[] coeffs) {
+        return new LinCombStateFunction(coeffs, this);
+    }
+
 }
