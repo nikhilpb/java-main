@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Time: 2:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public class KernelSolver {
+public class KernelSolver implements Solver {
     private final StoppingModel model;
     private final double gamma;
     private final GaussianStateKernel kernel;
@@ -74,11 +74,13 @@ public class KernelSolver {
         columnStore.initialize(args);
     }
 
+    @Override
     public boolean solve() {
         return true;
     }
 
-    public StateFunction getValueEstimate() {
+    @Override
+    public Policy getPolicy() {
         return null;
     }
 
@@ -98,8 +100,4 @@ public class KernelSolver {
     public StateKernel getKernel() {
         return kernel;
     }
-
-
-
-
 }

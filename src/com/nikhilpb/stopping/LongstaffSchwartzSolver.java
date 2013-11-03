@@ -1,6 +1,7 @@
 package com.nikhilpb.stopping;
 
 import com.nikhilpb.adp.*;
+import com.nikhilpb.util.math.Regression;
 
 import java.util.ArrayList;
 
@@ -11,11 +12,14 @@ import java.util.ArrayList;
  * Time: 2:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LongstaffSchwartzSolver {
+public class LongstaffSchwartzSolver implements Solver {
     private StoppingModel model;
     private BasisSet basisSet;
     private int timePeriods;
+    ArrayList<SamplePath> samplePaths;
     private ArrayList<ArrayList<StoppingState>> sampleStates;
+    private double[][] coeffs;
+    ArrayList<StateFunction> contValues;
 
     public LongstaffSchwartzSolver(StoppingModel model,
                                    BasisSet basisSet,
@@ -31,25 +35,42 @@ public class LongstaffSchwartzSolver {
         timePeriods = model.getTimePeriods();
         System.out.println("sampling " + sampleCount + " sample paths");
         MonteCarloEval sampler = new MonteCarloEval(model, policy, model.getRewardFunction(), seed);
-        ArrayList<SamplePath> samplePaths = sampler.getSamplePaths(sampleCount, timePeriods);
-        sampleStates = new ArrayList<ArrayList<StoppingState>>();
-        for (int t = 0; t < timePeriods; ++t) {
-            sampleStates.add(new ArrayList<StoppingState>());
-        }
-
-        System.out.println("aggregating states");
-        for (SamplePath sp : samplePaths) {
-            for (int t = 0; t < sampleCount; ++t) {
-                sampleStates.get(t).add((StoppingState)sp.stateActions.get(t).getState());
-            }
-        }
+        samplePaths = sampler.getSamplePaths(sampleCount, timePeriods);
     }
 
+    @Override
     public boolean solve() {
+        coeffs = new double[model.getTimePeriods()][];
+        contValues = new ArrayList<StateFunction>();
+        RewardFunction rf = model.getRewardFunction();
+        for (int t = timePeriods - 1; t >= 0; --t) {
+            if (t == timePeriods - 1) {
+                contValues.set(t, new ConstantStateFunction(0.));
+                continue;
+            }
+            double[][] xData = new double[samplePaths.size()][];
+            double[] yData = new double[samplePaths.size()];
+            for (int s = 0; s < samplePaths.size(); ++s) {
+                SamplePath sp = samplePaths.get(s);
+                ArrayList<StateAction> states = sp.stateActions;
+                State thisState = states.get(t).getState();
+                xData[s] = basisSet.evaluate(thisState);
+                for (int tt = t+1; tt < timePeriods; tt++) {
+                    State state2 = states.get(tt).getState();
+                    if (rf.value(state2, StoppingAction.STOP) > contValues.get(tt).value(state2)) {
+                        yData[s] = rf.value(state2, StoppingAction.STOP);
+                    }
+                }
+            }
+            coeffs[t] = Regression.LinLeastSq(xData, yData);
+            contValues.set(t, new LinCombStateFunction(coeffs[t], basisSet));
+        }
         return true;
     }
 
-    public QFunction getQFunction() {
-        return null;
+    @Override
+    public Policy getPolicy() {
+        QFunction qFunction = new BasisQFunction(contValues);
+        return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
     }
 }
