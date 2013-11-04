@@ -119,7 +119,7 @@ public class KernelSolverCplex extends KernelSolver {
             */
         }
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
-        cplex.addMinimize(obj);
+        // cplex.addMinimize(obj);
     }
 
     @Override
