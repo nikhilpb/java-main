@@ -63,6 +63,8 @@ public class CompleteQPStore implements QPColumnStore {
                             meanj[k] -= meani[k];
                         }
                         valueC = valueS + args.twoExp.eval(meanj);
+                    } else {
+                        valueC = valueS;
                     }
                     columnsC[t][i].curC[j] = valueC;
                 }

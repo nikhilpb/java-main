@@ -62,7 +62,7 @@ public class KernelSolverCplex extends KernelSolver {
                     objTerms.add(cplex.prod(kernel.value(states.get(i), model.getBaseState()), lambdaS[0][i]));
                 }
             }
-            /*
+
             for (int i = 0; i < states.size(); ++i) {
                 objTerms.add(cplex.prod(model.getRewardFunction().value(states.get(i),
                                                                         StoppingAction.STOP)
@@ -116,10 +116,9 @@ public class KernelSolverCplex extends KernelSolver {
                     }
                 }
             }
-            */
         }
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
-        // cplex.addMinimize(obj);
+        cplex.addMinimize(obj);
     }
 
     @Override
