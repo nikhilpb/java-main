@@ -37,7 +37,7 @@ public class KernelSolverCplex extends KernelSolver {
             int stateCount = sampleStates.get(t).size();
             double[] lb = new double[stateCount], ub = new double[stateCount], ones = new double[stateCount];
             Arrays.fill(lb, 0.);
-            Arrays.fill(ub, Double.MAX_VALUE);
+            Arrays.fill(ub, 0.);
             Arrays.fill(ones, 1.);
             lambdaS[t] = cplex.numVarArray(stateCount, lb, ub);
             lambdaC[t] = cplex.numVarArray(stateCount, lb, ub);
