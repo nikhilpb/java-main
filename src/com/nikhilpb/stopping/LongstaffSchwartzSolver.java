@@ -40,7 +40,7 @@ public class LongstaffSchwartzSolver implements Solver {
 
     @Override
     public boolean solve() {
-        coeffs = new double[model.getTimePeriods()][];
+        coeffs = new double[timePeriods][];
         contValues = new ArrayList<StateFunction>();
         RewardFunction rf = model.getRewardFunction();
         for (int t = timePeriods - 1; t >= 0; --t) {
@@ -53,8 +53,8 @@ public class LongstaffSchwartzSolver implements Solver {
             for (int s = 0; s < samplePaths.size(); ++s) {
                 SamplePath sp = samplePaths.get(s);
                 ArrayList<StateAction> states = sp.stateActions;
-                State thisState = states.get(t).getState();
-                xData[s] = basisSet.evaluate(thisState);
+                State state = states.get(t).getState();
+                xData[s] = basisSet.evaluate(state);
                 for (int tt = t+1; tt < timePeriods; tt++) {
                     State state2 = states.get(tt).getState();
                     if (rf.value(state2, StoppingAction.STOP) > contValues.get(tt).value(state2)) {
