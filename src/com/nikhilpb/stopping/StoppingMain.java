@@ -52,6 +52,14 @@ public class StoppingMain extends XmlParserMain {
         };
         cmdMap.put("solve", solveProcessor);
 
+        CommandProcessor evalProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return evalCommand(props);
+            }
+        };
+        cmdMap.put("eval", evalProcessor);
+
         parseCommandLine(args, null);
         executeCommands(cmdMap);
     }
@@ -104,7 +112,6 @@ public class StoppingMain extends XmlParserMain {
         } else {
             throw new RuntimeException("unknown basis type" + basisType);
         }
-        System.out.println(basisSet.toString());
         return true;
     }
 
@@ -124,6 +131,19 @@ public class StoppingMain extends XmlParserMain {
             throw new RuntimeException("error solving");
         }
         policy =  solver.getPolicy();
+        return true;
+    }
+
+    public static boolean evalCommand(Properties props) {
+        if (model == null || policy == null) {
+            throw new RuntimeException("model and policy must be initialized");
+        }
+        int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
+        long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
+        System.out.println("sampling " + sampleCount + " sample paths");
+        MonteCarloEval sampler = new MonteCarloEval(model, policy, model.getRewardFunction(), seed);
+        MonteCarloEval.MonteCarloResults mcEval = sampler.eval(sampleCount, model.getTimePeriods());
+        System.out.println(mcEval.toString());
         return true;
     }
 }

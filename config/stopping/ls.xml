@@ -13,11 +13,15 @@
     </model>
     <basis>
         <type>polynomial</type>
-        <degree>2</degree>
+        <degree>3</degree>
     </basis>
     <solve>
         <type>ls</type>
-        <sample_count>1000</sample_count>
+        <sample_count>10000</sample_count>
         <seed>123</seed>
     </solve>
+    <eval>
+        <sample_count>1000</sample_count>
+        <seed>456</seed>
+    </eval>
 </config>

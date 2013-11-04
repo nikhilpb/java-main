@@ -25,6 +25,7 @@ public class SamplePath {
             string += "state : " + sa.getState().toString()
                     + "\naction : " + sa.getAction().toString() + "\n";
         }
+        string += "reward: " + reward + "\n";
         return string;
     }
 }

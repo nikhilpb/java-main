@@ -55,4 +55,46 @@ public class MonteCarloEval {
         return samplePaths;
     }
 
+    public MonteCarloResults eval(int pathsCount, int timePeriods) {
+        ArrayList<SamplePath> samplePaths = getSamplePaths(pathsCount, timePeriods);
+        double mean = 0., var = 0.;
+        for (SamplePath sp : samplePaths) {
+            mean += sp.reward;
+            var += sp.reward * sp.reward;
+        }
+        mean = mean / pathsCount;
+        var = var / pathsCount;
+        var = var - (mean * mean);
+        return new MonteCarloResults(mean, Math.sqrt(var), pathsCount);
+    }
+
+    public static class MonteCarloResults {
+        private double mcMean, mcStd, mcStdErr;
+
+        public MonteCarloResults(double mcMean, double mcStd, int sampleCount) {
+            this.mcMean = mcMean;
+            this.mcStd = mcStd;
+            this.mcStdErr = mcStd / Math.sqrt((double) sampleCount);
+        }
+
+        public double getMean() {
+            return mcMean;
+        }
+
+        public double getStd() {
+            return mcStd;
+        }
+
+        public double getStdErr() {
+            return mcStdErr;
+        }
+
+        @Override
+        public String toString() {
+            return "mean: " + mcMean +
+                    ", standard deviation: " + mcStd +
+                    ", standard error: " + mcStdErr;
+        }
+    }
+
 }
