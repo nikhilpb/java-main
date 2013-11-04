@@ -124,11 +124,24 @@ public class StoppingMain extends XmlParserMain {
             int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
             long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
             solver = new LongstaffSchwartzSolver(model, basisSet, seed, sampleCount);
+        } else if (solverType.equals("kernel")) {
+            int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
+            long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
+            double gamma = Double.parseDouble(getPropertyOrDie(props, "gamma"));
+            double kappa = Double.parseDouble(getPropertyOrDie(props, "kappa"));
+            double bandwidth = Double.parseDouble(getPropertyOrDie(props, "bandwidth"));
+            try{
+                solver = new KernelSolverCplex(model, kappa, gamma, bandwidth, sampleCount, seed);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             throw new RuntimeException("unknown solver type " + solverType);
         }
-        if (!solver.solve()) {
-            throw new RuntimeException("error solving");
+        try {
+            solver.solve();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         policy =  solver.getPolicy();
         return true;

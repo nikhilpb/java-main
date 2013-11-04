@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <model>
+        <S>100.0</S>
+        <n>3</n>
+        <delta>0.0</delta>
+        <rho>0.1</rho>
+        <sigma>0.2</sigma>
+        <time_periods>10</time_periods>
+        <reward_type>max-call</reward_type>
+        <K>100.0</K>
+        <seed>123</seed>
+    </model>
+    <basis>
+        <type>polynomial</type>
+        <degree>3</degree>
+    </basis>
+    <solve>
+        <type>kernel</type>
+        <sample_count>100</sample_count>
+        <seed>123</seed>
+        <gamma>1E-6</gamma>
+        <kappa>1.</kappa>
+        <bandwitdth>1.</bandwitdth>
+    </solve>
+    <eval>
+        <sample_count>1000</sample_count>
+        <seed>456</seed>
+    </eval>
+</config>

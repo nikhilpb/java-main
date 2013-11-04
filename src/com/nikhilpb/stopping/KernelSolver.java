@@ -14,18 +14,19 @@ import java.util.ArrayList;
  * Time: 2:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public class KernelSolver implements Solver {
-    private final StoppingModel model;
-    private final double gamma;
-    private final GaussianStateKernel kernel;
-    private ArrayList<ArrayList<StoppingState>> sampleStates;
-    private ArrayList<Lambda> lambdas;
-    private QPColumnStore columnStore;
-    private final int timePeriods;
-    private final MeanGaussianKernel oneExp, twoExp;
+public abstract class KernelSolver implements Solver {
+    protected StoppingModel model;
+    protected double gamma, kappa;
+    protected GaussianStateKernel kernel;
+    protected ArrayList<ArrayList<StoppingState>> sampleStates;
+    protected ArrayList<Lambda> lambdas;
+    protected QPColumnStore columnStore;
+    protected int timePeriods;
+    protected MeanGaussianKernel oneExp, twoExp;
 
-    public KernelSolver(StoppingModel model,
+    protected void init(StoppingModel model,
                         double gamma,
+                        double kappa,
                         double bandWidth,
                         int sampleCount,
                         long sampleSeed) {
@@ -34,6 +35,7 @@ public class KernelSolver implements Solver {
         twoExp = new MeanGaussianKernel(PSDMatrix.times(model.getCovarMatrix(), 2.),
                                         bandWidth);
         this.gamma = gamma;
+        this.kappa = kappa;
         this.kernel = new GaussianStateKernel(bandWidth);
         timePeriods = model.getTimePeriods();
         lambdas = new ArrayList<Lambda>();
@@ -72,25 +74,6 @@ public class KernelSolver implements Solver {
         args.stateList = sampleStates;
         columnStore = new CompleteQPStore();
         columnStore.initialize(args);
-    }
-
-    @Override
-    public boolean solve() {
-        return true;
-    }
-
-    @Override
-    public Policy getPolicy() {
-        return null;
-    }
-
-    // TODO
-    private void initializeGrad() {
-
-    }
-
-    private double[] que0(int i) {
-        return null;
     }
 
     public double getGamma() {
