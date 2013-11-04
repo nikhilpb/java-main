@@ -71,9 +71,7 @@ public class KernelSolverCplex extends KernelSolver {
                                                                         * 2. * this.gamma,
                                         lambdaS[t][i]));
                 QPColumn stopColumn = columnStore.getColumn(t, i, StoppingAction.STOP);
-                System.out.println("time: " + t + "\nstop column: "  + stopColumn.toString());
                 QPColumn contColumn = columnStore.getColumn(t, i, StoppingAction.CONTINUE);
-                System.out.println("time: " + t + "\ncont column: "  + contColumn.toString());
                 for (int j = 0; j < stopColumn.curS.length; ++j) {
                     objTerms.add(cplex.prod(lambdaS[t][i], lambdaS[t][j], stopColumn.curS[j]));
                 }
