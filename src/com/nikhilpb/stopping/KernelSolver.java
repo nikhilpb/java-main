@@ -55,7 +55,7 @@ public abstract class KernelSolver implements Solver {
 
         System.out.println("aggregating states");
         for (SamplePath sp : samplePaths) {
-            for (int t = 0; t < sampleCount; ++t) {
+            for (int t = 0; t < timePeriods; ++t) {
                 sampleStates.get(t).add((StoppingState)sp.stateActions.get(t).getState());
             }
         }
