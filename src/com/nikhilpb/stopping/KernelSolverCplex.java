@@ -1,6 +1,8 @@
 package com.nikhilpb.stopping;
 
 import com.nikhilpb.adp.Policy;
+import com.nikhilpb.adp.State;
+import com.nikhilpb.adp.StateFunction;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumExpr;
@@ -128,6 +130,7 @@ public class KernelSolverCplex extends KernelSolver {
 
     @Override
     public Policy getPolicy() {
+        ArrayList<StateFunction> contValues = new ArrayList<StateFunction>();
         return null;
     }
 }
