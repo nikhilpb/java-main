@@ -21,7 +21,7 @@
         <seed>123</seed>
         <gamma>1E-6</gamma>
         <kappa>1.</kappa>
-        <bandwitdth>1.</bandwitdth>
+        <bandwidth>1.</bandwidth>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
