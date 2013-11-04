@@ -27,6 +27,6 @@ public class PolyStateFunction implements StateFunction {
 
     @Override
     public String toString() {
-        return  "polynomial function - degree: " + degree + ", index: " + index;
+        return  "poly_" + degree + "," + index;
     }
 }

@@ -22,6 +22,6 @@ public class ConstantStateFunction implements StateFunction {
 
     @Override
     public String toString() {
-       return  "constant function: " + val;
+       return  "const_" + val;
     }
 }

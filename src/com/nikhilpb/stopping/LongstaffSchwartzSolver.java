@@ -42,6 +42,9 @@ public class LongstaffSchwartzSolver implements Solver {
     public boolean solve() {
         coeffs = new double[timePeriods][];
         contValues = new ArrayList<StateFunction>();
+        for (int t = 0; t < timePeriods; ++t) {
+            contValues.add(null);
+        }
         RewardFunction rf = model.getRewardFunction();
         for (int t = timePeriods - 1; t >= 0; --t) {
             if (t == timePeriods - 1) {
@@ -59,12 +62,23 @@ public class LongstaffSchwartzSolver implements Solver {
                     State state2 = states.get(tt).getState();
                     if (rf.value(state2, StoppingAction.STOP) > contValues.get(tt).value(state2)) {
                         yData[s] = rf.value(state2, StoppingAction.STOP);
+                        break;
                     }
                 }
             }
-            coeffs[t] = Regression.LinLeastSq(xData, yData);
-            contValues.set(t, new LinCombStateFunction(coeffs[t], basisSet));
+            if (t == 0) {
+                double meanReward = 0.;
+                for (int i = 0; i < yData.length; ++i) {
+                    meanReward += yData[i];
+                }
+                meanReward = meanReward / ((double) yData.length);
+                contValues.set(0, new ConstantStateFunction(meanReward));
+            } else {
+                coeffs[t] = Regression.LinLeastSq(xData, yData);
+                contValues.set(t, new LinCombStateFunction(coeffs[t], basisSet));
+            }
         }
+
         return true;
     }
 

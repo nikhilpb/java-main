@@ -1,9 +1,7 @@
 package com.nikhilpb.stopping;
 
 import Jama.Matrix;
-import com.nikhilpb.adp.BasisSet;
-import com.nikhilpb.adp.RewardFunction;
-import com.nikhilpb.adp.SamplePath;
+import com.nikhilpb.adp.*;
 import com.nikhilpb.util.XmlParserMain;
 import com.nikhilpb.util.math.PSDMatrix;
 
@@ -24,6 +22,8 @@ public class StoppingMain extends XmlParserMain {
     private static RewardFunction rewardFunction;
     private static BasisSet basisSet;
     private static ArrayList<SamplePath> samplePath;
+    private static Solver solver;
+    private static Policy policy;
 
     public static void main(String[] args) {
         HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
@@ -43,6 +43,14 @@ public class StoppingMain extends XmlParserMain {
             }
         };
         cmdMap.put("basis", basisProcessor);
+
+        CommandProcessor solveProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return solveCommand(props);
+            }
+        };
+        cmdMap.put("solve", solveProcessor);
 
         parseCommandLine(args, null);
         executeCommands(cmdMap);
@@ -97,6 +105,25 @@ public class StoppingMain extends XmlParserMain {
             throw new RuntimeException("unknown basis type" + basisType);
         }
         System.out.println(basisSet.toString());
+        return true;
+    }
+
+    public static boolean solveCommand(Properties props) {
+        if (model == null) {
+            throw new RuntimeException("model must be initialized");
+        }
+        String solverType = getPropertyOrDie(props, "type");
+        if (solverType.equals("ls")) {
+            int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
+            long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
+            solver = new LongstaffSchwartzSolver(model, basisSet, seed, sampleCount);
+        } else {
+            throw new RuntimeException("unknown solver type " + solverType);
+        }
+        if (!solver.solve()) {
+            throw new RuntimeException("error solving");
+        }
+        policy =  solver.getPolicy();
         return true;
     }
 }

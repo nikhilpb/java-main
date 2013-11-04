@@ -29,4 +29,16 @@ public class LinCombStateFunction implements StateFunction {
         }
         return value;
     }
+
+    @Override
+    public String toString() {
+        String name = "";
+        for (int i = 0; i < coeffs.length; ++i) {
+            name += coeffs[i] + "*" + stateFunctions.get(i).toString();
+            if (i < coeffs.length - 1) {
+                name += " + ";
+            }
+        }
+        return name;
+    }
 }
