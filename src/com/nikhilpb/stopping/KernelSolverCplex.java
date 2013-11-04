@@ -44,7 +44,7 @@ public class KernelSolverCplex extends KernelSolver {
             IloLinearNumExpr probMass = cplex.linearNumExpr();
             probMass.addTerms(lambdaS[t], ones);
             probMass.addTerms(lambdaC[t], ones);
-            // cplex.addEq(1., probMass);
+            cplex.addEq(1., probMass);
             for (int i = 0; i < stateCount; ++i) {
                 IloLinearNumExpr stateMass = cplex.linearNumExpr();
                 stateMass.addTerm(1., lambdaS[t][i]);
