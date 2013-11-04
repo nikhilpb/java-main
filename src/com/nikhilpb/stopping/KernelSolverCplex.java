@@ -49,7 +49,7 @@ public class KernelSolverCplex extends KernelSolver {
                 IloLinearNumExpr stateMass = cplex.linearNumExpr();
                 stateMass.addTerm(1., lambdaS[t][i]);
                 stateMass.addTerm(1., lambdaC[t][i]);
-                //cplex.addGe(this.kappa / ((double) stateCount), stateMass);
+                cplex.addGe(this.kappa / ((double) stateCount), stateMass);
             }
         }
 
