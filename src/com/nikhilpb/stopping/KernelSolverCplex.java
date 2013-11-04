@@ -103,7 +103,7 @@ public class KernelSolverCplex extends KernelSolver {
                     }
                 }
                 if (contColumn.nextC != null) {
-                    for (int j = 0; j < stopColumn.nextC.length; ++j) {
+                    for (int j = 0; j < contColumn.nextC.length; ++j) {
                         objTerms.add(cplex.prod(lambdaC[t][i], lambdaC[t+1][j], contColumn.nextC[j]));
                     }
                 }
