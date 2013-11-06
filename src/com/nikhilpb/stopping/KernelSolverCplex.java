@@ -1,7 +1,6 @@
 package com.nikhilpb.stopping;
 
 import com.nikhilpb.adp.Policy;
-import com.nikhilpb.adp.State;
 import com.nikhilpb.adp.StateFunction;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
