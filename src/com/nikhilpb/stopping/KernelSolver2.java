@@ -1,7 +1,6 @@
 package com.nikhilpb.stopping;
 
-import com.nikhilpb.adp.Policy;
-import com.nikhilpb.adp.Solver;
+import com.nikhilpb.adp.*;
 import com.nikhilpb.util.math.PSDMatrix;
 import ilog.concert.*;
 import ilog.cplex.IloCplex;
@@ -34,6 +33,7 @@ public class KernelSolver2 implements Solver {
     private IloRange[] bConsts;
     private static final double kTol = 1E-4;
     private double[] b;
+    ArrayList<StateFunction> contValues;
 
 
     public KernelSolver2(StoppingModel model,
@@ -175,12 +175,45 @@ public class KernelSolver2 implements Solver {
         for (int t = 0; t < timePeriods; ++t) {
             b[t] = cplex.getDual(bConsts[t]);
         }
+        contValues = new ArrayList<StateFunction>();
+        double l0C = cplex.getValue(lambda0C);
+        double l0S = cplex.getValue(lambda0S);
+        double[][] lS = new double[timePeriods-2][], lC = new double[timePeriods-2][];
+        for (int t = 1; t < timePeriods-1; ++t) {
+            lS[t-1] = cplex.getValues(lambdaS[t]);
+            lC[t-1] = cplex.getValues(lambdaC[t]);
+        }
+        double[] lSLast = cplex.getValues(lambdaSLast);
+        for (int t = 0; t < timePeriods; ++t) {
+            if (t == 0) {
+                contValues.add(new ConstantStateFunction(Double.MAX_VALUE));
+                continue;
+            }
+            if (t == timePeriods-1) {
+                contValues.add(new ConstantStateFunction(Double.MIN_VALUE));
+                continue;
+            }
+            double[] lmdPrev;
+            if (t == 1) {
+                lmdPrev = new double[1];
+                lmdPrev[0] = l0C;
+            } else {
+                lmdPrev = lC[t-2];
+            }
+            double[] lmdCur = new double[sampleCount];
+            for (int i = 0; i < sampleCount; ++i) {
+                lmdCur[i] = lC[t-1][i] + lS[t-1][i];
+            }
+            contValues.add(new KernelStateFunction(sampler.getStates(t),
+                    sampler.getStates(t-1), lmdPrev, lmdCur, kernel, oneExp, model, gamma, b[t]));
+        }
         return solved;
     }
 
     @Override
     public Policy getPolicy() {
-        return null;
+        QFunction qFunction = new BasisQFunction(contValues);
+        return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
     }
 
     private int timePeriodForInd(int i) {
