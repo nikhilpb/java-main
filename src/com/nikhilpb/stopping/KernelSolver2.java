@@ -158,7 +158,7 @@ public class KernelSolver2 implements Solver {
             if (actionForInd(i) == StoppingAction.STOP) {
                 int t = timePeriodForInd(i);
                 int ind = stateIndForInd(i);
-                objTerms.add(cplex.prod(model.getRewardFunction().value(sampler.getStates(t).get(i),
+                objTerms.add(cplex.prod(model.getRewardFunction().value(sampler.getStates(t).get(ind),
                                                                         StoppingAction.STOP) * -2.0 * gamma,
                                         getVarFromInd(i)));
             }
