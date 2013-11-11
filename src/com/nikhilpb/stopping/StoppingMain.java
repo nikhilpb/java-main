@@ -131,7 +131,7 @@ public class StoppingMain extends XmlParserMain {
             double kappa = Double.parseDouble(getPropertyOrDie(props, "kappa"));
             double bandwidth = Double.parseDouble(getPropertyOrDie(props, "bandwidth"));
             try{
-                solver = new KernelSolverCplex(model, kappa, gamma, bandwidth, sampleCount, seed);
+                solver = new KernelSolver2(model, kappa, gamma, bandwidth, sampleCount, seed);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -154,7 +154,7 @@ public class StoppingMain extends XmlParserMain {
         int sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
         long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
         System.out.println("sampling " + sampleCount + " sample paths");
-        MonteCarloEval sampler = new MonteCarloEval(model, policy, model.getRewardFunction(), seed);
+        MonteCarloEval sampler = new MonteCarloEval(model, policy, seed);
         MonteCarloEval.MonteCarloResults mcEval = sampler.eval(sampleCount, model.getTimePeriods());
         System.out.println(mcEval.toString());
         return true;

@@ -9,13 +9,8 @@ package com.example.tutorial;
  */
 import com.example.tutorial.AddressBookProtos.AddressBook;
 import com.example.tutorial.AddressBookProtos.Person;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.PrintStream;
+
+import java.io.*;
 
 class AddPerson {
     // This function fills in a Person message based on user input.
@@ -59,8 +54,9 @@ class AddPerson {
 
             person.addPhone(phoneNumber);
         }
-
-        return person.build();
+        Person person1 = person.build();
+        System.out.print(person1.toString());
+        return person1;
     }
 
     // Main function:  Reads the entire address book from a file,
@@ -85,7 +81,10 @@ class AddPerson {
         addressBook.addPerson(
                 PromptForAddress(new BufferedReader(new InputStreamReader(System.in)),
                         System.out));
+        System.out.println(addressBook.build().toString());
 
+        AddressBook addressBook1 = AddressBook.parseFrom(new FileInputStream(new File("addr.txt")));
+        System.out.print(addressBook1.toString());
         // Write the new address book back to disk.
         FileOutputStream output = new FileOutputStream(args[0]);
         addressBook.build().writeTo(output);

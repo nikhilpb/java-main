@@ -44,7 +44,7 @@ public class StoppingTest {
                 return StoppingAction.CONTINUE;
             }
         };
-        MonteCarloEval eval = new MonteCarloEval(model, policy, model.getRewardFunction(), kSeed);
+        MonteCarloEval eval = new MonteCarloEval(model, policy, kSeed);
         SamplePath samplePath = eval.samplePath(kSeed, kTimePeriods);
         System.out.print(samplePath.toString());
     }

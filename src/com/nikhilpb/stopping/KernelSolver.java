@@ -46,7 +46,7 @@ public abstract class KernelSolver implements Solver {
         };
 
         System.out.println("sampling " + sampleCount + " sample paths");
-        MonteCarloEval sampler = new MonteCarloEval(model, policy, model.getRewardFunction(), sampleSeed);
+        MonteCarloEval sampler = new MonteCarloEval(model, policy, sampleSeed);
         ArrayList<SamplePath> samplePaths = sampler.getSamplePaths(sampleCount, timePeriods);
         sampleStates = new ArrayList<ArrayList<StoppingState>>();
         for (int t = 0; t < timePeriods; ++t) {

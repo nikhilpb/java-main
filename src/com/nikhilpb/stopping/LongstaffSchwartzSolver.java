@@ -34,7 +34,7 @@ public class LongstaffSchwartzSolver implements Solver {
         };
         timePeriods = model.getTimePeriods();
         System.out.println("sampling " + sampleCount + " sample paths");
-        MonteCarloEval sampler = new MonteCarloEval(model, policy, model.getRewardFunction(), seed);
+        MonteCarloEval sampler = new MonteCarloEval(model, policy, seed);
         samplePaths = sampler.getSamplePaths(sampleCount, timePeriods);
     }
 
