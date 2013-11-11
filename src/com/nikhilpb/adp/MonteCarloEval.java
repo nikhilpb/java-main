@@ -16,10 +16,10 @@ public class MonteCarloEval {
     private RewardFunction rewardFunction;
     private Random random;
 
-    public MonteCarloEval(MarkovDecisionProcess mdp, Policy policy, RewardFunction rewardFunction, long seed) {
+    public MonteCarloEval(MarkovDecisionProcess mdp, Policy policy, long seed) {
         this.mdp = mdp;
         this.policy = policy;
-        this.rewardFunction = rewardFunction;
+        this.rewardFunction = mdp.getRewardFunction();
         this.random = new Random(seed);
     }
 
@@ -29,6 +29,7 @@ public class MonteCarloEval {
         State curState = null;
         Action curAction = null;
         int time = 0;
+        double alpha = mdp.getAlpha();
         do {
             if (time == 0) {
                 curState = mdp.getBaseState();
@@ -41,7 +42,8 @@ public class MonteCarloEval {
             }
             curAction = policy.getAction(curState);
             samplePath.stateActions.add(new StateAction(curState, curAction));
-            samplePath.reward += rewardFunction.value(curState, curAction);
+            samplePath.reward += Math.pow(alpha, time)
+                                * rewardFunction.value(curState, curAction);
             time += 1;
         } while (time < timePeriods);
         return samplePath;

@@ -1,13 +1,10 @@
-package com.nikhilpb.stopping;
-
-import com.nikhilpb.adp.State;
-import com.nikhilpb.adp.StateFunction;
+package com.nikhilpb.adp;
 
 /**
  * Created with IntelliJ IDEA.
  * User: nikhilpb
- * Date: 10/29/13
- * Time: 8:56 PM
+ * Date: 11/6/13
+ * Time: 4:56 PM
  * To change this template use File | Settings | File Templates.
  */
 public class ConstantStateFunction implements StateFunction {
@@ -22,6 +19,6 @@ public class ConstantStateFunction implements StateFunction {
 
     @Override
     public String toString() {
-       return  "const_" + val;
+        return  "const_" + val;
     }
 }

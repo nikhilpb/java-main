@@ -7,8 +7,24 @@ package com.nikhilpb.adp;
  * Time: 11:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface MarkovDecisionProcess {
-    public State getBaseState();
-    public StateDistribution getDistribution(State state, Action action);
-    public void reset(long seed);
+public abstract class MarkovDecisionProcess {
+    protected RewardFunction rewardFunction;
+    protected double alpha;
+    protected boolean isInfHorizon;
+
+    public abstract State getBaseState();
+    public abstract StateDistribution getDistribution(State state, Action action);
+    public abstract void reset(long seed);
+
+    public RewardFunction getRewardFunction() {
+        return rewardFunction;
+    }
+
+    public double getAlpha() {
+        return alpha;
+    }
+
+    public boolean isInfHorizon() {
+        return isInfHorizon;
+    }
 }
