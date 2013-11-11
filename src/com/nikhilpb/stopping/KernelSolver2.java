@@ -33,6 +33,7 @@ public class KernelSolver2 implements Solver {
     private IloCplex cplex;
     private IloRange[] bConsts;
     private static final double kTol = 1E-4;
+    private double[] b;
 
 
     public KernelSolver2(StoppingModel model,
@@ -165,11 +166,16 @@ public class KernelSolver2 implements Solver {
         }
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
         cplex.addMinimize(obj);
+        b = new double[timePeriods];
     }
 
     @Override
     public boolean solve() throws Exception {
-        return cplex.solve();
+        boolean solved = cplex.solve();
+        for (int t = 0; t < timePeriods; ++t) {
+            b[t] = cplex.getDual(bConsts[t]);
+        }
+        return solved;
     }
 
     @Override
