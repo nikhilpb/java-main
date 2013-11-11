@@ -180,8 +180,8 @@ public class KernelSolver2 implements Solver {
         double l0S = cplex.getValue(lambda0S);
         double[][] lS = new double[timePeriods-2][], lC = new double[timePeriods-2][];
         for (int t = 1; t < timePeriods-1; ++t) {
-            lS[t-1] = cplex.getValues(lambdaS[t]);
-            lC[t-1] = cplex.getValues(lambdaC[t]);
+            lS[t-1] = cplex.getValues(lambdaS[t-1]);
+            lC[t-1] = cplex.getValues(lambdaC[t-1]);
         }
         double[] lSLast = cplex.getValues(lambdaSLast);
         for (int t = 0; t < timePeriods; ++t) {
