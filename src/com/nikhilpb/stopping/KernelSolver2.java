@@ -140,7 +140,7 @@ public class KernelSolver2 implements Solver {
             } else {
                 massBalance.addTerms(negOnes, lambdaC[t-2]);
             }
-            if (t == timePeriods) {
+            if (t == timePeriods - 1) {
                 massBalance.addTerms(ones, lambdaSLast);
             } else {
                 massBalance.addTerms(ones, lambdaC[t-1]);
