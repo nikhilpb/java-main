@@ -131,7 +131,7 @@ public class StoppingMain extends XmlParserMain {
             double kappa = Double.parseDouble(getPropertyOrDie(props, "kappa"));
             double bandwidth = Double.parseDouble(getPropertyOrDie(props, "bandwidth"));
             try{
-                solver = new KernelSolverCplex(model, kappa, gamma, bandwidth, sampleCount, seed);
+                solver = new KernelSolver2(model, kappa, gamma, bandwidth, sampleCount, seed);
             } catch (Exception e) {
                 e.printStackTrace();
             }
