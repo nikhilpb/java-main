@@ -3,8 +3,12 @@ package com.nikhilpb.stopping;
 import com.nikhilpb.adp.Policy;
 import com.nikhilpb.adp.Solver;
 import com.nikhilpb.util.math.PSDMatrix;
+import ilog.concert.*;
+import ilog.cplex.IloCplex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,14 +27,20 @@ public class KernelSolver2 implements Solver {
     protected int[] startInd;
     private int qSize, sampleCount;
     protected StoppingStateSampler sampler;
+    private IloNumVar lambda0C, lambda0S;
+    private IloNumVar[][] lambdaC, lambdaS;
+    private IloNumVar[] lambdaSLast;
+    private IloCplex cplex;
+    private IloRange[] bConsts;
+    private static final double kTol = 1E-4;
+
 
     public KernelSolver2(StoppingModel model,
                          double kappa,
                          double gamma,
                          double bandWidth,
                          int sampleCount,
-                         long sampleSeed) {
-
+                         long sampleSeed) throws IloException {
         this.model = model;
         timePeriods = model.getTimePeriods();
         this.gamma = gamma;
@@ -99,14 +109,67 @@ public class KernelSolver2 implements Solver {
                     }
                 }
             }
-
         }
-        PSDMatrix qPsd = new PSDMatrix(qMat);
+        cplex = new IloCplex();
+        lambda0C = cplex.numVar(0., 1.);
+        lambda0S = cplex.numVar(0., 1.);
+        double[] ub = new double[sampleCount],
+                lb = new double[sampleCount],
+                ones = new double[sampleCount],
+                negOnes = new double[sampleCount];
+        Arrays.fill(ub, 1.);
+        Arrays.fill(lb, 0.);
+        Arrays.fill(ones, 1.);
+        Arrays.fill(negOnes, -1.);
+        lambdaSLast = cplex.numVarArray(sampleCount, lb, ub);
+        lambdaS = new IloNumVar[timePeriods-2][];
+        lambdaC = new IloNumVar[timePeriods-2][];
+        for (int t = 1; t < timePeriods-1; ++t) {
+            lambdaS[t-1] = cplex.numVarArray(sampleCount, lb, ub);
+            lambdaC[t-1] = cplex.numVarArray(sampleCount, lb, ub);
+        }
+        IloLinearNumExpr zeroMass = cplex.linearNumExpr();
+        zeroMass.addTerm(1.0, lambda0C);
+        zeroMass.addTerm(1.0, lambda0S);
+        bConsts = new IloRange[timePeriods];
+        bConsts[0] = cplex.addEq(1.0, zeroMass);
+        for (int t = 1; t < timePeriods; ++t) {
+            IloLinearNumExpr massBalance = cplex.linearNumExpr();
+            if (t==1) {
+                massBalance.addTerm(lambda0C, -1.0);
+            } else {
+                massBalance.addTerms(negOnes, lambdaC[t-2]);
+            }
+            if (t == timePeriods) {
+                massBalance.addTerms(ones, lambdaSLast);
+            } else {
+                massBalance.addTerms(ones, lambdaC[t-1]);
+                massBalance.addTerms(ones, lambdaS[t-1]);
+            }
+            bConsts[t] = cplex.addEq(0., massBalance);
+        }
+        List<IloNumExpr> objTerms = new ArrayList<IloNumExpr>();
+        for (int i = 0; i < qSize; ++i){
+            for (int j = 0; j < qSize; ++j) {
+                if (qMat[i][j] > kTol) {
+                    objTerms.add(cplex.prod(getVarFromInd(i), getVarFromInd(j), qMat[i][j]));
+                }
+            }
+            if (actionForInd(i) == StoppingAction.STOP) {
+                int t = timePeriodForInd(i);
+                int ind = stateIndForInd(i);
+                objTerms.add(cplex.prod(model.getRewardFunction().value(sampler.getStates(t).get(i),
+                                                                        StoppingAction.STOP) * -2.0 * gamma,
+                                        getVarFromInd(i)));
+            }
+        }
+        IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
+        cplex.addMinimize(obj);
     }
 
     @Override
     public boolean solve() throws Exception {
-        return false;
+        return cplex.solve();
     }
 
     @Override
@@ -155,6 +218,27 @@ public class KernelSolver2 implements Solver {
                 System.out.printf("%.3f ", qMat[i][j]);
             }
             System.out.println();
+        }
+    }
+
+    private IloNumVar getVarFromInd(int i) {
+        int t = timePeriodForInd(i);
+        int ind = stateIndForInd(i);
+        StoppingAction action = actionForInd(i);
+        if (t == 0) {
+            if (action == StoppingAction.STOP) {
+                return lambda0S;
+            } else {
+                return lambda0C;
+            }
+        } else if (t==timePeriods-1) {
+            return lambdaSLast[ind];
+        } else {
+            if (action == StoppingAction.STOP) {
+                return lambdaS[t-1][ind];
+            } else {
+                return lambdaC[t-1][ind];
+            }
         }
     }
 }
