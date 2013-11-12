@@ -59,9 +59,6 @@ public class MonteCarloEval {
 
     public MonteCarloResults eval(int pathsCount, int timePeriods) {
         ArrayList<SamplePath> samplePaths = getSamplePaths(pathsCount, timePeriods);
-        for (int i = 0; i < 10; ++i) {
-            System.out.println(samplePaths.get(i).toString());
-        }
         double mean = 0., var = 0.;
         for (SamplePath sp : samplePaths) {
             mean += sp.reward;
