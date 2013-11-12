@@ -164,6 +164,9 @@ public class KernelSolver2 implements Solver {
                                         getVarFromInd(i)));
             }
         }
+        for (IloNumExpr o : objTerms) {
+            System.out.println(o);
+        }
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
         cplex.addMinimize(obj);
         b = new double[timePeriods];
