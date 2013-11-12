@@ -159,10 +159,10 @@ public class KernelSolver2 implements Solver {
             if (actionForInd(i) == StoppingAction.STOP) {
                 int t = timePeriodForInd(i);
                 int ind = stateIndForInd(i);
-                System.out.println(i + " " + getVarFromInd(i));
                 IloNumExpr o = cplex.prod(model.getRewardFunction().value(sampler.getStates(t).get(ind),
                                                                           StoppingAction.STOP) * -2.0 * gamma,
                                           getVarFromInd(i));
+                System.out.println(o);
                 objTerms.add(o);
             }
         }
