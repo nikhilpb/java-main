@@ -186,7 +186,7 @@ public class KernelSolver2 implements Solver {
         for (int t = 1; t < timePeriods-1; ++t) {
             lS[t-1] = cplex.getValues(lambdaS[t-1]);
             lC[t-1] = cplex.getValues(lambdaC[t-1]);
-            System.out.printf("t: %d, w(S): %.3f, w(C): %.3f", t, arraySum(lS[t-1]), arraySum(lC[t-1]));
+            System.out.printf("t: %d, w(S): %.3f, w(C): %.3f\n", t, arraySum(lS[t-1]), arraySum(lC[t-1]));
         }
         double[] lSLast = cplex.getValues(lambdaSLast);
         System.out.println("time last " + Arrays.toString(lSLast));
