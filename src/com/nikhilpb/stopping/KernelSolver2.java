@@ -148,7 +148,7 @@ public class KernelSolver2 implements Solver {
                 massBalance.addTerms(ones, lambdaS[t-1]);
             }
             bConsts[t] = cplex.addEq(0., massBalance);
-            for (int i = startInd[t]; i < startInd[t] + sampleCount; ++i) {
+            for (int i = 0; i < sampleCount; ++i) {
                 IloLinearNumExpr stateMass = cplex.linearNumExpr();
                 if (t < timePeriods - 1) {
                     stateMass.addTerm(1.0, lambdaS[t-1][i]);
