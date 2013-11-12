@@ -148,6 +148,16 @@ public class KernelSolver2 implements Solver {
                 massBalance.addTerms(ones, lambdaS[t-1]);
             }
             bConsts[t] = cplex.addEq(0., massBalance);
+            for (int i = startInd[t]; i < startInd[t] + sampleCount; ++i) {
+                IloLinearNumExpr stateMass = cplex.linearNumExpr();
+                if (t < timePeriods - 1) {
+                    stateMass.addTerm(1.0, lambdaS[t-1][i]);
+                    stateMass.addTerm(1.0, lambdaC[t-1][i]);
+                } else {
+                    stateMass.addTerm(1.0, lambdaSLast[i]);
+                }
+                cplex.addLe(stateMass, kappa / sampleCount);
+            }
         }
         List<IloNumExpr> objTerms = new ArrayList<IloNumExpr>();
         for (int i = 0; i < qSize; ++i){
@@ -162,7 +172,6 @@ public class KernelSolver2 implements Solver {
                 IloNumExpr o = cplex.prod(model.getRewardFunction().value(sampler.getStates(t).get(ind),
                                                                           StoppingAction.STOP) * -2.0 * gamma,
                                           getVarFromInd(i));
-                System.out.println(o);
                 objTerms.add(o);
             }
         }
