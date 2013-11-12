@@ -190,6 +190,7 @@ public class KernelSolver2 implements Solver {
         double l0C = cplex.getValue(lambda0C);
         double l0S = cplex.getValue(lambda0S);
         System.out.println(l0S + " " + l0C);
+        System.out.printf("t: %d, w(S): %.3f, w(C): %.3f\n", 0, l0S, l0C);
         double[][] lS = new double[timePeriods-2][], lC = new double[timePeriods-2][];
         for (int t = 1; t < timePeriods-1; ++t) {
             lS[t-1] = cplex.getValues(lambdaS[t-1]);
@@ -197,7 +198,7 @@ public class KernelSolver2 implements Solver {
             System.out.printf("t: %d, w(S): %.3f, w(C): %.3f\n", t, arraySum(lS[t-1]), arraySum(lC[t-1]));
         }
         double[] lSLast = cplex.getValues(lambdaSLast);
-        System.out.println("time last " + Arrays.toString(lSLast));
+        System.out.printf("t: %d, w(S): %.3f\n", timePeriods - 1, arraySum(lSLast));
         for (int t = 0; t < timePeriods; ++t) {
             if (t == 0) {
                 contValues.add(new ConstantStateFunction(Double.MAX_VALUE));
