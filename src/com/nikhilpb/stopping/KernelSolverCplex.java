@@ -188,39 +188,39 @@ public class KernelSolverCplex implements Solver {
         }
         contValues = new ArrayList<StateFunction>();
         double l0C = cplex.getValue(lambda0C);
-        double l0S = cplex.getValue(lambda0S);
-        System.out.println(l0S + " " + l0C);
-        System.out.printf("t: %d, w(S): %.3f, w(C): %.3f\n", 0, l0S, l0C);
         double[][] lS = new double[timePeriods-2][], lC = new double[timePeriods-2][];
         for (int t = 1; t < timePeriods-1; ++t) {
             lS[t-1] = cplex.getValues(lambdaS[t-1]);
             lC[t-1] = cplex.getValues(lambdaC[t-1]);
-            System.out.printf("t: %d, w(S): %.3f, w(C): %.3f\n", t, arraySum(lS[t-1]), arraySum(lC[t-1]));
         }
         double[] lSLast = cplex.getValues(lambdaSLast);
-        System.out.printf("t: %d, w(S): %.3f\n", timePeriods - 1, arraySum(lSLast));
+
         for (int t = 0; t < timePeriods; ++t) {
-            if (t == 0) {
-                contValues.add(new ConstantStateFunction(Double.MAX_VALUE));
-                continue;
-            }
             if (t == timePeriods-1) {
                 contValues.add(new ConstantStateFunction(Double.MIN_VALUE));
                 continue;
             }
-            double[] lmdPrev;
-            if (t == 1) {
-                lmdPrev = new double[1];
-                lmdPrev[0] = l0C;
+            double[] lmdCur;
+            if (t == 0) {
+                lmdCur = new double[1];
+                lmdCur[0] = l0C;
             } else {
-                lmdPrev = lC[t-2];
+                lmdCur = lC[t-1];
             }
-            double[] lmdCur = new double[sampleCount];
+            double[] lmdNext = new double[sampleCount];
             for (int i = 0; i < sampleCount; ++i) {
-                lmdCur[i] = lC[t-1][i] + lS[t-1][i];
+                lmdNext[i] = lC[t][i] + lS[t][i];
             }
-            contValues.add(new KernelStateFunction(sampler.getStates(t),
-                    sampler.getStates(t-1), lmdPrev, lmdCur, kernel, oneExp, model, gamma, b[t]));
+            contValues.add(new KernelStateFunction(
+                    sampler.getStates(t),
+                    sampler.getStates(t+1),
+                    lmdCur,
+                    lmdNext,
+                    oneExp,
+                    twoExp,
+                    model,
+                    gamma,
+                    b[t+1]));
         }
         return solved;
     }

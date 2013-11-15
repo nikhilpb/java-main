@@ -41,4 +41,15 @@ public class StoppingState implements State {
         str += "]";
         return str;
     }
+
+    public double[] getDifference(StoppingState oState) {
+        if (oState.vector.length != this.vector.length) {
+            throw new RuntimeException("vector lengths don't match");
+        }
+        double[] diff = new double[oState.vector.length];
+        for (int i = 0; i < diff.length; ++i) {
+            diff[i] = oState.vector[i] - this.vector[i];
+        }
+        return diff;
+    }
 }
