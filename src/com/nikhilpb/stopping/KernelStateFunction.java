@@ -38,6 +38,8 @@ public class KernelStateFunction implements StateFunction {
         this.model = model;
         this.gamma = gamma;
         this.b = b;
+        System.out.printf("cur state size: %d, lmd size: %d\n", curStates.size(), curLambda.length);
+        System.out.printf("next state size: %d, lmd size: %d\n", nextStates.size(), nextLambda.length);
     }
 
     @Override
