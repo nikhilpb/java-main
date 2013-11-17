@@ -38,8 +38,6 @@ public class KernelStateFunction implements StateFunction {
         this.model = model;
         this.gamma = gamma;
         this.b = b;
-        System.out.printf("cur state size: %d, lmd size: %d\n", curStates.size(), curLambda.length);
-        System.out.printf("next state size: %d, lmd size: %d\n", nextStates.size(), nextLambda.length);
     }
 
     @Override
@@ -53,7 +51,7 @@ public class KernelStateFunction implements StateFunction {
             for (int j = 0; j < mu.length; ++j) {
                 mu[j] -= nState.vector[j];
             }
-            value += (1.0 / gamma) * (curLambda[i]) * oneExp.eval(mu);
+            value += (1.0 / gamma) * (nextLambda[i]) * oneExp.eval(mu);
         }
         for (int i = 0; i < curStates.size(); ++i) {
             StoppingState tState = curStates.get(i);
