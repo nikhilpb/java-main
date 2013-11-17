@@ -28,6 +28,7 @@ public class QFunctionPolicy implements Policy {
     @Override
     public Action getAction(State state) {
         ArrayList<Action> actions = state.getActions();
+        System.out.println(state.toString() + " " + actions.toString());
         Action maxAction = null;
         double value, maxValue = Double.MIN_VALUE;
         for (Action a : actions) {
