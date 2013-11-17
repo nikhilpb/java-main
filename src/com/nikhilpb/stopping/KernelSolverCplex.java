@@ -183,10 +183,13 @@ public class KernelSolverCplex implements Solver {
     @Override
     public boolean solve() throws Exception {
         boolean solved = cplex.solve();
+        if (!solved) {
+            return solved;
+        }
+        // get the values of the variables
         for (int t = 0; t < timePeriods; ++t) {
             b[t] = cplex.getDual(bConsts[t]);
         }
-        contValues = new ArrayList<StateFunction>();
         double l0C = cplex.getValue(lambda0C);
         double[][] lS = new double[timePeriods-2][], lC = new double[timePeriods-2][];
         for (int t = 1; t < timePeriods-1; ++t) {
@@ -195,6 +198,7 @@ public class KernelSolverCplex implements Solver {
         }
         double[] lSLast = cplex.getValues(lambdaSLast);
 
+        contValues = new ArrayList<StateFunction>();
         for (int t = 0; t < timePeriods; ++t) {
             if (t == timePeriods-1) {
                 contValues.add(new ConstantStateFunction(Double.MIN_VALUE));
@@ -208,8 +212,14 @@ public class KernelSolverCplex implements Solver {
                 lmdCur = lC[t-1];
             }
             double[] lmdNext = new double[sampleCount];
-            for (int i = 0; i < sampleCount; ++i) {
-                lmdNext[i] = lC[t][i] + lS[t][i];
+            if (t < timePeriods - 2) {
+                for (int i = 0; i < sampleCount; ++i) {
+                    lmdNext[i] = lC[t][i] + lS[t][i];
+                }
+            } else {
+                for (int i = 0; i < sampleCount; ++i) {
+                    lmdNext[i] = lSLast[i];
+                }
             }
             contValues.add(new KernelStateFunction(
                     sampler.getStates(t),
