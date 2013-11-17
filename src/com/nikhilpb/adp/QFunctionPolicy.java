@@ -28,15 +28,12 @@ public class QFunctionPolicy implements Policy {
     @Override
     public Action getAction(State state) {
         ArrayList<Action> actions = state.getActions();
-        System.out.println(state.toString() + " " + actions.toString());
         Action maxAction = null;
-        double value, maxValue = Double.MIN_VALUE;
+        double value, maxValue = -Double.MAX_VALUE;
         for (Action a : actions) {
-            System.out.println("action: " + a);
             double rfv = rewardFunction.value(state, a);
             double qfv = qFunction.value(state, a);
             value = rfv + alpha * qfv;
-            System.out.println("rfv: " + rfv + ", qfv" + qfv + ", value: " + value + ", maxValue: " + maxValue);
             if (value > maxValue) {
                 maxValue = value;
                 maxAction = a;
