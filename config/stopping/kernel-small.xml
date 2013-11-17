@@ -20,7 +20,7 @@
         <bandwidth>10.</bandwidth>
     </solve>
     <eval>
-        <sample_count>1</sample_count>
+        <sample_count>3</sample_count>
         <seed>456</seed>
     </eval>
 </config>
