@@ -32,7 +32,12 @@ public class QFunctionPolicy implements Policy {
         Action maxAction = null;
         double value, maxValue = Double.MIN_VALUE;
         for (Action a : actions) {
-            value = rewardFunction.value(state, a) + alpha * qFunction.value(state, a);
+            System.out.println("state: " + state);
+            System.out.println("action: " + a);
+            double rfv = rewardFunction.value(state, a);
+            double qfv = qFunction.value(state, a);
+            value = rfv + alpha * qfv;
+            System.out.println("rfv: " + rfv + ", qfv" + qfv);
             if (value > maxValue) {
                 maxValue = value;
                 maxAction = a;
