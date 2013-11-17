@@ -36,7 +36,7 @@ public class QFunctionPolicy implements Policy {
             double rfv = rewardFunction.value(state, a);
             double qfv = qFunction.value(state, a);
             value = rfv + alpha * qfv;
-            System.out.println("rfv: " + rfv + ", qfv" + qfv);
+            System.out.println("rfv: " + rfv + ", qfv" + qfv + ", value: " + value + ", maxValue: " + maxValue);
             if (value > maxValue) {
                 maxValue = value;
                 maxAction = a;
