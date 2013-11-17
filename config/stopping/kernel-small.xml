@@ -17,7 +17,7 @@
         <seed>123</seed>
         <gamma>1</gamma>
         <kappa>1.</kappa>
-        <bandwidth>1.</bandwidth>
+        <bandwidth>10.</bandwidth>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
