@@ -33,7 +33,6 @@ public class MonteCarloEval {
         do {
             if (time == 0) {
                 curState = mdp.getBaseState();
-
             } else {
                 StateDistribution distribution = mdp.getDistribution(curState,  curAction);
                 if (distribution == null)
@@ -41,6 +40,12 @@ public class MonteCarloEval {
                 curState = distribution.nextSample();
             }
             curAction = policy.getAction(curState);
+            if (curState == null) {
+                System.out.println("null state encountered at time: " + time);
+            }
+            if (curAction == null) {
+                System.out.println("null action encountered at time: " + time);
+            }
             samplePath.stateActions.add(new StateAction(curState, curAction));
             samplePath.reward += Math.pow(alpha, time)
                                 * rewardFunction.value(curState, curAction);
