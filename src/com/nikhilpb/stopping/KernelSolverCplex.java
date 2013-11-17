@@ -204,6 +204,10 @@ public class KernelSolverCplex implements Solver {
                 contValues.add(new ConstantStateFunction(Double.MIN_VALUE));
                 continue;
             }
+            if (t == 0) {
+                contValues.add(new ConstantStateFunction(Double.MAX_VALUE));
+                continue;
+            }
             double[] lmdCur;
             if (t == 0) {
                 lmdCur = new double[1];
