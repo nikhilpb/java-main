@@ -47,9 +47,9 @@ public class KernelStateFunction implements StateFunction {
         for (int i = 0; i < nextStates.size(); ++i) {
             StoppingState nState = nextStates.get(i);
             GaussianTransition gt = (GaussianTransition)model.getDistribution(state, StoppingAction.CONTINUE);
-            double[] mu = gt.baseState;
+            double[] mu = new double[gt.baseState.length];
             for (int j = 0; j < mu.length; ++j) {
-                mu[j] -= nState.vector[j];
+                mu[j] = gt.baseState[j] - nState.vector[j];
             }
             value += (1.0 / gamma) * (nextLambda[i]) * oneExp.eval(mu);
         }

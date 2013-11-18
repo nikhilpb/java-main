@@ -30,7 +30,6 @@ public class MonteCarloEval {
         Action curAction = null;
         int time = 0;
         double alpha = mdp.getAlpha();
-        System.out.println("---------------------------");
         do {
             if (time == 0) {
                 curState = mdp.getBaseState();
@@ -43,16 +42,13 @@ public class MonteCarloEval {
                 }
                 curState = distribution.nextSample();
             }
-            System.out.println("**********");
             curAction = policy.getAction(curState);
-            System.out.println("**********");
             samplePath.stateActions.add(new StateAction(curState, curAction));
             samplePath.reward += Math.pow(alpha, time)
                                 * rewardFunction.value(curState, curAction);
             System.out.println("time: " + time + ", state: " + curState + ", action: " + curAction);
             time += 1;
         } while (time < timePeriods);
-        System.out.println("---------------------------");
         return samplePath;
     }
 
