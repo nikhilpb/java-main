@@ -49,7 +49,7 @@ public class MonteCarloEval {
             samplePath.stateActions.add(new StateAction(curState, curAction));
             samplePath.reward += Math.pow(alpha, time)
                                 * rewardFunction.value(curState, curAction);
-            System.out.println("time: " + time);
+            System.out.println("time: " + time + ", state: " + curState + ", action: " + curAction);
             time += 1;
         } while (time < timePeriods);
         return samplePath;
