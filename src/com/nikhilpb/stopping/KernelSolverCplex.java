@@ -201,7 +201,7 @@ public class KernelSolverCplex implements Solver {
         contValues = new ArrayList<StateFunction>();
         for (int t = 0; t < timePeriods; ++t) {
             if (t == timePeriods-1) {
-                contValues.add(new ConstantStateFunction(Double.MIN_VALUE));
+                contValues.add(new ConstantStateFunction(-Double.MAX_VALUE));
                 continue;
             }
             if (t == 0) {
