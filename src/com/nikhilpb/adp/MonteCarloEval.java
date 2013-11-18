@@ -34,9 +34,7 @@ public class MonteCarloEval {
             if (time == 0) {
                 curState = mdp.getBaseState();
             } else {
-                System.out.println("before");
                 StateDistribution distribution = mdp.getDistribution(curState,  curAction);
-                System.out.println("after");
                 if (distribution == null) {
                     break;
                 }
@@ -46,7 +44,6 @@ public class MonteCarloEval {
             samplePath.stateActions.add(new StateAction(curState, curAction));
             samplePath.reward += Math.pow(alpha, time)
                                 * rewardFunction.value(curState, curAction);
-            System.out.println("time: " + time + ", state: " + curState + ", action: " + curAction);
             time += 1;
         } while (time < timePeriods);
         return samplePath;
@@ -56,6 +53,7 @@ public class MonteCarloEval {
         ArrayList<SamplePath> samplePaths = new ArrayList<SamplePath>();
         for (int i = 0; i < pathsCount; ++i) {
             samplePaths.add(samplePath(random.nextLong(), timePeriods));
+            System.out.println(samplePaths.get(i).toString());
         }
         return samplePaths;
     }
