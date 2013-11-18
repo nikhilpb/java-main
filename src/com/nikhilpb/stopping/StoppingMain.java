@@ -86,6 +86,9 @@ public class StoppingMain extends XmlParserMain {
         if (rewardType.equals("max-call")) {
             rewardFunction =
                 new MaxCallReward(Double.parseDouble(getPropertyOrDie(props, "K")));
+        } else if (rewardType.equals("max-put")) {
+            rewardFunction =
+                new MaxPutReward(Double.parseDouble(getPropertyOrDie(props, "K")));
         } else {
             throw new RuntimeException("unkown reward function");
         }
