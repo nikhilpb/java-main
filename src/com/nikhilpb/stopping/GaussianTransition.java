@@ -5,6 +5,8 @@ import com.nikhilpb.adp.StateFunction;
 import com.nikhilpb.adp.StateDistribution;
 import com.nikhilpb.util.math.Distributions;
 
+import java.util.Arrays;
+
 /**
  * Created with IntelliJ IDEA.
  * User: nikhilpb
@@ -34,6 +36,7 @@ public class GaussianTransition implements StateDistribution {
 
     public State nextSample() {
         double[] nextState = gen.nextValue();
+        System.out.println(Arrays.toString(nextState));
         for (int i = 0; i < nextState.length; ++i) {
             nextState[i] += baseState[i];
         }
