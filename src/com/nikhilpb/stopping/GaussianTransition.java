@@ -36,7 +36,6 @@ public class GaussianTransition implements StateDistribution {
 
     public State nextSample() {
         double[] nextState = gen.nextValue();
-        System.out.println(Arrays.toString(nextState));
         for (int i = 0; i < nextState.length; ++i) {
             nextState[i] += baseState[i];
         }
