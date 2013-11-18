@@ -36,6 +36,7 @@ public class StoppingModel extends MarkovDecisionProcess {
     }
 
     public StateDistribution getDistribution(State state, Action action) {
+        System.out.println("in getDistribution");
         StoppingState stoppingState = (StoppingState)state;
         StoppingAction stoppingAction = (StoppingAction)action;
         if (stoppingState.time >= timePeriods  - 1 || action == StoppingAction.STOP) {
