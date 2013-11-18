@@ -34,9 +34,11 @@ public class MonteCarloEval {
             if (time == 0) {
                 curState = mdp.getBaseState();
             } else {
+                System.out.println("before");
                 StateDistribution distribution = mdp.getDistribution(curState,  curAction);
                 if (distribution == null)
                     break;
+                System.out.println("after");
                 curState = distribution.nextSample();
             }
             curAction = policy.getAction(curState);
