@@ -53,7 +53,6 @@ public class MonteCarloEval {
         ArrayList<SamplePath> samplePaths = new ArrayList<SamplePath>();
         for (int i = 0; i < pathsCount; ++i) {
             samplePaths.add(samplePath(random.nextLong(), timePeriods));
-            System.out.println(samplePaths.get(i).toString());
         }
         return samplePaths;
     }
