@@ -43,7 +43,9 @@ public class MonteCarloEval {
                 }
                 curState = distribution.nextSample();
             }
+            System.out.println("**********");
             curAction = policy.getAction(curState);
+            System.out.println("**********");
             samplePath.stateActions.add(new StateAction(curState, curAction));
             samplePath.reward += Math.pow(alpha, time)
                                 * rewardFunction.value(curState, curAction);
