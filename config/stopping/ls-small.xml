@@ -21,7 +21,7 @@
         <seed>123</seed>
     </solve>
     <eval>
-        <sample_count>1000</sample_count>
+        <sample_count>1</sample_count>
         <seed>456</seed>
     </eval>
 </config>
