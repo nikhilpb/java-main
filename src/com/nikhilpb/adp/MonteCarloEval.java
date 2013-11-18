@@ -30,6 +30,7 @@ public class MonteCarloEval {
         Action curAction = null;
         int time = 0;
         double alpha = mdp.getAlpha();
+        System.out.println("---------------------------");
         do {
             if (time == 0) {
                 curState = mdp.getBaseState();
@@ -49,6 +50,7 @@ public class MonteCarloEval {
             System.out.println("time: " + time + ", state: " + curState + ", action: " + curAction);
             time += 1;
         } while (time < timePeriods);
+        System.out.println("---------------------------");
         return samplePath;
     }
 
