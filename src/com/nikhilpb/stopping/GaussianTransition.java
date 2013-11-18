@@ -52,4 +52,9 @@ public class GaussianTransition implements StateDistribution {
         return mean;
     }
 
+    @Override
+    public String toString() {
+        return "gaussian transition";
+    }
+
 }
