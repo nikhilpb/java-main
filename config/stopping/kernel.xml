@@ -5,7 +5,7 @@
         <n>3</n>
         <delta>0.0</delta>
         <rho>0.1</rho>
-        <sigma>0.2</sigma>
+        <sigma>0.05</sigma>
         <time_periods>10</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
