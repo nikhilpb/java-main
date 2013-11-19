@@ -13,7 +13,7 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>100</sample_count>
+        <sample_count>500</sample_count>
         <seed>123</seed>
         <gamma>1</gamma>
         <kappa>1.</kappa>
