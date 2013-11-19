@@ -265,6 +265,11 @@ public class KernelSolverCplex implements Solver {
                     model,
                     gamma));
         }
+
+        b = findOffsets();
+        for (int t = 0; t < timePeriods-1; ++t) {
+            ((KernelContFunction)contValues.get(t)).setB(b[t+1]);
+        }
         return solved;
     }
 
@@ -345,5 +350,68 @@ public class KernelSolverCplex implements Solver {
             val += arr[i];
         }
         return val;
+    }
+
+    private double[] findOffsets() throws IloException {
+        IloCplex cplexLP = new IloCplex();
+        IloNumVar[] bVar;
+        IloNumVar[][] sVar;
+        IloNumVar s0Var;
+        double[] lb = new double[timePeriods], ub = new double[timePeriods], zeros = new double[timePeriods];
+        Arrays.fill(lb, -Double.MAX_VALUE);
+        Arrays.fill(ub, Double.MAX_VALUE);
+        Arrays.fill(zeros, 0.);
+        bVar = cplexLP.numVarArray(timePeriods, lb, ub);
+        ub = new double[timePeriods-1];
+        lb = new double[timePeriods-1];
+        Arrays.fill(ub, Double.MAX_VALUE);
+        Arrays.fill(lb, 0.);
+        sVar = new IloNumVar[sampleCount][];
+        for (int i = 0; i < sampleCount; ++i) {
+            sVar[i] = cplexLP.numVarArray(timePeriods-1, lb, ub);
+        }
+        s0Var = cplexLP.numVar(0., Double.MAX_VALUE);
+        IloLinearNumExpr obj = cplexLP.linearNumExpr();
+        obj.addTerm(1.0, bVar[0]);
+        obj.addTerm(kappa, s0Var);
+        for (int i = 0; i < sampleCount; ++i) {
+            for (int t = 1; t < timePeriods; ++t) {
+                obj.addTerm(kappa / sampleCount, sVar[i][t-1]);
+            }
+        }
+        cplexLP.addMinimize(obj);
+        IloLinearNumExpr constr = cplexLP.linearNumExpr();
+        constr.addTerm(1.0, s0Var);
+        constr.addTerm(1.0, bVar[0]);
+        double rhs = model.getRewardFunction().value(model.getBaseState(), StoppingAction.STOP);
+        cplexLP.addGe(constr, rhs);
+        constr = cplexLP.linearNumExpr();
+        constr.addTerm(1.0, s0Var);
+        constr.addTerm(1.0, bVar[0]);
+        constr.addTerm(-1., bVar[1]);
+        rhs = contValues.get(0).value(model.getBaseState());
+        cplexLP.addGe(constr, rhs);
+        for (int i = 0; i < sampleCount; ++i) {
+            for (int t = 1; t < timePeriods; ++t) {
+                StoppingState state = sampler.getStates(t).get(i);
+                rhs = model.getRewardFunction().value(state, StoppingAction.STOP);
+                rhs -= valueFuns.get(t).value(state);
+                constr = cplexLP.linearNumExpr();
+                constr.addTerm(1., sVar[i][t-1]);
+                constr.addTerm(1., bVar[t]);
+                cplexLP.addGe(constr, rhs);
+                if (t < timePeriods - 1) {
+                    rhs = contValues.get(t).value(state);
+                    rhs -= valueFuns.get(t).value(state);
+                    constr = cplexLP.linearNumExpr();
+                    constr.addTerm(1., sVar[i][t-1]);
+                    constr.addTerm(1., bVar[t]);
+                    constr.addTerm(-1., bVar[t+1]);
+                    cplexLP.addGe(constr, rhs);
+                }
+            }
+        }
+        cplexLP.solve();
+        return cplexLP.getValues(bVar);
     }
 }
