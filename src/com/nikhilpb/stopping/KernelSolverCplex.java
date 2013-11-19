@@ -33,7 +33,7 @@ public class KernelSolverCplex implements Solver {
     private IloRange[] bConsts;
     private static final double kTol = 1E-4;
     private double[] b;
-    ArrayList<StateFunction> contValues;
+    ArrayList<StateFunction> contValues, valueFuns;
 
 
     public KernelSolverCplex(StoppingModel model,
@@ -186,10 +186,6 @@ public class KernelSolverCplex implements Solver {
         if (!solved) {
             return solved;
         }
-        // get the values of the variables
-        for (int t = 0; t < timePeriods; ++t) {
-            b[t] = cplex.getDual(bConsts[t]);
-        }
         double l0C = cplex.getValue(lambda0C);
         double[][] lS = new double[timePeriods-2][], lC = new double[timePeriods-2][];
         for (int t = 1; t < timePeriods-1; ++t) {
@@ -202,10 +198,6 @@ public class KernelSolverCplex implements Solver {
         for (int t = 0; t < timePeriods; ++t) {
             if (t == timePeriods-1) {
                 contValues.add(new ConstantStateFunction(-Double.MAX_VALUE));
-                continue;
-            }
-            if (t == 0) {
-                contValues.add(new ConstantStateFunction(Double.MAX_VALUE));
                 continue;
             }
             double[] lmdCur;
@@ -225,7 +217,7 @@ public class KernelSolverCplex implements Solver {
                     lmdNext[i] = lSLast[i];
                 }
             }
-            contValues.add(new KernelStateFunction(
+            contValues.add(new KernelContFunction(
                     sampler.getStates(t),
                     sampler.getStates(t+1),
                     lmdCur,
@@ -234,7 +226,7 @@ public class KernelSolverCplex implements Solver {
                     twoExp,
                     model,
                     gamma,
-                    b[t+1]));
+                    0.));
         }
         return solved;
     }

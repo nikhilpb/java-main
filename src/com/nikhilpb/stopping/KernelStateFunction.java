@@ -4,59 +4,55 @@ import com.nikhilpb.adp.State;
 import com.nikhilpb.adp.StateFunction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
  * User: nikhilpb
- * Date: 11/11/13
- * Time: 5:46 PM
+ * Date: 11/19/13
+ * Time: 12:44 AM
  * To change this template use File | Settings | File Templates.
  */
 public class KernelStateFunction implements StateFunction {
-    private ArrayList<StoppingState> nextStates, curStates;
-    private double[] nextLambda, curLambda;
-    private double b, gamma;
-    private MeanGaussianKernel oneExp, twoExp;
+    private ArrayList<StoppingState> prevStates, curStates;
+    private double[] prevLambda, curLambda;
+    private GaussianStateKernel kernel;
+    private MeanGaussianKernel oneExp;
     private StoppingModel model;
+    private double gamma;
 
-    public KernelStateFunction(ArrayList<StoppingState> curStates,
-                               ArrayList<StoppingState> nextStates,
+    public KernelStateFunction(ArrayList<StoppingState> prevStates,
+                               ArrayList<StoppingState> curStates,
+                               double[] prevLambda,
                                double[] curLambda,
-                               double[] nextLambda,
+                               GaussianStateKernel kernel,
                                MeanGaussianKernel oneExp,
-                               MeanGaussianKernel twoExp,
                                StoppingModel model,
-                               double gamma,
-                               double b) {
+                               double gamma) {
+        this.prevStates = prevStates;
         this.curStates = curStates;
-        this.nextStates = nextStates;
+        this.prevLambda = prevLambda;
         this.curLambda = curLambda;
-        this.nextLambda = nextLambda;
+        this.kernel = kernel;
         this.oneExp = oneExp;
-        this.twoExp = twoExp;
         this.model = model;
         this.gamma = gamma;
-        this.b = b;
     }
 
     @Override
     public double value(State state) {
-        double value = -b;
-        StoppingState stoppingState = (StoppingState)state;
-        for (int i = 0; i < nextStates.size(); ++i) {
-            StoppingState nState = nextStates.get(i);
-            GaussianTransition gt = (GaussianTransition)model.getDistribution(state, StoppingAction.CONTINUE);
-            double[] mu = new double[gt.baseState.length];
-            for (int j = 0; j < mu.length; ++j) {
-                mu[j] = gt.baseState[j] - nState.vector[j];
-            }
-            value += (1.0 / gamma) * (nextLambda[i]) * oneExp.eval(mu);
-        }
+        double value = 0.;
         for (int i = 0; i < curStates.size(); ++i) {
-            StoppingState tState = curStates.get(i);
-            double[] mu = tState.getDifference(stoppingState);
-            value -= (1.0 / gamma) * curLambda[i] * twoExp.eval(mu);
+            value += (1./gamma) * curLambda[i] * kernel.value(curStates.get(i), state);
+        }
+        for (int i = 0; i < prevStates.size(); ++i) {
+            State prevState = prevStates.get(i);
+            GaussianTransition gt = (GaussianTransition)model.getDistribution(prevState, StoppingAction.CONTINUE);
+            StoppingState stopState = (StoppingState)state;
+            double[] mu = new double[gt.getMean().length];
+            for (int j = 0; j < stopState.vector.length; ++j) {
+                mu[j] = gt.getMean()[j] - stopState.vector[j];
+            }
+            value -= (1./gamma) * prevLambda[i] * oneExp.eval(mu);
         }
         return value;
     }
