@@ -7,7 +7,7 @@
         <rho>0.1</rho>
         <sigma>0.05</sigma>
         <time_periods>10</time_periods>
-        <reward_type>max-put</reward_type>
+        <reward_type>max-call</reward_type>
         <K>100.0</K>
         <r>0.01</r>
         <seed>123</seed>
@@ -16,9 +16,9 @@
         <type>kernel</type>
         <sample_count>500</sample_count>
         <seed>123</seed>
-       	<gamma>1E-5</gamma>
+       	<gamma>1</gamma>
         <kappa>1.</kappa>
-        <bandwidth>.1</bandwidth>
+        <bandwidth>1.</bandwidth>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
