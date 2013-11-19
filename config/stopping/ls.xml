@@ -2,7 +2,7 @@
 <config>
     <model>
         <S>100.0</S>
-        <n>3</n>
+        <n>10</n>
         <delta>0.0</delta>
         <rho>0.1</rho>
         <sigma>0.05</sigma>
@@ -17,7 +17,7 @@
     </basis>
     <solve>
         <type>ls</type>
-        <sample_count>100</sample_count>
+        <sample_count>500</sample_count>
         <seed>123</seed>
     </solve>
     <eval>
