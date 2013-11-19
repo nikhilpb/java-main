@@ -228,6 +228,43 @@ public class KernelSolverCplex implements Solver {
                     gamma,
                     0.));
         }
+
+        valueFuns = new ArrayList<StateFunction>();
+        for (int t = 0; t < timePeriods; ++t) {
+            if (t == 0) {
+                valueFuns.add(new ConstantStateFunction(0.));
+                continue;
+            }
+            double[] lmdPrev, lmdCur;
+            if (t == 1) {
+                lmdPrev = new double[1];
+                lmdPrev[0] = l0C;
+            } else {
+                lmdPrev = new double[sampleCount];
+                for (int i = 0; i < sampleCount; ++i) {
+                    lmdPrev[i] = lC[t-2][i];
+                }
+            }
+            lmdCur = new double[sampleCount];
+            if (t == timePeriods - 1) {
+                for (int i = 0; i < sampleCount; ++i) {
+                    lmdCur[i] = lSLast[i];
+                }
+            } else {
+                for (int i = 0; i < sampleCount; ++i) {
+                    lmdCur[i] = lC[t-1][i] + lS[t-1][i];
+                }
+            }
+            valueFuns.add(new KernelStateFunction(
+                    sampler.getStates(t-1),
+                    sampler.getStates(t),
+                    lmdPrev,
+                    lmdCur,
+                    kernel,
+                    oneExp,
+                    model,
+                    gamma));
+        }
         return solved;
     }
 
