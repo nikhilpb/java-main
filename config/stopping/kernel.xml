@@ -2,10 +2,10 @@
 <config>
     <model>
         <S>100.0</S>
-        <n>10</n>
+        <n>3</n>
         <delta>0.02</delta>
         <rho>0.1</rho>
-        <sigma>0.05</sigma>
+        <sigma>0.02</sigma>
         <time_periods>10</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
@@ -14,7 +14,7 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>500</sample_count>
+        <sample_count>100</sample_count>
         <seed>123</seed>
        	<gamma>1</gamma>
         <kappa>1.</kappa>
