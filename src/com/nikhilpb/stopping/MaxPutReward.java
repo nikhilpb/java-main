@@ -36,9 +36,6 @@ public class MaxPutReward implements RewardFunction {
         if (value < 0.) {
             return 0.;
         }
-        if (value >= 10.0) {
-            return 10.0;
-        }
         return value;
     }
 }
