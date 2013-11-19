@@ -36,6 +36,6 @@ public class MaxCallReward implements RewardFunction {
         if (value < 0.) {
             return 0.;
         }
-        return value * Math.pow((1+r), stoppingState.time);
+        return value / Math.pow((1+r), stoppingState.time);
     }
 }
