@@ -78,7 +78,7 @@ public class StoppingMain extends XmlParserMain {
         double[] initValue = new double[n];
         Arrays.fill(initValue, S);
         for (int i = 0; i < n; ++i) {
-            muArray[i][0] = delta;
+            muArray[i][0] = r;
             Arrays.fill(sigmaArray[i], rho * sigma * sigma);
             sigmaArray[i][i] = sigma * sigma;
         }
