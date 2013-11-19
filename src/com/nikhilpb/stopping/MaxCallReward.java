@@ -12,9 +12,9 @@ import com.nikhilpb.adp.State;
  * To change this template use File | Settings | File Templates.
  */
 public class MaxCallReward implements RewardFunction {
-    private double K;
+    private double K, r;
 
-    public MaxCallReward(double K) { this.K = K; }
+    public MaxCallReward(double K, double r) { this.K = K; this.r = r; }
 
     @Override
     public double value(State state, Action action) {
@@ -36,6 +36,6 @@ public class MaxCallReward implements RewardFunction {
         if (value < 0.) {
             return 0.;
         }
-        return value;
+        return value * Math.pow((1+r), stoppingState.time);
     }
 }

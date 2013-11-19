@@ -69,6 +69,8 @@ public class StoppingMain extends XmlParserMain {
         double delta = Double.parseDouble(getPropertyOrDie(props, "delta"));
         double sigma = Double.parseDouble(getPropertyOrDie(props, "sigma"));
         double rho = Double.parseDouble(getPropertyOrDie(props, "rho"));
+        double r = Double.parseDouble(getPropertyOrDie(props, "r"));
+        double K = Double.parseDouble(getPropertyOrDie(props, "K"));
         int n = Integer.parseInt(getPropertyOrDie(props, "n"));
         int timPeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
         double[][] muArray = new double[n][1];
@@ -85,7 +87,7 @@ public class StoppingMain extends XmlParserMain {
         String rewardType = getPropertyOrDie(props, "reward_type");
         if (rewardType.equals("max-call")) {
             rewardFunction =
-                new MaxCallReward(Double.parseDouble(getPropertyOrDie(props, "K")));
+                new MaxCallReward(K, r);
         } else if (rewardType.equals("max-put")) {
             rewardFunction =
                 new MaxPutReward(Double.parseDouble(getPropertyOrDie(props, "K")));
