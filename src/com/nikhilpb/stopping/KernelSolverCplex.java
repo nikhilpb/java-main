@@ -268,7 +268,11 @@ public class KernelSolverCplex implements Solver {
 
         b = findOffsets();
         for (int t = 0; t < timePeriods-1; ++t) {
-            ((KernelContFunction)contValues.get(t)).setB(b[t+1]);
+            if (t == 0) {
+                contValues.set(0, new ConstantStateFunction(Double.MAX_VALUE));
+            } else {
+                ((KernelContFunction)contValues.get(t)).setB(b[t+1]);
+            }
         }
         return solved;
     }
