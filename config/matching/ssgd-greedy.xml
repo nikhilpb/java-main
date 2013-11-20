@@ -2,7 +2,7 @@
 <config>
     <model>
         <type>general</type>
-        <file>data/model-150.txt</file>
+        <file>data/model-50.txt</file>
     </model>
     <basis>
         <type>separable</type>
