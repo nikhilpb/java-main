@@ -12,7 +12,7 @@
         <seed>123</seed>
         <sampling_policy>greedy</sampling_policy>
         <eps>1.0</eps>
-        <a>10</a>
+        <a>0.05</a>
         <b>1000.0</b>
         <step_count>5000</step_count>
         <check_per_steps>20</check_per_steps>
