@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <config>
     <model>
+    <model>
         <S>100.0</S>
         <n>1</n>
-        <delta>0.0</delta>
+        <delta>0.005</delta>
         <rho>0.1</rho>
         <sigma>0.2</sigma>
         <time_periods>5</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
+        <r>0.01</r>
         <seed>123</seed>
     </model>
     <basis>

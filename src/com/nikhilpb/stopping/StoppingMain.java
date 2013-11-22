@@ -70,6 +70,9 @@ public class StoppingMain extends XmlParserMain {
         double sigma = Double.parseDouble(getPropertyOrDie(props, "sigma"));
         double rho = Double.parseDouble(getPropertyOrDie(props, "rho"));
         double r = Double.parseDouble(getPropertyOrDie(props, "r"));
+        if (delta >= r) {
+            System.out.println("dividends >= interest rate");
+        }
         double K = Double.parseDouble(getPropertyOrDie(props, "K"));
         int n = Integer.parseInt(getPropertyOrDie(props, "n"));
         int timPeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
@@ -78,7 +81,7 @@ public class StoppingMain extends XmlParserMain {
         double[] initValue = new double[n];
         Arrays.fill(initValue, S);
         for (int i = 0; i < n; ++i) {
-            muArray[i][0] = r;
+            muArray[i][0] = r - delta;
             Arrays.fill(sigmaArray[i], rho * sigma * sigma);
             sigmaArray[i][i] = sigma * sigma;
         }

@@ -2,8 +2,8 @@
 <config>
     <model>
         <S>100.0</S>
-        <n>10</n>
-        <delta>0.02</delta>
+        <n>1</n>
+        <delta>0.005</delta>
         <rho>0.1</rho>
         <sigma>0.02</sigma>
         <time_periods>10</time_periods>
