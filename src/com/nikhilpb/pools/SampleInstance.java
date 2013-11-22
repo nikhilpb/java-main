@@ -399,6 +399,15 @@ public class SampleInstance {
         }
         cplex.addMaximize(obj);
         cplex.solve();
+
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                for (int t = 0; t <= timePeriods; ++t) {
+                    double thisVal = cplex.getValue(piVar[t][i][j]);
+                    System.out.println(thisVal);
+                }
+            }
+        }
         return cplex.getObjValue();
     }
 	
