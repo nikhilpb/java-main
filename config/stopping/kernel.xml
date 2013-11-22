@@ -7,7 +7,7 @@
         <rho>0.1</rho>
         <sigma>0.02</sigma>
         <time_periods>10</time_periods>
-        <reward_type>max-call</reward_type>
+        <reward_type>max-bin</reward_type>
         <K>100.0</K>
         <r>0.04</r>
         <seed>123</seed>
