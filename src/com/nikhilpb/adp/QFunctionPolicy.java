@@ -29,12 +29,10 @@ public class QFunctionPolicy implements Policy {
     public Action getAction(State state) {
         ArrayList<Action> actions = state.getActions();
         Action maxAction = null;
-        System.out.println("state: " + state);
         double value, maxValue = -Double.MAX_VALUE;
         for (Action a : actions) {
             double rfv = rewardFunction.value(state, a);
             double qfv = qFunction.value(state, a);
-            System.out.println("action: " + a + ", rfv: " + rfv + ", qfv: " + qfv);
             value = rfv + alpha * qfv;
             if (value > maxValue) {
                 maxValue = value;
