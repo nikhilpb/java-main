@@ -122,6 +122,7 @@ public class MatchingPoolsMain extends CommandLineMain {
 				inst = new SampleInstance(model, svRandom.nextLong());
 				inst.sample();
 				if (policyType.equals("offline")){
+                    System.out.println("solving offline 2");
 					value[s] = inst.offlineMatch2(cplex);
 				}
 				else{
