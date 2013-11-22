@@ -40,7 +40,7 @@ public class MaxBinaryReward implements RewardFunction {
         if (value < 0. || value > 10.) {
             return 0.;
         } else {
-            return 1.0 * Math.pow((1+r), stoppingState.time);
+            return 1.0 / Math.pow((1+r), stoppingState.time);
         }
     }
 }
