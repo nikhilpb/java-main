@@ -404,7 +404,9 @@ public class SampleInstance {
             for (int j = 0; j < N; ++j) {
                 for (int t = 0; t <= timePeriods; ++t) {
                     double thisVal = cplex.getValue(piVar[t][i][j]);
-                    System.out.println(thisVal);
+                    if (thisVal > 1E-4) {
+                        System.out.println(thisVal);
+                    }
                 }
             }
         }
