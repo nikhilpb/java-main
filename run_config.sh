@@ -13,7 +13,7 @@ case "$1" in
             CONFIG=$CONFIGBASE"matching/"$CONFIG".xml"
 		;;
 "stopping") MAINCLASS="com.nikhilpb.stopping.StoppingMain"
-            CONFIG=$CONFIGBASE"stopping/"$CONFIG
+            CONFIG=$CONFIGBASE"stopping/"$CONFIG".xml"
 		;;
 *) 	echo "no class corresponding to "$1
 		exit
