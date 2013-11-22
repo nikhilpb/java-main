@@ -96,10 +96,10 @@ public class MonteCarloEval {
 
         @Override
         public String toString() {
-            return "mean: " + mcMean + "\n" +
-                    ", standard deviation: " + mcStd + "\n" +
-                    ", standard error: " + mcStdErr + "\n" +
-                    ", mean step count: " + meanStepCount + "\n";
+            return "mean: " + mcMean + ",\n" +
+                    "standard deviation: " + mcStd + ",\n" +
+                    "standard error: " + mcStdErr + ",\n" +
+                    "mean step count: " + meanStepCount + "\n";
         }
     }
 
