@@ -60,23 +60,26 @@ public class MonteCarloEval {
     public MonteCarloResults eval(int pathsCount, int timePeriods) {
         ArrayList<SamplePath> samplePaths = getSamplePaths(pathsCount, timePeriods);
         double mean = 0., var = 0.;
+        int totalStepCount = 0;
         for (SamplePath sp : samplePaths) {
             mean += sp.reward;
             var += sp.reward * sp.reward;
+            totalStepCount += sp.stateActions.size();
         }
         mean = mean / pathsCount;
         var = var / pathsCount;
         var = var - (mean * mean);
-        return new MonteCarloResults(mean, Math.sqrt(var), pathsCount);
+        return new MonteCarloResults(mean, Math.sqrt(var), pathsCount, totalStepCount);
     }
 
     public static class MonteCarloResults {
-        private double mcMean, mcStd, mcStdErr;
+        private double mcMean, mcStd, mcStdErr, meanStepCount;
 
-        public MonteCarloResults(double mcMean, double mcStd, int sampleCount) {
+        public MonteCarloResults(double mcMean, double mcStd, int sampleCount, int totalStepCount) {
             this.mcMean = mcMean;
             this.mcStd = mcStd;
             this.mcStdErr = mcStd / Math.sqrt((double) sampleCount);
+            this.meanStepCount = totalStepCount / ((double) sampleCount);
         }
 
         public double getMean() {
@@ -93,9 +96,10 @@ public class MonteCarloEval {
 
         @Override
         public String toString() {
-            return "mean: " + mcMean +
-                    ", standard deviation: " + mcStd +
-                    ", standard error: " + mcStdErr;
+            return "mean: " + mcMean + "\n" +
+                    ", standard deviation: " + mcStd + "\n" +
+                    ", standard error: " + mcStdErr + "\n" +
+                    ", mean step count: " + meanStepCount + "\n";
         }
     }
 
