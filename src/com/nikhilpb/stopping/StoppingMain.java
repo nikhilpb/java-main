@@ -89,11 +89,11 @@ public class StoppingMain extends XmlParserMain {
         PSDMatrix covar = new PSDMatrix(sigmaArray);
         String rewardType = getPropertyOrDie(props, "reward_type");
         if (rewardType.equals("max-call")) {
-            rewardFunction =
-                new MaxCallReward(K, r);
+            rewardFunction = new MaxCallReward(K, r);
         } else if (rewardType.equals("max-put")) {
-            rewardFunction =
-                new MaxPutReward(Double.parseDouble(getPropertyOrDie(props, "K")));
+            rewardFunction = new MaxPutReward(K);
+        } else if (rewardType.equals("max-bin")) {
+            rewardFunction = new MaxBinaryReward(K, r, 10.); // todo: value hardcoded
         } else {
             throw new RuntimeException("unkown reward function");
         }
