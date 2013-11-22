@@ -3,13 +3,13 @@
     <model>
         <S>100.0</S>
         <n>1</n>
-        <delta>0.01</delta>
+        <delta>0.02</delta>
         <rho>0.1</rho>
         <sigma>0.02</sigma>
         <time_periods>10</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
-        <r>0.01</r>
+        <r>0.04</r>
         <seed>123</seed>
     </model>
     <solve>
