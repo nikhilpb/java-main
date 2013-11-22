@@ -329,6 +329,78 @@ public class SampleInstance {
 		cplex.solve();
 		return cplex.getObjValue();
 	}
+
+    public double offlineMatch2(IloCplex cplex)
+            throws IloException{
+        cplex.clearModel();
+        if (!isSampled){
+            System.err.print("the instance not sampled yet");
+        }
+        int N = allExistingNodes.size();
+        boolean eI, eJ;
+
+        // set up variables
+        IloNumVar[][][] piVar = new IloNumVar[timePeriods+1][N][N];
+        for (int t = 0; t <= timePeriods; t++){
+            for (int i = 0; i < N; i++){
+                eI = existsAtTime(i, t);
+                for (int j = 0; j < N; j++){
+                    eJ = existsAtTime(j, t);
+                    if (!eI || !eJ){
+                        piVar[t][i][j] = cplex.numVar(0.0, 0.0);
+                    }
+                    else{
+                        piVar[t][i][j] = cplex.numVar(0.0, 1.0);
+                    }
+                }
+            }
+        }
+
+        // add constraints
+        IloLinearNumExpr[] incomingCum = new IloLinearNumExpr[N];
+        for (int i = 0; i < N; i++){
+            incomingCum[i] = cplex.linearNumExpr();
+        }
+        for (int t = 0; t <= timePeriods; t++) {
+            IloLinearNumExpr[] incoming = new IloLinearNumExpr[N];
+            for (int i = 0; i < N; i++) {
+                eI = existsAtTime(i, t);
+                incoming[i] = cplex.linearNumExpr();
+                if (eI) {
+                    IloLinearNumExpr outgoing = cplex.linearNumExpr();
+                    for (int j = 0; j < N; j++) {
+                        eJ = existsAtTime(j, t);
+                        if (eJ) {
+                            incoming[i].addTerm(piVar[t][j][i], 1.0);
+                            outgoing.addTerm(piVar[t][i][j], 1.0);
+                        }
+                    }
+                    cplex.addEq(incoming[i], outgoing);
+                }
+                incomingCum[i].add(incoming[i]);
+            }
+        }
+        for (int i = 0; i < N; ++i) {
+            cplex.addLe(incomingCum[i], 1.0);
+        }
+
+        // add objective
+        IloLinearNumExpr obj = cplex.linearNumExpr();
+        NodeRewardFunction nrf = model.getNodeRewardFunction();
+        for (int t = 0; t <= timePeriods; t++){
+            for (int i = 0; i < N; i++){
+                Node node1 = allExistingNodes.get(i);
+                for (int j = 0; j < N; j++){
+                    Node node2 = allExistingNodes.get(j);
+                    double weight = nrf.evaluate(node1, node2);
+                    obj.addTerm(piVar[t][i][j], weight);
+                }
+            }
+        }
+        cplex.addMaximize(obj);
+        cplex.solve();
+        return cplex.getObjValue();
+    }
 	
 	
 }
