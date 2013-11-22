@@ -1,7 +1,7 @@
 time_periods = 25
 supply_demand_equal = TRUE
 supply_type_dimentions = 6
-supply_departure_rate = 0.1
+supply_departure_rate = 0.05
 demand_departure_rate = 0
 mean_arrival_count = 4
 sod_bias = 0.15

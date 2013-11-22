@@ -2,7 +2,7 @@
 <config>
     <model>
         <S>100.0</S>
-        <n>1</n>
+        <n>3</n>
         <delta>0.02</delta>
         <rho>0.1</rho>
         <sigma>0.02</sigma>
@@ -14,9 +14,9 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>100</sample_count>
+        <sample_count>500</sample_count>
         <seed>123</seed>
-       	<gamma>1</gamma>
+       	<gamma>1E-6</gamma>
         <kappa>1.</kappa>
         <bandwidth>1.</bandwidth>
     </solve>
