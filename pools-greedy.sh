@@ -8,4 +8,4 @@ java -Xmx6g -Djava.library.path=$CPLEXJAVALIBDIR \
     -classpath classes:$CPLEXJARDIR:lib/commons-collections-3.2.1.jar:lib/jakarta-oro-2.0.8.jar \
     com.nikhilpb.pools.MatchingPoolsMain \
 	model data/pools-model.txt \; \
-	value greedy $sample_runs $problem_size $simvalue_seed
+	value offline $sample_runs $problem_size $simvalue_seed
