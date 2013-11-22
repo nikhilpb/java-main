@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
+import org.apache.commons.cli.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -62,6 +63,8 @@ public class MatchingMain extends XmlParserMain {
             }
         };
         cmdMap.put("evaluate", evaluateProcessor);
+
+        Options options = new Options();
 
         parseCommandLine(args, handler);
         executeCommands(cmdMap);

@@ -290,16 +290,16 @@ public class SampleInstance {
 		for (int i = 0; i < N; i++){
 			incomingCum[i] = cplex.linearNumExpr();
 		}
-		for (int t = 0; t <= timePeriods; t++){
+		for (int t = 0; t <= timePeriods; t++) {
 			IloLinearNumExpr[] incoming = new IloLinearNumExpr[N];
-			for (int i = 0; i < N; i++){	
+			for (int i = 0; i < N; i++) {
 				eI = existsAtTime(i, t);
 				incoming[i] = cplex.linearNumExpr();
-				if (eI){
+				if (eI) {
 					IloLinearNumExpr outgoing = cplex.linearNumExpr();
-					for (int j = 0; j < N; j++){
+					for (int j = 0; j < N; j++) {
 						eJ = existsAtTime(j, t);
-						if (eJ){
+						if (eJ) {
 							incoming[i].addTerm(piVar[t][j][i], 1.0);
 							outgoing.addTerm(piVar[t][i][j], 1.0);
 						}
