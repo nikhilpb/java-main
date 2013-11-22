@@ -3,7 +3,7 @@
     <model>
         <S>100.0</S>
         <n>1</n>
-        <delta>0.005</delta>
+        <delta>0.000</delta>
         <rho>0.1</rho>
         <sigma>0.02</sigma>
         <time_periods>10</time_periods>
