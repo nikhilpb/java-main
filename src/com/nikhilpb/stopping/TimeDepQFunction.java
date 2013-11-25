@@ -39,10 +39,17 @@ public class TimeDepQFunction implements QFunction {
     /**
      * Prints the QFunction to a file. Only valid for 1-d model.
      *
-     * @param model
-     * @param fileName
+     * @param model Must be 1 dimensional
+     * @param fileName Will be overwritten
+     * @param lowPrice
+     * @param highPrice
+     * @param delta
      */
-    public void printQFunction(final StoppingModel model, final String fileName) {
+    public void printQFunction(final StoppingModel model,
+                               final String fileName,
+                               double lowPrice,
+                               double highPrice,
+                               double delta) {
         final int timePeriods = model.getTimePeriods();
         int dimension = model.getDimension();
         if (dimension > 1) {
@@ -51,6 +58,15 @@ public class TimeDepQFunction implements QFunction {
         try {
             PrintWriter writer = new PrintWriter(fileName, "UTF-8");
             writer.printf("Time,Price,Value");
+            int pointCount = (int)Math.floor((highPrice - lowPrice) / delta);
+            for (int t = 0; t < timePeriods; ++t) {
+                for (int p = 0; p <= pointCount; ++p) {
+                    double [] stateVec = {lowPrice + p * delta};
+                    StoppingState stoppingState = new StoppingState(stateVec, t);
+                    double val = contValues.get(t).value(stoppingState);
+                    writer.printf("%d,%.4f,%.4f\n", t, p, val);
+                }
+            }
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
