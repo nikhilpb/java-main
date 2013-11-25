@@ -3,7 +3,7 @@
     <model>
         <S>100.0</S>
         <n>1</n>
-        <delta>0.005</delta>
+        <delta>0.0</delta>
         <rho>0.1</rho>
         <sigma>0.2</sigma>
         <time_periods>5</time_periods>
@@ -14,7 +14,7 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>100</sample_count>
+        <sample_count>5</sample_count>
         <seed>123</seed>
         <gamma>0.1</gamma>
         <kappa>1.</kappa>
