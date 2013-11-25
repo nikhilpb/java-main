@@ -1,16 +1,13 @@
-#!/apps/gurobi/linux64/bin/python2.7
+#!/usr/bin/python
 
 import sys
-
-if len(sys.argv) != 3:
-	sys.exit("expect 2 arguments")	
 
 file_name = 'results/' + sys.argv[1]
 
 time_periods = int(sys.argv[2])
 
 print 'plotting continuation values'
-print 'file name: ' + file_name + ', time perids: ' + str(time_periods)
+print 'file name: ' + file_name + ', time periods: ' + str(time_periods)
 
 import csv
 
@@ -25,5 +22,19 @@ for r in reader:
 	else:
 		data[r[0]] = []
 
-print data
+curves = {}
 
+for k, l in data.iteritems():
+	prices = []
+	values = []
+	for r in l:
+		prices.append(r[0])
+		values.append(r[1])
+	curves[k] = [prices, values]
+
+import matplotlib.pyplot as plt
+
+for k in curves:
+	plt.plot(curves[k][0], curves[k][1])
+
+plt.show()
