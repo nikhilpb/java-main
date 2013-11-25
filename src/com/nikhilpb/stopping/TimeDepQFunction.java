@@ -64,7 +64,7 @@ public class TimeDepQFunction implements QFunction {
                     double [] stateVec = {lowPrice + p * delta};
                     StoppingState stoppingState = new StoppingState(stateVec, t);
                     double val = contValues.get(t).value(stoppingState);
-                    writer.printf("%d,%.4f,%.4f\n", t, p, val);
+                    writer.println(t + "," + p + "," + val);
                 }
             }
             writer.close();
