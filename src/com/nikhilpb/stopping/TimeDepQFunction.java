@@ -57,7 +57,6 @@ public class TimeDepQFunction implements QFunction {
         }
         try {
             PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-            writer.printf("Time,Price,Value");
             int pointCount = (int)Math.floor((highPrice - lowPrice) / delta);
             for (int t = 0; t < timePeriods; ++t) {
                 for (int p = 0; p <= pointCount; ++p) {
