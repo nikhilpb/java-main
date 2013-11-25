@@ -191,7 +191,7 @@ public class StoppingMain extends XmlParserMain {
             throw new RuntimeException("policy must be a qfunction type");
         }
         TimeDepQFunction qFunction = (TimeDepQFunction)qFunctionPolicy.getqFunction();
-        qFunction.printQFunction(model, fileName);
+        qFunction.printQFunction(model, fileName, lowPrice, highPrice, delta);
         return true;
     }
 }
