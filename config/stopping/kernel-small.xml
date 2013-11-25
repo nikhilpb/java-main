@@ -14,7 +14,7 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>500</sample_count>
+        <sample_count>100</sample_count>
         <seed>123</seed>
         <gamma>0.1</gamma>
         <kappa>1.</kappa>
@@ -28,6 +28,6 @@
         <low-price>50.0</low-price>
         <high-price>150.0</high-price>
         <delta>1.0</delta>
-        <filename>test.txt</filename>
+        <filename>results/test.txt</filename>
     </plot>
 </config>
