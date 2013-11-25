@@ -42,6 +42,7 @@ public class KernelContFunction implements StateFunction {
 
     @Override
     public double value(State state) {
+        System.out.println("in kernel cont function");
         double value = b;
         StoppingState stoppingState = (StoppingState)state;
         for (int i = 0; i < nextStates.size(); ++i) {
