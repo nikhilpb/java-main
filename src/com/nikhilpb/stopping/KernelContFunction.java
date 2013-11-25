@@ -42,7 +42,6 @@ public class KernelContFunction implements StateFunction {
 
     @Override
     public double value(State state) {
-        System.out.println("in kernel cont function");
         double value = b;
         System.out.println("b: " + b);
         StoppingState stoppingState = (StoppingState)state;
@@ -55,13 +54,11 @@ public class KernelContFunction implements StateFunction {
             }
             value += (1.0 / gamma) * (nextLambda[i]) * oneExp.eval(mu);
         }
-        System.out.println(value);
         for (int i = 0; i < curStates.size(); ++i) {
             StoppingState tState = curStates.get(i);
             double[] mu = tState.getDifference(stoppingState);
             value -= (1.0 / gamma) * curLambda[i] * twoExp.eval(mu);
         }
-        System.out.println(value);
         return value;
     }
 

@@ -62,7 +62,7 @@ public class TimeDepQFunction implements QFunction {
             for (int t = 0; t < timePeriods; ++t) {
                 for (int p = 0; p <= pointCount; ++p) {
                     double price = lowPrice + p * delta;
-                    double [] stateVec = {price};
+                    double [] stateVec = { Math.log(price) };
                     StoppingState stoppingState = new StoppingState(stateVec, t);
                     double val = contValues.get(t).value(stoppingState);
                     writer.println(t + "," + price + "," + val);
