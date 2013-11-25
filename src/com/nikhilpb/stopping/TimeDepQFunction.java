@@ -56,7 +56,7 @@ public class TimeDepQFunction implements QFunction {
             throw new RuntimeException("dimension should be 1");
         }
         try {
-            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+            PrintWriter writer = new PrintWriter("results/" + fileName, "UTF-8");
             int pointCount = (int)Math.floor((highPrice - lowPrice) / delta);
             for (int t = 0; t < timePeriods; ++t) {
                 for (int p = 0; p <= pointCount; ++p) {
