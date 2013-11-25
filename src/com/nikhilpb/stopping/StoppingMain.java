@@ -180,8 +180,8 @@ public class StoppingMain extends XmlParserMain {
         if (model == null || policy == null) {
             throw new RuntimeException("model and policy must be initialized");
         }
-        int lowPrice = getIntPropertyOrDie(props, "low-price");
-        int highPrice = getIntPropertyOrDie(props, "high-price");
+        double lowPrice = getDoublePropertyOrDie(props, "low-price");
+        double highPrice = getDoublePropertyOrDie(props, "high-price");
         String fileName = getPropertyOrDie(props, "filename");
         double delta = getDoublePropertyOrDie(props, "delta");
         QFunctionPolicy qFunctionPolicy;
