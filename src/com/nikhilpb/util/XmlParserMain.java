@@ -103,11 +103,23 @@ public abstract class XmlParserMain {
         return failedCommands.isEmpty();
     }
 
-    protected static String getPropertyOrDie(Properties props, String tag) throws RuntimeException {
+    protected static String getPropertyOrDie(Properties props, String tag) {
         String prop = props.getProperty(tag);
         if (prop == null) {
             throw new RuntimeException(tag + " is required");
         }
         return prop;
+    }
+
+    protected static int getIntPropertyOrDie(Properties props, String tag) {
+        return Integer.parseInt(getPropertyOrDie(props, tag));
+    }
+
+    protected static long getLongPropertyOrDie(Properties props, String tag) {
+        return Long.parseLong(getPropertyOrDie(props, tag));
+    }
+
+    protected static double getDoublePropertyOrDie(Properties props, String tag) {
+        return Double.parseDouble(getPropertyOrDie(props, tag));
     }
 }

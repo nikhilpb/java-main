@@ -53,11 +53,11 @@ public class MultiIndependentDist {
 
     public double getProb(int i, int j) {
         if (i >= dimension) {
-            System.err.println("this distribution does not have this dimension");
+            System.err.println("this distribution does not have this getDimension");
             return 0.0;
         } else {
             if (j >= typeCountPerDimension[i]) {
-                System.err.println("this dimension in the distribution does not have this number of types");
+                System.err.println("this getDimension in the distribution does not have this number of types");
                 return 0.0;
             } else {
                 return dists[i].getProbability(j);

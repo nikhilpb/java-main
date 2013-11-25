@@ -15,11 +15,11 @@ public class TupleIterator implements java.util.Iterator<int[]>
     private boolean hasMore = true;
 
     /**
-     * Constructor. Enumerates all tuples of a given dimension where
+     * Constructor. Enumerates all tuples of a given getDimension where
      * each component takes a value in {0, ..., n - 1}.
      *
-     * @param dim the dimension
-     * @param n the number of values per dimension
+     * @param dim the getDimension
+     * @param n the number of values per getDimension
      * @throws IllegalArgumentException if dim < 1 or n < 1
      */
     public TupleIterator(int dim, int n) 

@@ -11,6 +11,11 @@ import java.util.ArrayList;
  */
 public class QFunctionPolicy implements Policy {
     private MarkovDecisionProcess model;
+
+    public QFunction getqFunction() {
+        return qFunction;
+    }
+
     private QFunction qFunction;
     private RewardFunction rewardFunction;
     private double alpha;
@@ -25,6 +30,11 @@ public class QFunctionPolicy implements Policy {
         this.alpha = alpha;
     }
 
+    /**
+     *
+     * @param state
+     * @return Action corresponding to the state given by the policy.
+     */
     @Override
     public Action getAction(State state) {
         ArrayList<Action> actions = state.getActions();

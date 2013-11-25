@@ -60,7 +60,7 @@ public class StoppingModel extends MarkovDecisionProcess {
         return covarMatrix;
     }
 
-    public int dimension() {
+    public int getDimension() {
         return meanMatrix.getRowDimension();
     }
 

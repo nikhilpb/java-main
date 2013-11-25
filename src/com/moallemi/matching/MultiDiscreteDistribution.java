@@ -24,7 +24,7 @@ public class MultiDiscreteDistribution {
         probabilities[i][j] = probs[i][j];
         weight += probs[i][j];
       }
-      System.out.println("weight on dimension " + i + " is " + weight);
+      System.out.println("weight on getDimension " + i + " is " + weight);
       dists[i] = new DiscreteDistribution(probs[i]);
     }
     random = rnd;
@@ -48,11 +48,11 @@ public class MultiDiscreteDistribution {
 
   public double getProb(int i, int j) {
     if (i >= dimension) {
-      System.out.println("this distribution does not have this dimension");
+      System.out.println("this distribution does not have this getDimension");
       return 0.0;
     } else {
       if (j >= typeCountPerDimension[i]) {
-        System.out.println("this dimension in the distribution does not have this number of types");
+        System.out.println("this getDimension in the distribution does not have this number of types");
         return 0.0;
       } else {
         return dists[i].getProbability(j);

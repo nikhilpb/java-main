@@ -116,7 +116,7 @@ public class MatchingPoolsModel {
 	}
 	
 	public void printInfo(){	 
-		System.out.println("dimension is: " + dimension);
+		System.out.println("getDimension is: " + dimension);
 		System.out.print("tissue types: "); 
 		for (int i = 0; i < dimension; i++){
 			System.out.print(tissues[i] + " ");

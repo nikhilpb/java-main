@@ -66,7 +66,7 @@ public class Item {
     }
 
     /**
-     * @return the type at a particular dimension
+     * @return the type at a particular getDimension
      */
     public int getTypeAtDimension(int i) {
         return type[i];

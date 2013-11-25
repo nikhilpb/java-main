@@ -84,7 +84,7 @@ public abstract class MatchingModel {
     double[][] demProbs;
     if (props.getBooleanDefault("supply_demand_equal", false)) {
       supplyTypeDim = props.getInt("supply_type_dimentions");
-      System.out.println("supply and demand type dimension is " + supplyTypeDim);
+      System.out.println("supply and demand type getDimension is " + supplyTypeDim);
       demandTypeDim = supplyTypeDim;
       supplyTypes = new int[supplyTypeDim];
       demandTypes = new int[demandTypeDim];
@@ -93,7 +93,7 @@ public abstract class MatchingModel {
       for (int i = 0; i < supplyTypeDim; i++) {
         supplyTypes[i] = props.getIntDefault("st[" + (i + 1) + "]", 0);
         demandTypes[i] = props.getIntDefault("st[" + (i + 1) + "]", 0);
-        System.out.println("no of supply types at dimension " + i + " is " + supplyTypes[i]);
+        System.out.println("no of supply types at getDimension " + i + " is " + supplyTypes[i]);
         supProbs[i] = new double[supplyTypes[i]];
         demProbs[i] = new double[demandTypes[i]];
         for (int j = 0; j < supplyTypes[i]; j++) {
@@ -141,8 +141,8 @@ public abstract class MatchingModel {
   }
 
   public void printInfo() {
-    System.out.println("supply type has dimension: " + supplyTypeDim);
-    System.out.println("demand type has dimension: " + demandTypeDim);
+    System.out.println("supply type has getDimension: " + supplyTypeDim);
+    System.out.println("demand type has getDimension: " + demandTypeDim);
 
     System.out.print("supply types along dimensions: ");
     for (int i = 0; i < supplyTypeDim; i++) {

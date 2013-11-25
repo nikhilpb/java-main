@@ -60,6 +60,14 @@ public class StoppingMain extends XmlParserMain {
         };
         cmdMap.put("eval", evalProcessor);
 
+        CommandProcessor plotProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return plotCommand(props);
+            }
+        };
+        cmdMap.put("plot", plotProcessor);
+
         parseCommandLine(args, null);
         executeCommands(cmdMap);
     }
@@ -111,7 +119,7 @@ public class StoppingMain extends XmlParserMain {
             int degree = Integer.parseInt(getPropertyOrDie(props, "degree"));
             basisSet = new BasisSet();
             basisSet.add(new ConstantStateFunction(1.));
-            int modelDim = model.dimension();
+            int modelDim = model.getDimension();
             for (int d = 1; d <= degree; ++d) {
                 for (int i = 0; i < modelDim; ++i) {
                     basisSet.add(new PolyStateFunction(d, i));
@@ -155,7 +163,7 @@ public class StoppingMain extends XmlParserMain {
         return true;
     }
 
-    public static boolean evalCommand(Properties props) {
+    protected static boolean evalCommand(Properties props) {
         if (model == null || policy == null) {
             throw new RuntimeException("model and policy must be initialized");
         }
@@ -165,6 +173,25 @@ public class StoppingMain extends XmlParserMain {
         MonteCarloEval sampler = new MonteCarloEval(model, policy, seed);
         MonteCarloEval.MonteCarloResults mcEval = sampler.eval(sampleCount, model.getTimePeriods());
         System.out.println(mcEval.toString());
+        return true;
+    }
+
+    protected static boolean plotCommand(Properties props) {
+        if (model == null || policy == null) {
+            throw new RuntimeException("model and policy must be initialized");
+        }
+        int lowPrice = getIntPropertyOrDie(props, "low-price");
+        int highPrice = getIntPropertyOrDie(props, "high-price");
+        String fileName = getPropertyOrDie(props, "filename");
+        double delta = getDoublePropertyOrDie(props, "delta");
+        QFunctionPolicy qFunctionPolicy;
+        try {
+            qFunctionPolicy = (QFunctionPolicy)policy;
+        } catch (ClassCastException e) {
+            throw new RuntimeException("policy must be a qfunction type");
+        }
+        TimeDepQFunction qFunction = (TimeDepQFunction)qFunctionPolicy.getqFunction();
+        qFunction.printQFunction(model, fileName);
         return true;
     }
 }

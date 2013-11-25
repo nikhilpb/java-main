@@ -15,7 +15,7 @@ public class VectorNd {
     /**
      * Construct a zero vector.
      *
-     * @param dim the dimension of the vector
+     * @param dim the getDimension of the vector
      */
     public VectorNd(int dim) {
 	v = new double [dim];
@@ -39,7 +39,7 @@ public class VectorNd {
      */
     public void extractMatrixRow(Matrix m, int index) {
 	if (m.getColumnDimension() != v.length)
-	    throw new IllegalArgumentException("incorrect matrix dimension");
+	    throw new IllegalArgumentException("incorrect matrix getDimension");
 	for (int i = 0; i < v.length; i++) 
 	    v[i] = m.get(index, i);
     }
@@ -52,7 +52,7 @@ public class VectorNd {
      */
     public void extractMatrixColumn(Matrix m, int index) {
 	if (m.getRowDimension() != v.length)
-	    throw new IllegalArgumentException("incorrect matrix dimension");
+	    throw new IllegalArgumentException("incorrect matrix getDimension");
 	for (int i = 0; i < v.length; i++) 
 	    v[i] = m.get(i, index);
     }
@@ -65,7 +65,7 @@ public class VectorNd {
      */
     public void toMatrixRow(Matrix m, int index) {
 	if (m.getColumnDimension() != v.length)
-	    throw new IllegalArgumentException("incorrect matrix dimension");
+	    throw new IllegalArgumentException("incorrect matrix getDimension");
 	for (int i = 0; i < v.length; i++)
 	    m.set(index, i, v[i]);
     }
@@ -78,16 +78,16 @@ public class VectorNd {
      */
     public void toMatrixColumn(Matrix m, int index) {
 	if (m.getRowDimension() != v.length)
-	    throw new IllegalArgumentException("incorrect matrix dimension");
+	    throw new IllegalArgumentException("incorrect matrix getDimension");
 	for (int i = 0; i < v.length; i++)
 	    m.set(i, index, v[i]);
     }
 
 
     /**
-     * Get the dimension.
+     * Get the getDimension.
      *
-     * @return the dimension
+     * @return the getDimension
      */
     public int getDimension() { return v.length; }
 
@@ -119,7 +119,7 @@ public class VectorNd {
 	return x;
     }
 
-    // utility to check dimension compatibility
+    // utility to check getDimension compatibility
     private void checkDimension(VectorNd other) 
 	throws IllegalArgumentException 
     {

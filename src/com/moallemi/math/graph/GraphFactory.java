@@ -17,7 +17,7 @@ public class GraphFactory {
      * Build a lattice.
      *
      * @param nodesPerAxis number of nodes per axis
-     * @param dimension dimension
+     * @param dimension getDimension
      * @param connectivity distance to maintain connectivity
      * @param isTorus should the edges wrap?
      * @param isL1Norm should an L1 norm be used? (otherwise L-\infty)

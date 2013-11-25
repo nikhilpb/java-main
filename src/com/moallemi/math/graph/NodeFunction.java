@@ -9,9 +9,9 @@ package com.moallemi.math.graph;
 public interface NodeFunction {
     
     /**
-     * The dimension of this node function.
+     * The getDimension of this node function.
      *
-     * @return the dimension
+     * @return the getDimension
      */
     public int getDimension();
 
@@ -20,9 +20,9 @@ public interface NodeFunction {
      *
      * @param graph the graph
      * @param node the node at which to evaluate the function
-     * @param index the dimension of interest
+     * @param index the getDimension of interest
      * @return the value of the function at the specified node and
-     * dimension
+     * getDimension
      */
     public double getValue(Graph graph, Node node, int index);
 

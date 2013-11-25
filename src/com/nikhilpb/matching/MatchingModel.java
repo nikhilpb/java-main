@@ -242,8 +242,8 @@ public class MatchingModel {
     }
 
     public void printInfo() {
-        System.out.println("supply type has dimension: " + supplyTypeDim);
-        System.out.println("demand type has dimension: " + demandTypeDim);
+        System.out.println("supply type has getDimension: " + supplyTypeDim);
+        System.out.println("demand type has getDimension: " + demandTypeDim);
 
         System.out.print("supply types along dimensions: ");
         for (int i = 0; i < supplyTypeDim; i++) {

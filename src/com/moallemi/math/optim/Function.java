@@ -8,9 +8,9 @@ package com.moallemi.math.optim;
  */
 public interface Function {
     /**
-     * Get the dimension of the function.
+     * Get the getDimension of the function.
      *
-     * @return the dimension
+     * @return the getDimension
      */
     public int getDimension();
 

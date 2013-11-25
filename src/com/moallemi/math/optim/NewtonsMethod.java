@@ -12,7 +12,7 @@ public class NewtonsMethod {
         int size = function.getDimension();
         if (x0.length != size)
             throw new IllegalArgumentException("initial point has "
-                                               + "wrong dimension");
+                                               + "wrong getDimension");
 
         double[] x = new double [size];
         System.arraycopy(x0, 0, xCurrent, 0, size);

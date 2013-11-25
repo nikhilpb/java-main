@@ -348,7 +348,7 @@ public class QPMain extends CommandLineMain {
     private static double computeRMS(double[] x, double[] y) {
         int n = x.length;
         if (y.length != n)
-            throw new IllegalArgumentException("dimension mismatch");
+            throw new IllegalArgumentException("getDimension mismatch");
         double v = 0.0;
         for (int i = 0; i < n; i++) {
             double d = x[i] - y[i];

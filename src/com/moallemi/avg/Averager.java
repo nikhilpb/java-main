@@ -14,7 +14,7 @@ public abstract class Averager {
         System.arraycopy(yValues, 0, this.yValues, 0, yValues.length);
 
         if (yValues.length != graph.getNodeCount())
-            throw new IllegalArgumentException("bad dimension");
+            throw new IllegalArgumentException("bad getDimension");
 
         MVSampleStatistics stat = new MVSampleStatistics();
         for (int i = 0; i < yValues.length; i++)

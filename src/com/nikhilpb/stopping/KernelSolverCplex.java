@@ -279,7 +279,7 @@ public class KernelSolverCplex implements Solver {
 
     @Override
     public Policy getPolicy() {
-        QFunction qFunction = new BasisQFunction(contValues);
+        QFunction qFunction = new TimeDepQFunction(contValues);
         return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
     }
 

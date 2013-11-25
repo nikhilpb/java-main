@@ -143,9 +143,9 @@ public class SimpleRingFinder {
     public Graph getRingGraph() { return ringGraph; }
 
     /**
-     * Get the dimension of the ring space.
+     * Get the getDimension of the ring space.
      *
-     * @return the ring space dimension
+     * @return the ring space getDimension
      */
     public int getRingDimension() { return basisRings.length; }
 
