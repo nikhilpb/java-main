@@ -43,7 +43,6 @@ public class KernelContFunction implements StateFunction {
     @Override
     public double value(State state) {
         double value = b;
-        System.out.println("b: " + b);
         StoppingState stoppingState = (StoppingState)state;
         for (int i = 0; i < nextStates.size(); ++i) {
             StoppingState nState = nextStates.get(i);
