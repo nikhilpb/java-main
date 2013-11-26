@@ -17,17 +17,17 @@
         <sample_count>500</sample_count>
         <seed>123</seed>
         <gamma>1E-6</gamma>
-        <kappa>1.</kappa>
+        <kappa>2.0</kappa>
         <bandwidth>1.</bandwidth>
-        <peak>1</peak>
+        <peak>100</peak>
     </solve>
-    <eval>i
+    <eval>
         <sample_count>1000</sample_count>
         <seed>456</seed>
     </eval>
     <plot>
-        <low-price>50.0</low-price>
-        <high-price>150.0</high-price>
+        <low-price>90.0</low-price>
+        <high-price>110.0</high-price>
         <delta>2.</delta>
         <filename>kernel-small.csv</filename>
     </plot>
