@@ -16,10 +16,10 @@
         <type>kernel</type>
         <sample_count>500</sample_count>
         <seed>123</seed>
-        <gamma>1.</gamma>
+        <gamma>1E-3</gamma>
         <kappa>2.</kappa>
         <bandwidth>1.0</bandwidth>
-        <peak>100</peak>
+        <peak>1</peak>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
