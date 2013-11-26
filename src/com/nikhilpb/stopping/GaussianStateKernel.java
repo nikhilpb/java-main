@@ -11,10 +11,11 @@ import com.nikhilpb.adp.StateKernel;
  * To change this template use File | Settings | File Templates.
  */
 public class GaussianStateKernel implements StateKernel {
-    private final double bandWidth;
+    private final double bandWidth, peak;
 
-    public GaussianStateKernel(double bandWidth) {
+    public GaussianStateKernel(double bandWidth, double peak) {
         this.bandWidth = bandWidth;
+        this.peak = peak;
     }
 
     public double value(State state1, State state2) {
@@ -24,7 +25,7 @@ public class GaussianStateKernel implements StateKernel {
             val +=   (sState1.vector[i] - sState2.vector[i])
                     *(sState1.vector[i] - sState2.vector[i]);
         }
-        val = Math.exp(- val / (2. * bandWidth));
+        val = peak * Math.exp(- val / (2. * bandWidth));
         return val;
     }
 

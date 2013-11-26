@@ -13,12 +13,13 @@ import com.nikhilpb.util.math.PSDMatrix;
 public class MeanGaussianKernel {
     private PSDMatrix sigma;
     private double[][] sigmaHat;
-    private double rho, scale;
+    private double rho, scale, peak;
     private int size;
 
-    public MeanGaussianKernel(PSDMatrix sigma, double rho) {
+    public MeanGaussianKernel(PSDMatrix sigma, double rho, double peak) {
         this.rho = rho;
         this.sigma = sigma;
+        this.peak = peak;
         init();
     }
 
@@ -28,7 +29,7 @@ public class MeanGaussianKernel {
         Matrix scaledSigmaMat = sigmaMat.times(1./ rho);
         scale = Matrix.identity(size, size)
                       .plus(scaledSigmaMat).det();
-        scale = 1 / Math.sqrt(scale);
+        scale = peak / Math.sqrt(scale);
         Matrix sigmaInv = sigmaMat.inverse();
         Matrix mat = sigmaInv.plus(Matrix.identity(size, size)
                               .times(1./rho))

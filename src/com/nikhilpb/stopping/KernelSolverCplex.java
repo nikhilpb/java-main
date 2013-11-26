@@ -40,6 +40,7 @@ public class KernelSolverCplex implements Solver {
                              double kappa,
                              double gamma,
                              double bandWidth,
+                             double peak,
                              int sampleCount,
                              long sampleSeed) throws IloException {
         this.model = model;
@@ -47,9 +48,9 @@ public class KernelSolverCplex implements Solver {
         this.gamma = gamma;
         this.kappa = kappa;
         this.sampleCount = sampleCount;
-        kernel = new GaussianStateKernel(bandWidth);
-        oneExp = new MeanGaussianKernel(model.getCovarMatrix(), bandWidth);
-        twoExp = new MeanGaussianKernel(PSDMatrix.times(model.getCovarMatrix(), 2.), bandWidth);
+        kernel = new GaussianStateKernel(bandWidth, peak);
+        oneExp = new MeanGaussianKernel(model.getCovarMatrix(), bandWidth, peak);
+        twoExp = new MeanGaussianKernel(PSDMatrix.times(model.getCovarMatrix(), 2.), bandWidth, peak);
         sampler = new StoppingStateSampler(model);
         sampler.sample(sampleCount, sampleSeed);
         startInd = new int[timePeriods];
