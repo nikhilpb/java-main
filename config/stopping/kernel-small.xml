@@ -19,7 +19,7 @@
         <gamma>1.</gamma>
         <kappa>2.</kappa>
         <bandwidth>1.0</bandwidth>
-        <peak>1</peak>
+        <peak>100</peak>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
