@@ -18,7 +18,7 @@
         <seed>123</seed>
         <gamma>1E-6</gamma>
         <kappa>2.</kappa>
-        <bandwidth>1.</bandwidth>
+        <bandwidth>1000.</bandwidth>
         <peak>1E5</peak>
     </solve>
     <eval>
