@@ -34,7 +34,13 @@ for k, l in data.iteritems():
 
 import matplotlib.pyplot as plt
 
+labs = []
+plots = []
 for k in curves:
-	plt.plot(curves[k][0], curves[k][1])
+	p, = plt.plot(curves[k][0], curves[k][1])
+	labs.append(k)
+	plots.append(p)
 
+plt.legend(plots, labs)
 plt.show()
+

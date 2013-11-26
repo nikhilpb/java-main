@@ -228,6 +228,12 @@ public class KernelSolverCplex implements Solver {
                     model,
                     gamma,
                     0.));
+            for (int i = 0; i < 20; ++i) {
+                double price = 90.0  + i;
+                double[] pVec = {price};
+                StoppingState s = new StoppingState(pVec, t);
+                System.out.println("t = " + t + ", p = " + price + ", v = " + contValues.get(t).value(s));
+            }
         }
 
         valueFuns = new ArrayList<StateFunction>();
