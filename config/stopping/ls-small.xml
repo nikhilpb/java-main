@@ -5,11 +5,11 @@
         <n>1</n>
         <delta>0.0</delta>
         <rho>0.1</rho>
-        <sigma>0.2</sigma>
+        <sigma>0.05</sigma>
         <time_periods>5</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
-        <r>0.01</r>
+        <r>0.0</r>
         <seed>123</seed>
     </model>
     <basis>
