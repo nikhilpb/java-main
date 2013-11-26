@@ -14,12 +14,12 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>1000</sample_count>
+        <sample_count>5</sample_count>
         <seed>123</seed>
         <gamma>1E-6</gamma>
         <kappa>2.</kappa>
         <bandwidth>1.</bandwidth>
-        <peak>1E4</peak>
+        <peak>1E5</peak>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
