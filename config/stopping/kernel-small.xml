@@ -28,7 +28,7 @@
     <plot>
         <low-price>50.0</low-price>
         <high-price>150.0</high-price>
-        <delta>.1</delta>
+        <delta>2.</delta>
         <filename>kernel-small.csv</filename>
     </plot>
 </config>
