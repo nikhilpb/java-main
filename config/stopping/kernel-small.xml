@@ -16,7 +16,7 @@
         <type>kernel</type>
         <sample_count>500</sample_count>
         <seed>123</seed>
-        <gamma>1E-6</gamma>
+        <gamma>1E-3</gamma>
         <kappa>2.0</kappa>
         <bandwidth>1.</bandwidth>
         <peak>100</peak>
@@ -29,6 +29,6 @@
         <low-price>90.0</low-price>
         <high-price>110.0</high-price>
         <delta>2.</delta>
-        <filename>kernel-small.csv</filename>
+        <filename>kernel-small-gamma-1E-4.csv</filename>
     </plot>
 </config>
