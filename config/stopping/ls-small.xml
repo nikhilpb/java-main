@@ -26,9 +26,9 @@
         <seed>456</seed>
     </eval>
     <plot>
-        <low-price>50.0</low-price>
-        <high-price>150.0</high-price>
-        <delta>1.0</delta>
+        <low-price>90.0</low-price>
+        <high-price>110.0</high-price>
+        <delta>.1</delta>
         <filename>ls-small.csv</filename>
     </plot>
 </config>
