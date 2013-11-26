@@ -16,9 +16,9 @@
         <type>kernel</type>
         <sample_count>500</sample_count>
         <seed>123</seed>
-        <gamma>1E-6</gamma>
+        <gamma>1E-10</gamma>
         <kappa>2.</kappa>
-        <bandwidth>1000.</bandwidth>
+        <bandwidth>1.</bandwidth>
         <peak>1E5</peak>
     </solve>
     <eval>
