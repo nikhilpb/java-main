@@ -98,8 +98,11 @@ public class PSDMatrix {
         EigenvalueDecomposition eig = mat.eig();
         Matrix dMat = eig.getD(), vMat = eig.getV();
         for (int i = 0; i < n; ++i) {
-            if (dMat.get(i, i) < 0.)
+            if (dMat.get(i, i) < 0.) {
+                System.out.println();
                 throw new IllegalArgumentException("matrix is not PSD");
+
+            }
             dMat.set(i, i, Math.sqrt(dMat.get(i, i)));
         }
         sqrtMat = vMat.times(dMat);
