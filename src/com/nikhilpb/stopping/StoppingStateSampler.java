@@ -30,6 +30,7 @@ public class StoppingStateSampler {
     public void sample(int sampleCount, long seed) {
         MonteCarloEval sampler = new MonteCarloEval(model, policy, seed);
         samplePaths = sampler.getSamplePaths(sampleCount, timePeriods);
+        System.out.println(samplePaths.get(0).toString());
         states = new ArrayList<ArrayList<StoppingState>>();
         for (int t = 0; t < timePeriods; ++t) {
             states.add(new ArrayList<StoppingState>());

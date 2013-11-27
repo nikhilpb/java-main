@@ -46,7 +46,6 @@ public class MonteCarloEval {
                                 * rewardFunction.value(curState, curAction);
             time += 1;
         } while (time < timePeriods);
-        System.out.println(samplePath.toString());
         return samplePath;
     }
 
