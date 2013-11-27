@@ -104,7 +104,7 @@ public class KernelSolverCplex implements Solver {
                     for (int k = 0; k < meani.length; ++k) {
                         diff[k] = meani[k] - nextStates.get(j).vector[k];
                     }
-                    qMat[indi][indjs] = qMat[indjs][indi] = oneExp.eval(diff);
+                    qMat[indi][indjs] = qMat[indjs][indi] = - oneExp.eval(diff);
                     if (t < timePeriods - 2) {
                         int indjc = indOfVar(t+1, j, StoppingAction.CONTINUE);
                         qMat[indi][indjc] = qMat[indjc][indi] = qMat[indi][indjs];

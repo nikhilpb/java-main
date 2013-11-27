@@ -17,12 +17,9 @@ def black_scholes(s, k, r, sigma, t):
 	d2 = 1. / (sigma * math.sqrt(t)) * (math.log(s/k) + (r - sigma**2)*t/2.)
 	return phi(d1) * s - phi(d2) * k
 
-print phi(2.0)
-
 print map(lambda x: black_scholes(x, 100., 0.0, 0.05, 5), esses)
 
 import matplotlib.pyplot as plt
-
 
 labs = []
 plots = []
