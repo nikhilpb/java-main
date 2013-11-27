@@ -147,6 +147,9 @@ public class StoppingMain extends XmlParserMain {
             double kappa = Double.parseDouble(getPropertyOrDie(props, "kappa"));
             double bandwidth = Double.parseDouble(getPropertyOrDie(props, "bandwidth"));
             double peak = getDoublePropertyOrDie(props, "peak");
+            System.out.println("solving with kernel method -\n" +
+                    "gamma: " + gamma +
+                    "...");
             try{
                 solver = new KernelSolverCplex(model, kappa, gamma, bandwidth, peak, sampleCount, seed);
             } catch (Exception e) {
@@ -156,6 +159,7 @@ public class StoppingMain extends XmlParserMain {
             throw new RuntimeException("unknown solver type " + solverType);
         }
         try {
+            System.out.println("now computing optimum");
             solver.solve();
         } catch (Exception e) {
             e.printStackTrace();

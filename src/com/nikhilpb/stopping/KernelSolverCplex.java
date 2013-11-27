@@ -43,6 +43,7 @@ public class KernelSolverCplex implements Solver {
                              double peak,
                              int sampleCount,
                              long sampleSeed) throws IloException {
+        System.out.println("start");
         this.model = model;
         timePeriods = model.getTimePeriods();
         this.gamma = gamma;
@@ -179,10 +180,12 @@ public class KernelSolverCplex implements Solver {
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
         cplex.addMinimize(obj);
         b = new double[timePeriods];
+        System.out.println("end");
     }
 
     @Override
     public boolean solve() throws Exception {
+        System.out.println("start solve");
         boolean solved = cplex.solve();
         if (!solved) {
             return solved;
