@@ -162,6 +162,7 @@ public class KernelSolverCplex implements Solver {
                 cplex.addLe(stateMass, kappa / sampleCount);
             }
         }
+        PSDMatrix psdQ = new PSDMatrix(qMat);
         List<IloNumExpr> objTerms = new ArrayList<IloNumExpr>();
         for (int i = 0; i < qSize; ++i){
             for (int j = 0; j < qSize; ++j) {
