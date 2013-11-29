@@ -35,7 +35,6 @@ public class KernelSolverCplex implements Solver {
     private double[] b;
     ArrayList<StateFunction> contValues, valueFuns;
 
-
     public KernelSolverCplex(StoppingModel model,
                              double kappa,
                              double gamma,
