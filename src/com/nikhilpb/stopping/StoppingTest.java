@@ -46,7 +46,7 @@ public class StoppingTest {
         };
         MonteCarloEval eval = new MonteCarloEval(model, policy, kSeed);
         SamplePath samplePath = eval.samplePath(kSeed, kTimePeriods);
-        System.out.print(samplePath.toString());
+        //System.out.print(samplePath.toString());
     }
 
     @Test
@@ -68,6 +68,13 @@ public class StoppingTest {
         assert Math.abs(mgk.eval(mean) - 0.676123) < kTol; // computed separately
         double[] mean2 = {1., 0.};
         assert Math.abs(mgk.eval(mean2) - 0.569607) < kTol; // computed separately
+        double[] xVec = {0., 0.}, yVec = {1.0, 0.0};
+        StoppingState xState = new StoppingState(xVec, 0), yState = new StoppingState(yVec, 1);
+        GaussianKernelE gaussianKernelE = new GaussianKernelE(mean, sigma, bw, 1.);
+        assert Math.abs(gaussianKernelE.eval(xState, yState) - 0.569607) < kTol;
+        PSDMatrix sigmaHalf = PSDMatrix.times(sigma, 0.5);
+        GaussianKernelDoubleE gaussianKernelDoubleE = new GaussianKernelDoubleE(sigmaHalf, bw, 1.);
+        assert Math.abs(gaussianKernelDoubleE.eval(xState, yState) - 0.569607) < kTol;
     }
 
     private static boolean approxEqual(double val1, double val2) {

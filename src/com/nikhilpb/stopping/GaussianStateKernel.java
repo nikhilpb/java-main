@@ -8,16 +8,27 @@ import com.nikhilpb.adp.StateKernel;
  * User: nikhilpb
  * Date: 10/21/13
  * Time: 1:55 PM
- * To change this template use File | Settings | File Templates.
+ * Evaluates expression of the type K exp(-||x -y||_2^2 / 2 \rho)
  */
 public class GaussianStateKernel implements StateKernel {
     private final double bandWidth, peak;
 
+    /**
+     * Constructor.
+     * @param bandWidth A misnomer, should be bandwidth^2
+     * @param peak Value when x = y
+     */
     public GaussianStateKernel(double bandWidth, double peak) {
         this.bandWidth = bandWidth;
         this.peak = peak;
     }
 
+    /**
+     * Evaluator of the expression.
+     * @param state1
+     * @param state2
+     * @return
+     */
     public double value(State state1, State state2) {
         double val = 0.;
         StoppingState sState1 = (StoppingState)state1, sState2 = (StoppingState)state2;

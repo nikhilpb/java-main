@@ -19,7 +19,7 @@ public class GaussianKernelDoubleE {
    * @param peak
    */
   public GaussianKernelDoubleE(PSDMatrix sigma, double rho, double peak) {
-    meanGaussianKernel = new MeanGaussianKernel(sigma, rho, peak);
+    meanGaussianKernel = new MeanGaussianKernel(PSDMatrix.times(sigma, 2.0), rho, peak);
   }
 
   /**
