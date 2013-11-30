@@ -21,7 +21,8 @@ public class KernelSolverCplex implements Solver {
     protected double gamma, kappa;
     protected GaussianStateKernel kernel;
     protected int timePeriods;
-    protected MeanGaussianKernel oneExp, twoExp;
+    protected GaussianKernelE gaussianKernelE;
+    protected GaussianKernelDoubleE gaussianKernelDoubleE;
     protected double[][] qMat;
     protected int[] startInd;
     private int qSize, sampleCount;
@@ -48,8 +49,8 @@ public class KernelSolverCplex implements Solver {
         this.kappa = kappa;
         this.sampleCount = sampleCount;
         kernel = new GaussianStateKernel(bandWidth, peak);
-        oneExp = new MeanGaussianKernel(model.getCovarMatrix(), bandWidth, peak);
-        twoExp = new MeanGaussianKernel(PSDMatrix.times(model.getCovarMatrix(), 2.), bandWidth, peak);
+        gaussianKernelE = new GaussianKernelE(model.getMeanArray(), model.getCovarMatrix(), bandWidth, peak);
+        gaussianKernelDoubleE = new GaussianKernelDoubleE(model.getCovarMatrix(), bandWidth, peak);
         sampler = new StoppingStateSampler(model);
         sampler.sample(sampleCount, sampleSeed);
         startInd = new int[timePeriods];
@@ -81,29 +82,16 @@ public class KernelSolverCplex implements Solver {
         for (int t = 0; t < timePeriods - 1; ++t) {
             ArrayList<StoppingState> curStates = sampler.getStates(t), nextStates = sampler.getStates(t+1);
             for (int i = 0; i < curStates.size(); ++i) {
-                GaussianTransition gti = (GaussianTransition)
-                        model.getDistribution(curStates.get(i), StoppingAction.CONTINUE);
-                final double[] meani = gti.getMean();
                 for (int j = 0; j < curStates.size(); j++) {
                     int indi = indOfVar(t, i, StoppingAction.CONTINUE);
                     int indj = indOfVar(t, j, StoppingAction.CONTINUE);
-                    GaussianTransition gtj = (GaussianTransition)
-                            model.getDistribution(curStates.get(j), StoppingAction.CONTINUE);
-                    double[] meanj = gtj.getMean();
-                    double[] diff = new double[meani.length];
-                    for (int k = 0; k < meani.length; ++k) {
-                        diff[k] = meani[k] - meanj[k];
-                    }
-                    qMat[indi][indj] += twoExp.eval(diff);
+                    qMat[indi][indj] += gaussianKernelDoubleE.eval(curStates.get(i), curStates.get(j));
                 }
                 for (int j = 0; j < nextStates.size(); ++j) {
                     int indi = indOfVar(t, i, StoppingAction.CONTINUE);
                     int indjs = indOfVar(t+1, j, StoppingAction.STOP);
-                    double[] diff = new double[meani.length];
-                    for (int k = 0; k < meani.length; ++k) {
-                        diff[k] = meani[k] - nextStates.get(j).vector[k];
-                    }
-                    qMat[indi][indjs] = qMat[indjs][indi] = - oneExp.eval(diff);
+                    qMat[indi][indjs] = qMat[indjs][indi] = - gaussianKernelE.eval(curStates.get(i),
+                                                                                   nextStates.get(j));
                     if (t < timePeriods - 2) {
                         int indjc = indOfVar(t+1, j, StoppingAction.CONTINUE);
                         qMat[indi][indjc] = qMat[indjc][indi] = qMat[indi][indjs];
@@ -111,7 +99,6 @@ public class KernelSolverCplex implements Solver {
                 }
             }
         }
-        printQ();
 
         cplex = new IloCplex();
         lambda0C = cplex.numVar(0., 1.);
@@ -225,8 +212,8 @@ public class KernelSolverCplex implements Solver {
                     sampler.getStates(t+1),
                     lmdCur,
                     lmdNext,
-                    oneExp,
-                    twoExp,
+                    gaussianKernelE,
+                    gaussianKernelDoubleE,
                     model,
                     gamma,
                     0.));
@@ -270,7 +257,7 @@ public class KernelSolverCplex implements Solver {
                     lmdPrev,
                     lmdCur,
                     kernel,
-                    oneExp,
+                    gaussianKernelE,
                     model,
                     gamma));
         }

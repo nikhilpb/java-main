@@ -16,7 +16,7 @@ public class KernelStateFunction implements StateFunction {
     private ArrayList<StoppingState> prevStates, curStates;
     private double[] prevLambda, curLambda;
     private GaussianStateKernel kernel;
-    private MeanGaussianKernel oneExp;
+    GaussianKernelE gaussianKernelE;
     private StoppingModel model;
     private double gamma;
 
@@ -25,7 +25,7 @@ public class KernelStateFunction implements StateFunction {
                                double[] prevLambda,
                                double[] curLambda,
                                GaussianStateKernel kernel,
-                               MeanGaussianKernel oneExp,
+                               GaussianKernelE gaussianKernelE,
                                StoppingModel model,
                                double gamma) {
         this.prevStates = prevStates;
@@ -33,7 +33,7 @@ public class KernelStateFunction implements StateFunction {
         this.prevLambda = prevLambda;
         this.curLambda = curLambda;
         this.kernel = kernel;
-        this.oneExp = oneExp;
+        this.gaussianKernelE = gaussianKernelE;
         this.model = model;
         this.gamma = gamma;
     }
@@ -46,13 +46,8 @@ public class KernelStateFunction implements StateFunction {
         }
         for (int i = 0; i < prevStates.size(); ++i) {
             State prevState = prevStates.get(i);
-            GaussianTransition gt = (GaussianTransition)model.getDistribution(prevState, StoppingAction.CONTINUE);
             StoppingState stopState = (StoppingState)state;
-            double[] mu = new double[gt.getMean().length];
-            for (int j = 0; j < stopState.vector.length; ++j) {
-                mu[j] = gt.getMean()[j] - stopState.vector[j];
-            }
-            value -= (1./gamma) * prevLambda[i] * oneExp.eval(mu);
+            value -= (1./gamma) * prevLambda[i] * gaussianKernelE.eval((StoppingState)prevState, stopState);
         }
         return value;
     }

@@ -67,4 +67,13 @@ public class StoppingModel extends MarkovDecisionProcess {
     public int getTimePeriods() {
         return timePeriods;
     }
+
+    public double[] getMeanArray() {
+        double[][] meanArray1 = meanMatrix.getArray();
+        double[] meanArray = new double[meanArray1.length];
+        for (int i = 0; i < meanArray.length; ++i) {
+            meanArray[i] = meanArray1[i][0];
+        }
+        return meanArray;
+    }
 }

@@ -17,15 +17,16 @@ public class KernelContFunction implements StateFunction {
     private ArrayList<StoppingState> nextStates, curStates;
     private double[] nextLambda, curLambda;
     private double b, gamma;
-    private MeanGaussianKernel oneExp, twoExp;
+    private GaussianKernelE gaussianKernelE;
+    private GaussianKernelDoubleE gaussianKernelDoubleE;
     private StoppingModel model;
 
     public KernelContFunction(ArrayList<StoppingState> curStates,
                               ArrayList<StoppingState> nextStates,
                               double[] curLambda,
                               double[] nextLambda,
-                              MeanGaussianKernel oneExp,
-                              MeanGaussianKernel twoExp,
+                              GaussianKernelE gaussianKernelE,
+                              GaussianKernelDoubleE gaussianKernelDoubleE,
                               StoppingModel model,
                               double gamma,
                               double b) {
@@ -33,8 +34,8 @@ public class KernelContFunction implements StateFunction {
         this.nextStates = nextStates;
         this.curLambda = curLambda;
         this.nextLambda = nextLambda;
-        this.oneExp = oneExp;
-        this.twoExp = twoExp;
+        this.gaussianKernelE = gaussianKernelE;
+        this.gaussianKernelDoubleE = gaussianKernelDoubleE;
         this.model = model;
         this.gamma = gamma;
         this.b = b;
@@ -46,18 +47,12 @@ public class KernelContFunction implements StateFunction {
         StoppingState stoppingState = (StoppingState)state;
         for (int i = 0; i < nextStates.size(); ++i) {
             StoppingState nState = nextStates.get(i);
-            GaussianTransition gt = (GaussianTransition)model.getDistribution(state, StoppingAction.CONTINUE);
-            double[] mu = new double[gt.baseState.length];
-            for (int j = 0; j < mu.length; ++j) {
-                mu[j] = gt.baseState[j] - nState.vector[j];
-            }
-            double thisVal = (1.0 / gamma) * (nextLambda[i]) * oneExp.eval(mu);
+            double thisVal = (1.0 / gamma) * (nextLambda[i]) * gaussianKernelE.eval(stoppingState, nState);
             value += thisVal;
         }
         for (int i = 0; i < curStates.size(); ++i) {
             StoppingState tState = curStates.get(i);
-            double[] mu = tState.getDifference(stoppingState);
-            value -= (1.0 / gamma) * curLambda[i] * twoExp.eval(mu);
+            value -= (1.0 / gamma) * curLambda[i] * gaussianKernelDoubleE.eval(stoppingState, tState);
         }
         return value;
     }
