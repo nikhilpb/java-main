@@ -5,7 +5,7 @@
         <n>1</n>
         <delta>0.0</delta>
         <rho>0.1</rho>
-        <sigma>5</sigma>
+        <sigma>0.05</sigma>
         <time_periods>5</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
@@ -14,11 +14,11 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>20</sample_count>
+        <sample_count>500</sample_count>
         <seed>123</seed>
-        <gamma>1E-10</gamma>
+        <gamma>1E-6</gamma>
         <kappa>2.0</kappa>
-        <bandwidth>1</bandwidth>
+        <bandwidth>1.0</bandwidth>
         <peak>1.0</peak>
     </solve>
     <eval>
