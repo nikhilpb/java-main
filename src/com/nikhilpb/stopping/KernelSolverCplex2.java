@@ -2,6 +2,7 @@ package com.nikhilpb.stopping;
 
 import com.nikhilpb.adp.Policy;
 import com.nikhilpb.adp.Solver;
+import com.nikhilpb.util.math.PSDMatrix;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumExpr;
@@ -174,6 +175,11 @@ public class KernelSolverCplex2 implements Solver {
             }
         }
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
+        try {
+            PSDMatrix psdMatrix = new PSDMatrix(qMat);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         cplex.addMinimize(obj);
     }
 
