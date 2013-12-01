@@ -192,6 +192,7 @@ public class KernelSolverCplex2 implements Solver {
         if (!solved) {
             return solved;
         }
+        return true;
     }
 
     @Override
