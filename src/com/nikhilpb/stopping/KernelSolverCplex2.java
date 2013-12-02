@@ -155,7 +155,7 @@ public class KernelSolverCplex2 implements Solver {
                 ArrayList<StoppingState> nextStates = sampler.getStates(1);
                 for (int i = 0; i < nextStates.size(); ++i) {
                     StoppingState nextState = nextStates.get(i);
-                    qMat[0][i + 1] = qMat[i + 1][0] = gaussianKernelE.eval(curState, nextState);
+                    qMat[0][i + 1] = qMat[i + 1][0] = - gaussianKernelE.eval(curState, nextState);
                     objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaVar[1][i], 2 * qMat[0][i + 1] ));
                 }
             } else {
