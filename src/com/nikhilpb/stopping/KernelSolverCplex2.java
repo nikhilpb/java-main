@@ -1,7 +1,6 @@
 package com.nikhilpb.stopping;
 
-import com.nikhilpb.adp.Policy;
-import com.nikhilpb.adp.Solver;
+import com.nikhilpb.adp.*;
 import com.nikhilpb.util.math.PSDMatrix;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
@@ -33,6 +32,8 @@ public class KernelSolverCplex2 implements Solver {
     protected StoppingStateSampler sampler;
     private IloNumVar[][] lambdaCVar, lambdaVar;
     private IloCplex cplex;
+    double[] b;
+    ArrayList<StateFunction> contValues, valueFuns;
 
     public KernelSolverCplex2(StoppingModel model,
                              double kappa,
@@ -176,6 +177,7 @@ public class KernelSolverCplex2 implements Solver {
         }
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
         cplex.addMinimize(obj);
+        b = new double[timePeriods];
     }
 
     private void printQ() {
@@ -206,12 +208,54 @@ public class KernelSolverCplex2 implements Solver {
                 System.out.println("sum of lambda^c_" + t + " = " + sumArray(lambdaC[t]));
             }
         }
+        contValues = new ArrayList<StateFunction>();
+        for (int t = 0; t < timePeriods; ++t) {
+            if (t == timePeriods-1) {
+                contValues.add(new ConstantStateFunction(-Double.MAX_VALUE));
+                continue;
+            }
+            contValues.add(new KernelContFunction(
+                           sampler.getStates(t),
+                           sampler.getStates(t+1),
+                           lambdaC[t],
+                           lambda[t+1],
+                           gaussianKernelE,
+                           gaussianKernelDoubleE,
+                           model,
+                           gamma,
+                           0.));
+        }
+        valueFuns = new ArrayList<StateFunction>();
+        for (int t = 0; t < timePeriods; ++t) {
+            if (t == 0) {
+                valueFuns.add(new ConstantStateFunction(0.));
+                continue;
+            }
+            valueFuns.add(new KernelStateFunction(
+                          sampler.getStates(t-1),
+                          sampler.getStates(t),
+                          lambdaC[t-1],
+                          lambda[t],
+                          kernel,
+                          gaussianKernelE,
+                          model,
+                          gamma));
+        }
+        b = findOffsets();
+        for (int t = 0; t < timePeriods-1; ++t) {
+            if (t == 0) {
+                contValues.set(0, new ConstantStateFunction(Double.MAX_VALUE));
+            } else {
+                ((KernelContFunction)contValues.get(t)).setB(b[t+1]);
+            }
+        }
         return true;
     }
 
     @Override
     public Policy getPolicy() {
-        return null;
+        QFunction qFunction = new TimeDepQFunction(contValues);
+        return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
     }
 
     private String debugArrayRepr(double[] arr) {
@@ -229,5 +273,68 @@ public class KernelSolverCplex2 implements Solver {
             sum += arr[i];
         }
         return sum;
+    }
+
+    private double[] findOffsets() throws IloException {
+        IloCplex cplexLP = new IloCplex();
+        IloNumVar[] bVar;
+        IloNumVar[][] sVar;
+        IloNumVar s0Var;
+        double[] lb = new double[timePeriods], ub = new double[timePeriods], zeros = new double[timePeriods];
+        Arrays.fill(lb, -Double.MAX_VALUE);
+        Arrays.fill(ub, Double.MAX_VALUE);
+        Arrays.fill(zeros, 0.);
+        bVar = cplexLP.numVarArray(timePeriods, lb, ub);
+        ub = new double[timePeriods-1];
+        lb = new double[timePeriods-1];
+        Arrays.fill(ub, Double.MAX_VALUE);
+        Arrays.fill(lb, 0.);
+        sVar = new IloNumVar[sampleCount][];
+        for (int i = 0; i < sampleCount; ++i) {
+            sVar[i] = cplexLP.numVarArray(timePeriods-1, lb, ub);
+        }
+        s0Var = cplexLP.numVar(0., Double.MAX_VALUE);
+        IloLinearNumExpr obj = cplexLP.linearNumExpr();
+        obj.addTerm(1.0, bVar[0]);
+        obj.addTerm(kappa, s0Var);
+        for (int i = 0; i < sampleCount; ++i) {
+            for (int t = 1; t < timePeriods; ++t) {
+                obj.addTerm(kappa / sampleCount, sVar[i][t-1]);
+            }
+        }
+        cplexLP.addMinimize(obj);
+        IloLinearNumExpr constr = cplexLP.linearNumExpr();
+        constr.addTerm(1.0, s0Var);
+        constr.addTerm(1.0, bVar[0]);
+        double rhs = model.getRewardFunction().value(model.getBaseState(), StoppingAction.STOP);
+        cplexLP.addGe(constr, rhs);
+        constr = cplexLP.linearNumExpr();
+        constr.addTerm(1.0, s0Var);
+        constr.addTerm(1.0, bVar[0]);
+        constr.addTerm(-1., bVar[1]);
+        rhs = contValues.get(0).value(model.getBaseState());
+        cplexLP.addGe(constr, rhs);
+        for (int i = 0; i < sampleCount; ++i) {
+            for (int t = 1; t < timePeriods; ++t) {
+                StoppingState state = sampler.getStates(t).get(i);
+                rhs = model.getRewardFunction().value(state, StoppingAction.STOP);
+                rhs -= valueFuns.get(t).value(state);
+                constr = cplexLP.linearNumExpr();
+                constr.addTerm(1., sVar[i][t-1]);
+                constr.addTerm(1., bVar[t]);
+                cplexLP.addGe(constr, rhs);
+                if (t < timePeriods - 1) {
+                    rhs = contValues.get(t).value(state);
+                    rhs -= valueFuns.get(t).value(state);
+                    constr = cplexLP.linearNumExpr();
+                    constr.addTerm(1., sVar[i][t-1]);
+                    constr.addTerm(1., bVar[t]);
+                    constr.addTerm(-1., bVar[t+1]);
+                    cplexLP.addGe(constr, rhs);
+                }
+            }
+        }
+        cplexLP.solve();
+        return cplexLP.getValues(bVar);
     }
 }
