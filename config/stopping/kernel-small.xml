@@ -6,7 +6,7 @@
         <delta>0.0</delta>
         <rho>0.1</rho>
         <sigma>0.05</sigma>
-        <time_periods>3</time_periods>
+        <time_periods>5</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
         <r>0.0</r>
@@ -14,12 +14,12 @@
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>70</sample_count>
+        <sample_count>200</sample_count>
         <seed>123</seed>
-        <gamma>1E-6</gamma>
+        <gamma>1E-3</gamma>
         <kappa>2.0</kappa>
-        <bandwidth>1E-4</bandwidth>
-        <peak>1.0</peak>
+        <bandwidth>1E-6</bandwidth>
+        <peak>100.0</peak>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
@@ -28,7 +28,7 @@
     <plot>
         <low-price>90.0</low-price>
         <high-price>110.0</high-price>
-        <delta>2.</delta>
-        <filename>kernel-small-gamma-1E-4.csv</filename>
+        <delta>1.</delta>
+        <filename>kernel-small.csv</filename>
     </plot>
 </config>
