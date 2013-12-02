@@ -174,6 +174,7 @@ public class KernelSolverCplex2 implements Solver {
                 }
             }
         }
+        printQ();
         IloNumExpr obj = cplex.sum(objTerms.toArray(new IloNumExpr[objTerms.size()]));
 //        try {
 //            PSDMatrix psdMatrix = new PSDMatrix(qMat);
