@@ -147,11 +147,11 @@ public class StoppingMain extends XmlParserMain {
             double kappa = Double.parseDouble(getPropertyOrDie(props, "kappa"));
             double bandwidth = Double.parseDouble(getPropertyOrDie(props, "bandwidth"));
             double peak = getDoublePropertyOrDie(props, "peak");
-//            try{
-//                solver = new KernelSolverCplex2(model, kappa, gamma, bandwidth, peak, sampleCount, seed);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            try{
+                solver = new KernelSolverCplex2(model, kappa, gamma, bandwidth, peak, sampleCount, seed);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             throw new RuntimeException("unknown solver type " + solverType);
         }
