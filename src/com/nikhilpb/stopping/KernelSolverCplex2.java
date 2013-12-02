@@ -180,7 +180,6 @@ public class KernelSolverCplex2 implements Solver {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        printQ();
         cplex.addMinimize(obj);
     }
 
