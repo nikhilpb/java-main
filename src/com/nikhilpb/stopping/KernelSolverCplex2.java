@@ -200,10 +200,10 @@ public class KernelSolverCplex2 implements Solver {
         double[][] lambdaC = new double[timePeriods-1][];
         for (int t = 0; t < timePeriods; ++t) {
             lambda[t] = cplex.getValues(lambdaVar[t]);
-            System.out.println("lambda_" + t + " = " + debugArrayRepr(lambda[t]));
+            System.out.println("sum of lambda_" + t + " = " + sumArray(lambda[t]));
             if (t < timePeriods - 1) {
                 lambdaC[t] = cplex.getValues(lambdaCVar[t]);
-                System.out.println("lambda^c_" + t + " = " + debugArrayRepr(lambdaC[t]));
+                System.out.println("sum of lambda^c_" + t + " = " + sumArray(lambdaC[t]));
             }
         }
         return true;
@@ -221,5 +221,13 @@ public class KernelSolverCplex2 implements Solver {
         }
         rpr += "]";
         return rpr;
+    }
+
+    private double sumArray(double[] arr) {
+        double sum = 0.;
+        for (int i = 0; i < arr.length; ++i) {
+            sum += arr[i];
+        }
+        return sum;
     }
 }
