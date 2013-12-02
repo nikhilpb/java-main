@@ -196,11 +196,30 @@ public class KernelSolverCplex2 implements Solver {
         if (!solved) {
             return solved;
         }
+        double[][] lambda = new double[timePeriods][];
+        double[][] lambdaC = new double[timePeriods-1][];
+        for (int t = 0; t < timePeriods; ++t) {
+            lambda[t] = cplex.getValues(lambdaVar[t]);
+            System.out.println("lambda_" + t + " = " + debugArrayRepr(lambda[t]));
+            if (t < timePeriods - 1) {
+                lambdaC[t] = cplex.getValues(lambdaCVar[t]);
+                System.out.println("lambda^c_" + t + " = " + debugArrayRepr(lambdaC[t]));
+            }
+        }
         return true;
     }
 
     @Override
     public Policy getPolicy() {
         return null;
+    }
+
+    private String debugArrayRepr(double[] arr) {
+        String rpr = "[";
+        for (int i = 0; i < arr.length; ++i) {
+            rpr += arr[i] + ",";
+        }
+        rpr += "]";
+        return rpr;
     }
 }
