@@ -187,7 +187,7 @@ public class KernelSolverCplex2 implements Solver {
     private void printQ() {
         for (int i = 0; i < qSize; ++i) {
             for (int j = 0; j < qSize; ++j) {
-                System.out.printf("%.3f ", qMat[i][j]);
+                System.out.printf("%f,", qMat[i][j]);
             }
             System.out.println();
         }
