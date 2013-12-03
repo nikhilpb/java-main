@@ -240,6 +240,7 @@ public class KernelSolverCplex3 implements Solver {
                     gamma,
                     b[t]));
         }
+        return solved;
     }
 
     @Override
