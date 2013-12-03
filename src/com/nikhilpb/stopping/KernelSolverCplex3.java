@@ -1,9 +1,6 @@
 package com.nikhilpb.stopping;
 
-import com.nikhilpb.adp.Policy;
-import com.nikhilpb.adp.RewardFunction;
-import com.nikhilpb.adp.Solver;
-import com.nikhilpb.adp.StateFunction;
+import com.nikhilpb.adp.*;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumExpr;
@@ -211,11 +208,51 @@ public class KernelSolverCplex3 implements Solver {
 
     @Override
     public boolean solve() throws Exception {
-        return cplex.solve();
+        boolean solved = cplex.solve();
+        if (!solved) {
+            return solved;
+        }
+        double[][] lambda = new double[timePeriods][];
+        double[][] lambdaC = new double[timePeriods-1][];
+        for (int t = 0; t < timePeriods; ++t) {
+            lambda[t] = cplex.getValues(lambdaVar[t]);
+            System.out.println("sum of lambda_" + t + " = " + sumArray(lambda[t]));
+            if (t < timePeriods - 1) {
+                lambdaC[t] = cplex.getValues(lambdaCVar[t]);
+                System.out.println("sum of lambda^c_" + t + " = " + sumArray(lambdaC[t]));
+            }
+        }
+        double[] b = cplex.getValues(bVar);
+        contValues = new ArrayList<StateFunction>();
+        for (int t = 0; t < timePeriods; ++t) {
+            if (t == timePeriods-1) {
+                contValues.add(new ConstantStateFunction(-Double.MAX_VALUE));
+                continue;
+            }
+            contValues.add(new KernelContFunction(
+                    sampler.getStates(t),
+                    sampler.getStates(t+1),
+                    lambdaC[t],
+                    lambda[t+1],
+                    gaussianKernelE,
+                    gaussianKernelDoubleE,
+                    model,
+                    gamma,
+                    b[t]));
+        }
     }
 
     @Override
     public Policy getPolicy() {
-        return null;
+        QFunction qFunction = new TimeDepQFunction(contValues);
+        return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
+    }
+
+    private double sumArray(double[] arr) {
+        double sum = 0.;
+        for (int i = 0; i < arr.length; ++i) {
+            sum += arr[i];
+        }
+        return sum;
     }
 }
