@@ -215,11 +215,11 @@ public class KernelSolverCplex3 implements Solver {
         double[][] lambda = new double[timePeriods][];
         double[][] lambdaC = new double[timePeriods-1][];
         for (int t = 0; t < timePeriods; ++t) {
-            lambda[t] = cplex.getValues(lambdaVar[t]);
-            System.out.println("sum of lambda_" + t + " = " + sumArray(lambda[t]));
+            if (t != 0) {
+                lambda[t] = cplex.getValues(lambdaVar[t]);
+            }
             if (t < timePeriods - 1) {
                 lambdaC[t] = cplex.getValues(lambdaCVar[t]);
-                System.out.println("sum of lambda^c_" + t + " = " + sumArray(lambdaC[t]));
             }
         }
         double[] b = cplex.getValues(bVar);
