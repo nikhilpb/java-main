@@ -18,8 +18,8 @@
         <seed>123</seed>
         <gamma>1E-3</gamma>
         <kappa>2.0</kappa>
-        <bandwidth>1E-6</bandwidth>
-        <peak>100.0</peak>
+        <bandwidth>1E-4</bandwidth>
+        <peak>1.0</peak>
     </solve>
     <eval>
         <sample_count>1000</sample_count>
