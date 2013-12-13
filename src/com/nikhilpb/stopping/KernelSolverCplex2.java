@@ -127,14 +127,14 @@ public class KernelSolverCplex2 implements Solver {
         qMat = new double[qSize][qSize];
         qMat[0][0] = gaussianKernelDoubleE.eval((StoppingState)model.getBaseState(),
                                                 (StoppingState)model.getBaseState());
-        objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaCVar[0][0], qMat[0][0]));
+        // objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaCVar[0][0], qMat[0][0]));
         for (int t = 1; t < timePeriods; ++t) {
             ArrayList<StoppingState> curStates = sampler.getStates(t);
             int startI = startInd[t];
             for (int i = 0; i < curStates.size(); ++i) {
                 for (int j = 0; j < curStates.size(); ++j) {
                     qMat[startI + i][startI + j] = kernel.value(curStates.get(i), curStates.get(j));
-                    objTerms.add(cplex.prod(lambdaVar[t][i], lambdaVar[t][j], qMat[startI + i][startI + j]));
+                    // objTerms.add(cplex.prod(lambdaVar[t][i], lambdaVar[t][j], qMat[startI + i][startI + j]));
                 }
             }
         }
@@ -145,7 +145,7 @@ public class KernelSolverCplex2 implements Solver {
             for (int i = 0; i < curStates.size(); ++i) {
                 for (int j = 0; j < curStates.size(); ++j) {
                     qMat[startI + i][startI + j] = gaussianKernelDoubleE.eval(curStates.get(i), curStates.get(j));
-                    objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaCVar[t][j], qMat[startI + i][startI + j]));
+                    // objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaCVar[t][j], qMat[startI + i][startI + j]));
                 }
             }
         }
@@ -157,7 +157,7 @@ public class KernelSolverCplex2 implements Solver {
                 for (int i = 0; i < nextStates.size(); ++i) {
                     StoppingState nextState = nextStates.get(i);
                     qMat[0][i + 1] = qMat[i + 1][0] = - gaussianKernelE.eval(curState, nextState);
-                    objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaVar[1][i], 2 * qMat[0][i + 1] ));
+                    // objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaVar[1][i], 2 * qMat[0][i + 1] ));
                 }
             } else {
                 ArrayList<StoppingState> curStates = sampler.getStates(t);
@@ -169,8 +169,8 @@ public class KernelSolverCplex2 implements Solver {
                         qMat[startInd[t] + sampleCount + i][startInd[t+1] + j] =
                                qMat[startInd[t+1] + j][startInd[t] + sampleCount + i] =
                                        - gaussianKernelE.eval(curState, nextState);
-                        objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaVar[t+1][j],
-                                - 2. * gaussianKernelE.eval(curState, nextState)));
+                        // objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaVar[t+1][j],
+                        //        - 2. * gaussianKernelE.eval(curState, nextState)));
                     }
                 }
             }
