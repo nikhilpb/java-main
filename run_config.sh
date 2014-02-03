@@ -5,7 +5,7 @@ CONFIGBASE="config/"
 CONFIG=${2:-"main"}
 MEMORY=${3:-"2g"}
 
-FLAGS="-Xmx"$MEMORY" -Djava.library.path="$CPLEXJAVALIBDIR
+FLAGS="-Xmx"$MEMORY" -Djava.library.path=/apps/cplex/cplex/bin/x86-64_linux/"
 LIBS=$CPLEXJARDIR":lib/commons-collections-3.2.1.jar:lib/jakarta-oro-2.0.8.jar:lib/Jama-1.0.1.jar:lib/protobuf-java-2.5.0.jar"
 
 case "$1" in 
