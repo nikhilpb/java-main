@@ -82,13 +82,13 @@ public class StoppingMain extends XmlParserMain {
             System.out.println("dividends >= interest rate");
         }
         double K = Double.parseDouble(getPropertyOrDie(props, "K"));
-        int n = Integer.parseInt(getPropertyOrDie(props, "n"));
+        int dimension = Integer.parseInt(getPropertyOrDie(props, "n"));
         int timPeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
-        double[][] muArray = new double[n][1];
-        double[][] sigmaArray = new double[n][n];
-        double[] initValue = new double[n];
+        double[][] muArray = new double[dimension][1];
+        double[][] sigmaArray = new double[dimension][dimension];
+        double[] initValue = new double[dimension];
         Arrays.fill(initValue, S);
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < dimension; ++i) {
             muArray[i][0] = r - delta;
             Arrays.fill(sigmaArray[i], rho * sigma * sigma);
             sigmaArray[i][i] = sigma * sigma;
@@ -148,7 +148,7 @@ public class StoppingMain extends XmlParserMain {
             double bandwidth = Double.parseDouble(getPropertyOrDie(props, "bandwidth"));
             double peak = getDoublePropertyOrDie(props, "peak");
             try{
-                solver = new KernelSolverCplex2(model, kappa, gamma, bandwidth, peak, sampleCount, seed);
+                solver = new KernelSolverCplex3(model, kappa, gamma, bandwidth, peak, sampleCount, seed);
             } catch (Exception e) {
                 e.printStackTrace();
             }
