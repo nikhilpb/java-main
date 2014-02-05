@@ -133,7 +133,7 @@ public class KernelSolverCplex3 implements Solver {
                 ArrayList<StoppingState> nextStates = sampler.getStates(1);
                 for (int i = 0; i < nextStates.size(); ++i) {
                     StoppingState nextState = nextStates.get(i);
-                    qMat[0][i + 1] = qMat[i + 1][0] = gaussianKernelE.eval(curState, nextState);
+                    qMat[0][i + 1] = qMat[i + 1][0] = - gaussianKernelE.eval(curState, nextState);
                     objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaVar[1][i],
                             2. * this.gamma * qMat[0][i + 1] ));
                 }
@@ -146,7 +146,7 @@ public class KernelSolverCplex3 implements Solver {
                         StoppingState nextState = nextStates.get(j);
                         qMat[startInd[t] + sampleCount + i][startInd[t+1] + j] =
                                 qMat[startInd[t+1] + j][startInd[t] + sampleCount + i] =
-                                         gaussianKernelE.eval(curState, nextState);
+                                        - gaussianKernelE.eval(curState, nextState);
                         objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaVar[t+1][j],
                                 2. * this.gamma * gaussianKernelE.eval(curState, nextState)));
                     }
