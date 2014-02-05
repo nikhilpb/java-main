@@ -154,9 +154,6 @@ public class KernelSolverCplex3 implements Solver {
                 }
             }
         }
-        System.out.println(qMat.length);
-        System.out.println(qMat[0].length);
-        System.out.println(qSize);
         saveQMat();
 
         // adding the b objective term
@@ -266,12 +263,15 @@ public class KernelSolverCplex3 implements Solver {
 
     private void saveQMat() {
         String fileName = "/tmp/qmat.csv";
+        int n = qMat.length;
+        System.out.println("writing a matrix of size " + n);
         try {
             PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-            for (int i = 0; i < qMat.length; ++i) {
-                for (int j = 0; j < qMat.length; ++j) {
+            for (int i = 0; i < n; ++i) {
+                System.out.println("row no " + i + ", no of columns " + qMat[i].length);
+                for (int j = 0; j < n; ++j) {
                     writer.print(qMat[i][j]);
-                    if (j < qMat.length - 1) {
+                    if (j < n - 1) {
                         writer.print(",");
                     }
                 }
