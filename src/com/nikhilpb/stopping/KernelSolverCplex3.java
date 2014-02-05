@@ -7,6 +7,7 @@ import ilog.concert.IloNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -153,6 +154,7 @@ public class KernelSolverCplex3 implements Solver {
                 }
             }
         }
+        saveQMat();
 
         // adding the b objective term
         objTerms.add(cplex.prod(bVar[0], 1.));
@@ -257,5 +259,25 @@ public class KernelSolverCplex3 implements Solver {
     public Policy getPolicy() {
         QFunction qFunction = new TimeDepQFunction(contValues);
         return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
+    }
+
+    private void saveQMat() {
+        String fileName = "/tmp/qmat.csv";
+        try {
+            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+            for (int i = 0; i < qMat.length; ++i) {
+                for (int j = 0; j < qMat.length; ++j) {
+                    writer.print(qMat[i][j]);
+                    if (j < qMat.length - 1) {
+                        writer.print(",");
+                    }
+                }
+                writer.println();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
