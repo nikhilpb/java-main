@@ -1,6 +1,7 @@
 package com.nikhilpb.stopping;
 
 import com.nikhilpb.adp.*;
+import com.nikhilpb.util.math.PSDMatrix;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumExpr;
@@ -154,7 +155,8 @@ public class KernelSolverCplex3 implements Solver {
                 }
             }
         }
-        saveQMat();
+        PSDMatrix qPsdMat = new PSDMatrix(qMat);
+        // saveQMat();
 
         // adding the b objective term
         objTerms.add(cplex.prod(bVar[0], 1.));
