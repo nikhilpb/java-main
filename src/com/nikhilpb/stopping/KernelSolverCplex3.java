@@ -154,6 +154,9 @@ public class KernelSolverCplex3 implements Solver {
                 }
             }
         }
+        System.out.println(qMat.length);
+        System.out.println(qMat[0].length);
+        System.out.println(qSize);
         saveQMat();
 
         // adding the b objective term
