@@ -1,5 +1,7 @@
 package com.nikhilpb.stopping;
 
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 import com.nikhilpb.adp.*;
 import com.nikhilpb.util.math.PSDMatrix;
 import ilog.concert.IloException;
@@ -155,7 +157,13 @@ public class KernelSolverCplex3 implements Solver {
                 }
             }
         }
-        PSDMatrix qPsdMat = new PSDMatrix(qMat);
+        Matrix qMatrix = new Matrix(qMat);
+        EigenvalueDecomposition eig = qMatrix.eig();
+        Matrix dMat = eig.getD();
+        for (int i = 0; i < qSize; ++i) {
+            System.out.println(dMat.get(i, i));
+        }
+
         // saveQMat();
 
         // adding the b objective term
