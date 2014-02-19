@@ -102,8 +102,6 @@ public class KernelSolverCplex3 implements Solver {
         qMat = new double[qSize][qSize];
         qMat[0][0] = gaussianKernelDoubleE.eval((StoppingState)model.getBaseState(),
                 (StoppingState)model.getBaseState());
-        objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaCVar[0][0],
-                this.gamma * qMat[0][0]));
 
         // quadratic terms involving terms in the same time-period
         for (int t = 1; t < timePeriods; ++t) {
@@ -112,8 +110,6 @@ public class KernelSolverCplex3 implements Solver {
             for (int i = 0; i < curStates.size(); ++i) {
                 for (int j = 0; j < curStates.size(); ++j) {
                     qMat[startI + i][startI + j] = kernel.value(curStates.get(i), curStates.get(j));
-                    objTerms.add(cplex.prod(lambdaVar[t][i], lambdaVar[t][j],
-                            this.gamma * qMat[startI + i][startI + j]));
                 }
             }
         }
@@ -124,8 +120,6 @@ public class KernelSolverCplex3 implements Solver {
             for (int i = 0; i < curStates.size(); ++i) {
                 for (int j = 0; j < curStates.size(); ++j) {
                     qMat[startI + i][startI + j] = gaussianKernelDoubleE.eval(curStates.get(i), curStates.get(j));
-                    objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaCVar[t][j],
-                            this.gamma * qMat[startI + i][startI + j]));
                 }
             }
         }
@@ -137,9 +131,7 @@ public class KernelSolverCplex3 implements Solver {
                 ArrayList<StoppingState> nextStates = sampler.getStates(1);
                 for (int i = 0; i < nextStates.size(); ++i) {
                     StoppingState nextState = nextStates.get(i);
-                    qMat[0][i + 1] = qMat[i + 1][0] = - gaussianKernelE.eval(curState, nextState);
-                    objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaVar[1][i],
-                            2. * this.gamma * qMat[0][i + 1] ));
+                    qMat[0][i + 1] = qMat[i + 1][0] = gaussianKernelE.eval(curState, nextState);
                 }
             } else {
                 ArrayList<StoppingState> curStates = sampler.getStates(t);
@@ -150,21 +142,57 @@ public class KernelSolverCplex3 implements Solver {
                         StoppingState nextState = nextStates.get(j);
                         qMat[startInd[t] + sampleCount + i][startInd[t+1] + j] =
                                 qMat[startInd[t+1] + j][startInd[t] + sampleCount + i] =
-                                        - gaussianKernelE.eval(curState, nextState);
-                        objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaVar[t+1][j],
-                                2. * this.gamma * gaussianKernelE.eval(curState, nextState)));
+                                        gaussianKernelE.eval(curState, nextState);
                     }
                 }
             }
         }
-        Matrix qMatrix = new Matrix(qMat);
-        EigenvalueDecomposition eig = qMatrix.eig();
-        Matrix dMat = eig.getD();
-        for (int i = 0; i < qSize; ++i) {
-            System.out.println(dMat.get(i, i));
+//        Matrix qMatrix = new Matrix(qMat);
+//        EigenvalueDecomposition eig = qMatrix.eig();
+//        Matrix dMat = eig.getD();
+//        for (int i = 0; i < qSize; ++i) {
+//            System.out.println(dMat.get(i, i));
+//        }
+
+        double[][] psdQMat = PSDMatrix.makePSD(qMat);
+        objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaCVar[0][0], this.gamma * psdQMat[0][0]));
+
+        for (int t = 1; t < timePeriods; ++t) {
+            int startI = startInd[t];
+            for (int i = 0; i < sampleCount; ++i) {
+                for (int j = 0; j < sampleCount; ++j) {
+                        objTerms.add(cplex.prod(lambdaVar[t][i], lambdaVar[t][j],
+                                this.gamma * psdQMat[startI + i][startI + j]));
+                }
+            }
         }
 
-        // saveQMat();
+        for (int t = 1; t < timePeriods - 1; ++t) {
+            int startI = startInd[t] + sampleCount;
+            for (int i = 0; i < sampleCount; ++i) {
+                for (int j = 0; j < sampleCount; ++j) {
+                    objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaCVar[t][j],
+                                this.gamma * psdQMat[startI + i][startI + j]));
+                }
+            }
+        }
+
+        for (int t = 0; t < timePeriods - 1; ++t) {
+            if (t == 0) {
+                for (int i = 0; i < sampleCount; ++i) {
+                        objTerms.add(cplex.prod(lambdaCVar[0][0], lambdaVar[1][i],
+                                2. * this.gamma * psdQMat[0][i + 1] ));
+                }
+            } else {
+                for (int i = 0; i < sampleCount; ++i) {
+                    for (int j = 0; j < sampleCount; ++j) {
+                        objTerms.add(cplex.prod(lambdaCVar[t][i], lambdaVar[t+1][j],
+                                2. * this.gamma * psdQMat[startInd[t] + sampleCount + i][startInd[t+1] + j]));
+                    }
+                }
+            }
+        }
+
 
         // adding the b objective term
         objTerms.add(cplex.prod(bVar[0], 1.));
@@ -269,28 +297,5 @@ public class KernelSolverCplex3 implements Solver {
     public Policy getPolicy() {
         QFunction qFunction = new TimeDepQFunction(contValues);
         return new QFunctionPolicy(model, qFunction, model.getRewardFunction(), 1.);
-    }
-
-    private void saveQMat() {
-        String fileName = "/tmp/qmat.csv";
-        int n = qMat.length;
-        System.out.println("writing a matrix of size " + n);
-        try {
-            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-            for (int i = 0; i < n; ++i) {
-                System.out.println("row no " + i + ", no of columns " + qMat[i].length);
-                for (int j = 0; j < n; ++j) {
-                    writer.print(qMat[i][j]);
-                    if (j < n - 1) {
-                        writer.print(",");
-                    }
-                }
-                writer.println();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
     }
 }
