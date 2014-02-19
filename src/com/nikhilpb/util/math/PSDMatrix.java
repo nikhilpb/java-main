@@ -42,15 +42,15 @@ public class PSDMatrix {
         fin.close();
     }
 
-    private boolean isSymmetric() {
-        if (mat.getRowDimension() != mat.getColumnDimension())
+    public static boolean isSymmetric(Matrix matrix) {
+        if (matrix.getRowDimension() != matrix.getColumnDimension())
             return false;
-        for (int i = 0; i < mat.getRowDimension(); ++i) {
+        for (int i = 0; i < matrix.getRowDimension(); ++i) {
             for (int j = 0; j < i; ++j) {
-                if (Math.abs(mat.get(i, j) - mat.get(j, i)) > kTol) {
+                if (Math.abs(matrix.get(i, j) - matrix.get(j, i)) > kTol) {
                     return false;
                 }
-                mat.set(j, i, mat.get(i, j));
+                matrix.set(j, i, matrix.get(i, j));
             }
         }
         return true;
@@ -93,7 +93,7 @@ public class PSDMatrix {
         if (n < 1) {
             throw new IllegalArgumentException("matrix must be non-empty");
         }
-        if (!isSymmetric())
+        if (!isSymmetric(mat))
             throw new IllegalArgumentException("matrix is not symmetric");
         EigenvalueDecomposition eig = mat.eig();
         Matrix dMat = eig.getD(), vMat = eig.getV();
@@ -113,5 +113,27 @@ public class PSDMatrix {
             throw new RuntimeException("can't scale the matrix by a negative number");
         }
         return new PSDMatrix(psdMatrix.mat().times(multiple));
+    }
+
+    /**
+     *  Converts a symmetric matrix to a PSD one. We do this by taking a nuclear norm projection on the S_+.
+     *
+     * @param matArray
+     * @return
+     */
+    public static double[][] makePSD(double[][] matArray){
+        Matrix mat = new Matrix(matArray);
+        if (!isSymmetric(mat)) {
+            throw new IllegalArgumentException("matrix is not symmetric");
+        }
+        EigenvalueDecomposition eig = mat.eig();
+        Matrix dMat = eig.getD(), vMat = eig.getV();
+        for (int i = 0; i < matArray.length; ++i) {
+            if (dMat.get(i, i) < 0.) {
+                dMat.set(i, i, 0.);
+            }
+        }
+        Matrix psdMat = vMat.times(dMat).times(vMat.transpose());
+        return psdMat.getArray();
     }
 }

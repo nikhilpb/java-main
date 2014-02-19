@@ -31,4 +31,24 @@ public class PSDMatrixTest {
         File file = new File(kFilename);
         assert file.delete();
     }
+
+    @Test
+    public void testMakePsd() throws Exception {
+        double[][] psdMatArray = {{2.,0.1},{0.1,1.}};
+        double[][] psdMatArray2 = PSDMatrix.makePSD(psdMatArray);
+        double err = 0.;
+        for (int i = 0; i < 2; ++i) {
+            for (int j = 0; j < 2; ++j) {
+                err += (psdMatArray[i][j] - psdMatArray2[i][j])* (psdMatArray[i][j] - psdMatArray2[i][j]);
+            }
+        }
+        assert Math.abs(err) < kTol;
+        double[][] psdMatArray3 = {{2.,0.},{0.,-1.}};
+        double[][] psdMatArray4 = PSDMatrix.makePSD(psdMatArray3);
+        assert Math.abs(psdMatArray4[0][0] - 2.) < kTol;
+        assert Math.abs(psdMatArray4[1][1] - 0.) < kTol;
+        assert Math.abs(psdMatArray4[0][1] - 0.) < kTol;
+        assert Math.abs(psdMatArray4[1][0] - 0.) < kTol;
+
+    }
 }
