@@ -2,7 +2,7 @@ package com.nikhilpb.pools;
 
 import com.moallemi.math.CplexFactory;
 import com.moallemi.util.PropertySet;
-import com.nikhilpb.util.XmlParserMain;
+import com.nikhilpb.util.XmlParser;
 import ilog.cplex.IloCplex;
 
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.Random;
  * Time: 6:52 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MatchingPoolsMain2 extends XmlParserMain {
+public class MatchingPoolsMain2 extends XmlParser {
 
     private static MatchingPoolsModel model;
     private static InstanceSet instances;

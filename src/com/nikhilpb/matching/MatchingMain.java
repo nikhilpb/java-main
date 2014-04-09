@@ -1,7 +1,7 @@
 package com.nikhilpb.matching;
 
 import com.moallemi.util.PropertySet;
-import com.nikhilpb.util.XmlParserMain;
+import com.nikhilpb.util.XmlParser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Random;
  * Time: 10:37 AM
  * To change this template use File | Settings | File Templates.
  */
-public class MatchingMain extends XmlParserMain {
+public class MatchingMain extends XmlParser {
     private static MatchingModel model;
     private static ItemFunctionSet basisSetSupply, basisSetDemand;
     private static ArrayList<MatchingSolver> solvers;

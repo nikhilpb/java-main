@@ -18,7 +18,7 @@ import java.util.*;
  * Time: 12:21 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class XmlParserMain {
+public abstract class XmlParser {
     protected static ArrayList<Pair<String, Properties>> parseTree;
 
     protected interface CommandProcessor {

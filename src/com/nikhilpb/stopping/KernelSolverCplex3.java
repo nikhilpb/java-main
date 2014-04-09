@@ -100,6 +100,7 @@ public class KernelSolverCplex3 implements Solver {
         }
         qSize = (2 * timePeriods - 3) * sampleCount + 1;
         qMat = new double[qSize][qSize];
+
         qMat[0][0] = gaussianKernelDoubleE.eval((StoppingState)model.getBaseState(),
                 (StoppingState)model.getBaseState());
 

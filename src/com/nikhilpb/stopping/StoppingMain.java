@@ -2,7 +2,7 @@ package com.nikhilpb.stopping;
 
 import Jama.Matrix;
 import com.nikhilpb.adp.*;
-import com.nikhilpb.util.XmlParserMain;
+import com.nikhilpb.util.XmlParser;
 import com.nikhilpb.util.math.PSDMatrix;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.Properties;
  * Time: 3:56 PM
  * To change this template use File | Settings | File Templates.
  */
-public class StoppingMain extends XmlParserMain {
+public class StoppingMain extends XmlParser {
     private static StoppingModel model;
     private static RewardFunction rewardFunction;
     private static BasisSet basisSet;
