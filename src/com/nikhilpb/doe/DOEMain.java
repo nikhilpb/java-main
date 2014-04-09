@@ -1,30 +1,84 @@
 package com.nikhilpb.doe;
 
+import com.nikhilpb.util.XmlParser;
+
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * Created by nikhilpb on 3/21/14.
  */
-public class DOEMain {
-    public static void main(String[] argv) throws Exception {
-        int p = 10;
-        int sampleCount = 10000;
-        double upper = 3000.;
-        int nop = 10001;
-        long seed = 123l;
-        int timePeriods = 10;
+public class DOEMain extends XmlParser {
+    private static int dim;
+    private static int sampleCount;
+    private static double upper;
+    private static double printUpper;
+    private static int pointsCount;
+    private static long seed;
+    private static int timePeriods;
+    private static OneDFunction[] qFuns;
 
-        OneDFunction[] qFuns = new OneDFunction[timePeriods];
+
+    public static void main(String[] args) throws Exception {
+        HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
+
+        CommandProcessor modelProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return modelCommand(props);
+            }
+        };
+        cmdMap.put("model", modelProcessor);
+
+        CommandProcessor solveProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return solveCommand(props);
+            }
+        };
+        cmdMap.put("solve", solveProcessor);
+
+        parseCommandLine(args, null);
+        executeCommands(cmdMap);
+
+
+    }
+
+    public static boolean modelCommand(Properties props) {
+        dim = Integer.parseInt(getPropertyOrDie(props, "dim"));
+        timePeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
+        return true;
+    }
+
+    public static boolean solveCommand(Properties props) {
+        sampleCount = Integer.parseInt(getPropertyOrDie(props, "sample_count"));
+        upper = Double.parseDouble(getPropertyOrDie(props, "upper"));
+        pointsCount = Integer.parseInt(getPropertyOrDie(props, "points_count"));
+        seed = Long.parseLong(getPropertyOrDie(props, "seed"));
+
+        printUpper = Double.parseDouble(getPropertyOrDie(props, "upper"));
+
+        qFuns = new OneDFunction[timePeriods];
         qFuns[0] = new IdentityFunction();
 
-        for (int i = 1; i < timePeriods; ++i) {
+        try {
+            for (int i = 1; i < timePeriods; ++i) {
+                System.out.println("Time Period no: " + i);
+                qFuns[i] = QFunctionRecursion.recurse(qFuns[i-1], dim, upper, pointsCount, seed, sampleCount);
+                qFuns[i].printFn(
+                        new PrintStream(new FileOutputStream("results/doe/q-dim-" + dim + "-tp-" + i + ".csv")),
+                        0.,
+                        printUpper);
 
-            qFuns[i] = QFunctionRecursion.recurse(qFuns[i-1], p, upper, nop, seed, sampleCount);
-            qFuns[i].printFn(new PrintStream(new FileOutputStream("/tmp/q" + i + ".csv")), 0., 10.);
-
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return true;
     }
+
 }
