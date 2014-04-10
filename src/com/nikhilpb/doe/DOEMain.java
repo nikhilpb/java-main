@@ -20,6 +20,7 @@ public class DOEMain extends XmlParser {
     private static int pointsCount;
     private static long seed;
     private static int timePeriods;
+    private static String baseName;
     private static OneDFunction[] qFuns;
 
 
@@ -42,6 +43,14 @@ public class DOEMain extends XmlParser {
         };
         cmdMap.put("solve", solveProcessor);
 
+        CommandProcessor printProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return printCommand(props);
+            }
+        };
+        cmdMap.put("print", printProcessor);
+
         parseCommandLine(args, null);
         executeCommands(cmdMap);
 
@@ -60,17 +69,23 @@ public class DOEMain extends XmlParser {
         pointsCount = Integer.parseInt(getPropertyOrDie(props, "points_count"));
         seed = Long.parseLong(getPropertyOrDie(props, "seed"));
 
-        printUpper = Double.parseDouble(getPropertyOrDie(props, "upper"));
-
         qFuns = new OneDFunction[timePeriods];
         qFuns[0] = new IdentityFunction();
 
+        for (int i = 1; i < timePeriods; ++i) {
+            System.out.println("Time Period no: " + i);
+            qFuns[i] = QFunctionRecursion.recurse(qFuns[i-1], dim, upper, pointsCount, seed, sampleCount);
+        }
+        return true;
+    }
+
+    public static boolean printCommand(Properties props) {
+        printUpper = Double.parseDouble(getPropertyOrDie(props, "print_upper"));
+        baseName = getPropertyOrDie(props, "base_name");
         try {
             for (int i = 1; i < timePeriods; ++i) {
-                System.out.println("Time Period no: " + i);
-                qFuns[i] = QFunctionRecursion.recurse(qFuns[i-1], dim, upper, pointsCount, seed, sampleCount);
                 qFuns[i].printFn(
-                        new PrintStream(new FileOutputStream("results/doe/q-dim-" + dim + "-tp-" + i + ".csv")),
+                        new PrintStream(new FileOutputStream("results/doe/" + baseName + "-dim-" + dim + "-tp-" + i + ".csv")),
                         0.,
                         printUpper);
 
@@ -79,6 +94,7 @@ public class DOEMain extends XmlParser {
             e.printStackTrace();
         }
         return true;
+
     }
 
 }

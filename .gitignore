@@ -2,3 +2,4 @@ classes/*
 .idea/*
 *.iml
 out/*
+.Rproj.user

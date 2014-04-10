@@ -46,7 +46,7 @@ public class DiscretizedFunction implements OneDFunction {
 
     @Override
     public double value(double x) {
-        if (x <= 0. || x >= upper) {
+        if (x < 0. || x > upper) {
             return 0.;
         }
         int lind = (int) (x / delta);
