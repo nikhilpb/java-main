@@ -1,17 +1,22 @@
 <?xml version="1.0"?>
 <config>
     <model>
-        <dim>3</dim>
+        <dim>10</dim>
         <time_periods>10</time_periods>
     </model>
     <solve>
         <upper>2000.</upper>
         <sample_count>10000</sample_count>
         <points_count>10000</points_count>
+        <policy_type>optimal</policy_type>
         <seed>123</seed>
     </solve>
     <print>
-        <print_upper>50.</print_upper>
-        <base_name>qfun-dim-3</base_name>
+        <print_upper>100.</print_upper>
+        <base_name>qfun</base_name>
     </print>
+    <print_mins>
+        <base_name>qfun-min</base_name>
+        <search_upper>20.</search_upper>
+    </print_mins>
 </config>

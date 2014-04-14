@@ -63,4 +63,17 @@ public class DiscretizedFunction implements OneDFunction {
             stream.println((low + i * delta) + "," + value(low + i * delta));
         }
     }
+
+    @Override
+    public double minAt(double searchLower, double searchUpper) {
+        int minInd = -1;
+        double minVal = Double.MAX_VALUE;
+        for (int i = 0; i < values.length && (points[i] >= searchLower) && (points[i] <= searchUpper); ++i) {
+            if (values[i] < minVal) {
+                minVal = values[i];
+                minInd = i;
+            }
+        }
+        return points[minInd];
+    }
 }

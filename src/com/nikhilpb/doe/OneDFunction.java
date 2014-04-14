@@ -9,4 +9,6 @@ public interface OneDFunction {
     public double value(double x);
 
     public void printFn(PrintStream stream, double low, double high);
+
+    public double minAt(double searchLower, double searchUpper);
 }

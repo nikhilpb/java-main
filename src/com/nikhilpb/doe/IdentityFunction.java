@@ -20,4 +20,9 @@ public class IdentityFunction implements OneDFunction {
             stream.println((low + i * delta) + "," + (low + i * delta));
         }
     }
+
+    @Override
+    public double minAt(double searchLower, double searchUpper) {
+        return 0.;
+    }
 }

@@ -10,7 +10,8 @@ public class QFunctionRecursion {
                                        double upper,
                                        int pointsCount,
                                        long seed,
-                                       int sampleCount) {
+                                       int sampleCount,
+                                       PolicyType type) {
         ABPairGenerator abPairGenerator = new ABPairGenerator(seed, p);
         ABPairGenerator.ABPair[] abPairs = abPairGenerator.next(sampleCount);
 
@@ -21,7 +22,7 @@ public class QFunctionRecursion {
             double lambda = qFun.getPoint(c);
             double pointEstimate = 0;
             for (int i = 0; i < abPairs.length; ++i) {
-                pointEstimate += qEstimate(nextQ, abPairs[i], lambda);
+                pointEstimate += qEstimate(nextQ, abPairs[i], lambda, type);
             }
             values[c] = pointEstimate / sampleCount;
         }
@@ -33,16 +34,36 @@ public class QFunctionRecursion {
 
     public static double qEstimate(OneDFunction nextQ,
                                    ABPairGenerator.ABPair abPair,
-                                   double lambda) {
+                                   double lambda,
+                                   PolicyType type) {
         double action;
         double beta = abPair.beta * Math.sqrt(lambda);
         double alpha = abPair.alpha;
-        if (nextQ.value(lambda + alpha - beta)
-                >= nextQ.value(lambda + alpha + beta)) {
-            action = 1.;
-        } else {
-            action = -1.;
+        switch (type) {
+            case OPTIMAL:
+                if (nextQ.value(lambda + alpha - beta)
+                        >= nextQ.value(lambda + alpha + beta)) {
+                    action = 1.;
+                } else {
+                    action = -1.;
+                }
+                break;
+            case MYOPIC:
+                if (beta < 0.) {
+                    action = 1.;
+                } else {
+                    action = -1.;
+                }
+                break;
+            default:
+                action = 1.;
+                break;
         }
+
         return nextQ.value(lambda + alpha + 2. * action * beta );
+    }
+
+    public static enum PolicyType {
+        OPTIMAL, MYOPIC;
     }
 }
