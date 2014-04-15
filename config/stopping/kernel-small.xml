@@ -9,12 +9,12 @@
         <time_periods>5</time_periods>
         <reward_type>max-call</reward_type>
         <K>100.0</K>
-        <r>0.0</r>
+        <r>0.01</r>
         <seed>123</seed>
     </model>
     <solve>
         <type>kernel</type>
-        <sample_count>2000</sample_count>
+        <sample_count>100</sample_count>
         <seed>123</seed>
         <gamma>5E-3</gamma>
         <kappa>2.0</kappa>
