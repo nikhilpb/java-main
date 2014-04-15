@@ -23,6 +23,7 @@ public class ExperimentMain {
     public static void main(String[] args) {
         Experiment experiment;
         String experimentName = args[0];
+        System.out.print(args);
         if (experimentName.equals("doe")) {
             experiment = DoeExperiment.getInstance();
         } else if (experimentName.equals("matching")) {
