@@ -19,7 +19,12 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class XmlParser {
-    protected static ArrayList<Pair<String, Properties>> parseTree;
+    private static ArrayList<Pair<String, Properties>> parseTree;
+    private static HashMap<String, CommandProcessor> cmdMap;
+
+    static {
+        cmdMap = new HashMap<String, CommandProcessor>();
+    }
 
     protected interface CommandProcessor {
         boolean processCommand(Properties props) throws Exception;
@@ -70,7 +75,11 @@ public abstract class XmlParser {
         return true;
     }
 
-    protected static boolean executeCommands(HashMap<String, CommandProcessor> cmdMap) {
+    protected static void registerCommand(String name, CommandProcessor processor) {
+        cmdMap.put(name, processor);
+    }
+
+    protected static boolean executeCommands() {
         long startTime = System.currentTimeMillis();
         ArrayList<String> failedCommands = new ArrayList<String>();
         for (Pair<String, Properties> p : parseTree) {

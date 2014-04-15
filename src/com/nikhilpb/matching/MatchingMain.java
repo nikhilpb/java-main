@@ -22,8 +22,6 @@ public class MatchingMain extends XmlParser {
     private static ArrayList<MatchingSolver> solvers;
 
     public static void main(String[] args) {
-        HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
-
         CommandLineHandler handler = new CommandLineHandler() {
             @Override
             public boolean handleCommandLine(String[] args) throws Exception {
@@ -37,7 +35,8 @@ public class MatchingMain extends XmlParser {
                 return modelCommand(props);
             }
         };
-        cmdMap.put("model", modelProcessor);
+
+        registerCommand("model", modelProcessor);
 
         CommandProcessor basisProcessor = new CommandProcessor() {
             @Override
@@ -45,7 +44,7 @@ public class MatchingMain extends XmlParser {
                 return basisCommand(props);
             }
         };
-        cmdMap.put("basis", basisProcessor);
+        registerCommand("basis", basisProcessor);
 
         CommandProcessor solveProcessor = new CommandProcessor() {
             @Override
@@ -53,7 +52,7 @@ public class MatchingMain extends XmlParser {
                 return solveCommand(props);
             }
         };
-        cmdMap.put("solve", solveProcessor);
+        registerCommand("solve", solveProcessor);
 
         CommandProcessor evaluateProcessor = new CommandProcessor() {
             @Override
@@ -61,10 +60,10 @@ public class MatchingMain extends XmlParser {
                 return evaluateCommand(props);
             }
         };
-        cmdMap.put("evaluate", evaluateProcessor);
+        registerCommand("evaluate", evaluateProcessor);
 
         parseCommandLine(args, handler);
-        executeCommands(cmdMap);
+        executeCommands();
     }
 
     private static boolean modelCommand(Properties props) throws Exception {

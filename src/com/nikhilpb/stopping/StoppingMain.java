@@ -26,15 +26,13 @@ public class StoppingMain extends XmlParser {
     private static Policy policy;
 
     public static void main(String[] args) {
-        HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
-
         CommandProcessor modelProcessor = new CommandProcessor() {
             @Override
             public boolean processCommand(Properties props) throws Exception {
                 return modelCommand(props);
             }
         };
-        cmdMap.put("model", modelProcessor);
+        registerCommand("model", modelProcessor);
 
         CommandProcessor basisProcessor = new CommandProcessor() {
             @Override
@@ -42,7 +40,7 @@ public class StoppingMain extends XmlParser {
                 return basisCommand(props);
             }
         };
-        cmdMap.put("basis", basisProcessor);
+        registerCommand("basis", basisProcessor);
 
         CommandProcessor solveProcessor = new CommandProcessor() {
             @Override
@@ -50,7 +48,7 @@ public class StoppingMain extends XmlParser {
                 return solveCommand(props);
             }
         };
-        cmdMap.put("solve", solveProcessor);
+        registerCommand("solve", solveProcessor);
 
         CommandProcessor evalProcessor = new CommandProcessor() {
             @Override
@@ -58,7 +56,7 @@ public class StoppingMain extends XmlParser {
                 return evalCommand(props);
             }
         };
-        cmdMap.put("eval", evalProcessor);
+        registerCommand("eval", evalProcessor);
 
         CommandProcessor plotProcessor = new CommandProcessor() {
             @Override
@@ -66,10 +64,9 @@ public class StoppingMain extends XmlParser {
                 return plotCommand(props);
             }
         };
-        cmdMap.put("plot", plotProcessor);
+        registerCommand("plot", plotProcessor);
 
         parseCommandLine(args, null);
-        executeCommands(cmdMap);
     }
 
     public static boolean modelCommand(Properties props) {

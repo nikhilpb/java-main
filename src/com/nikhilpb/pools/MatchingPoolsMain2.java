@@ -26,8 +26,6 @@ public class MatchingPoolsMain2 extends XmlParser {
     private static NodeFunction valueFunction;
 
     public static void main(String[] args) {
-        HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
-
         CommandLineHandler handler = new CommandLineHandler() {
             @Override
             public boolean handleCommandLine(String[] args) throws Exception {
@@ -41,7 +39,7 @@ public class MatchingPoolsMain2 extends XmlParser {
                 return modelCommand(props);
             }
         };
-        cmdMap.put("model", modelProcessor);
+        registerCommand("model", modelProcessor);
 
         CommandProcessor sampleProcessor = new CommandProcessor() {
             @Override
@@ -49,7 +47,7 @@ public class MatchingPoolsMain2 extends XmlParser {
                 return sampleCommand(props);
             }
         };
-        cmdMap.put("sample", sampleProcessor);
+        registerCommand("sample", sampleProcessor);
 
         CommandProcessor basisProcessor = new CommandProcessor() {
             @Override
@@ -57,7 +55,7 @@ public class MatchingPoolsMain2 extends XmlParser {
                 return basisCommand(props);
             }
         };
-        cmdMap.put("basis", basisProcessor);
+        registerCommand("basis", basisProcessor);
 
         CommandProcessor solverProcessor = new CommandProcessor() {
             @Override
@@ -65,7 +63,7 @@ public class MatchingPoolsMain2 extends XmlParser {
                 return solverCommand(props);
             }
         };
-        cmdMap.put("solve", solverProcessor);
+        registerCommand("solve", solverProcessor);
 
         CommandProcessor evaluateProcessor = new CommandProcessor() {
             @Override
@@ -73,10 +71,10 @@ public class MatchingPoolsMain2 extends XmlParser {
                 return evaluateCommand(props);
             }
         };
-        cmdMap.put("evaluate", evaluateProcessor);
+        registerCommand("evaluate", evaluateProcessor);
 
         parseCommandLine(args, handler);
-        executeCommands(cmdMap);
+        executeCommands();
     }
 
     private static boolean modelCommand(Properties props) throws Exception {

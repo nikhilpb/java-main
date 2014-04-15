@@ -24,15 +24,13 @@ public class DOEMain extends XmlParser {
 
 
     public static void main(String[] args) throws Exception {
-        HashMap<String, CommandProcessor> cmdMap = new HashMap<String, CommandProcessor>();
-
         CommandProcessor modelProcessor = new CommandProcessor() {
             @Override
             public boolean processCommand(Properties props) throws Exception {
                 return modelCommand(props);
             }
         };
-        cmdMap.put("model", modelProcessor);
+        registerCommand("model", modelProcessor);
 
         CommandProcessor solveProcessor = new CommandProcessor() {
             @Override
@@ -40,7 +38,7 @@ public class DOEMain extends XmlParser {
                 return solveCommand(props);
             }
         };
-        cmdMap.put("solve", solveProcessor);
+        registerCommand("solve", solveProcessor);
 
         CommandProcessor printProcessor = new CommandProcessor() {
             @Override
@@ -48,7 +46,7 @@ public class DOEMain extends XmlParser {
                 return printCommand(props);
             }
         };
-        cmdMap.put("print", printProcessor);
+        registerCommand("print", printProcessor);
 
         CommandProcessor printMinProcessor = new CommandProcessor() {
             @Override
@@ -56,10 +54,10 @@ public class DOEMain extends XmlParser {
                 return printMinCommand(props);
             }
         };
-        cmdMap.put("print_mins", printMinProcessor);
+        registerCommand("print_mins", printMinProcessor);
 
         parseCommandLine(args, null);
-        executeCommands(cmdMap);
+        executeCommands();
     }
 
     public static boolean modelCommand(Properties props) {
