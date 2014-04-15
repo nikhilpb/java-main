@@ -2,7 +2,7 @@
 <config>
     <model>
         <type>general</type>
-        <file>data/model.txt</file>
+        <file>data/model-25.txt</file>
     </model>
     <solve>
         <method>greedy</method>
