@@ -136,4 +136,12 @@ public class PSDMatrix {
         Matrix psdMat = vMat.times(dMat).times(vMat.transpose());
         return psdMat.getArray();
     }
+
+    public PSDMatrix inverse() {
+        return new PSDMatrix(mat.inverse());
+    }
+
+    public double get(int i, int j) {
+        return mat.get(i, j);
+    }
 }

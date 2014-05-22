@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.*;
 
+@Deprecated
 /**
  * Created with IntelliJ IDEA.
  * User: nikhilpb

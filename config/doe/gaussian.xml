@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <gmodel>
+        <dim>10</dim>
+        <sigma>1.</sigma>
+        <rho>0.1</rho>
+        <time_periods>1000</time_periods>
+        <seed>123</seed>
+    </gmodel>
+    <evaluate_policy>
+        <policy_type>random</policy_type>
+        <seed>456</seed>
+        <trial_count>10000</trial_count>
+    </evaluate_policy>
+</config>
