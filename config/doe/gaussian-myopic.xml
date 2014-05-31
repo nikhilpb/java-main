@@ -8,8 +8,7 @@
         <seed>123</seed>
     </gmodel>
     <evaluate_policy>
-        <policy_type>random</policy_type>
-        <seed>456</seed>
+        <policy_type>myopic</policy_type>
         <trial_count>10000</trial_count>
     </evaluate_policy>
 </config>

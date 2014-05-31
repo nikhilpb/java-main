@@ -3,6 +3,7 @@ package com.nikhilpb.doe;
 import Jama.Matrix;
 import com.nikhilpb.util.Experiment;
 import com.nikhilpb.util.XmlParser;
+import com.nikhilpb.util.math.IIDSeq;
 import com.nikhilpb.util.math.PSDMatrix;
 
 import java.io.FileOutputStream;
@@ -195,17 +196,32 @@ public class DoeExperiment extends Experiment {
         int trialCount = Integer.parseInt(getPropertyOrDie(props, "trial_count"));
         PSDMatrix sigmaInv = gaussianModel.getCovarMatrix().inverse();
         double[] values = new double[trialCount];
+        IIDSeq neSeq = new IIDSeq(), effSeq = new IIDSeq(), perEffSeq = new IIDSeq(), aneSeq = new IIDSeq();
         for (int r = 0; r < trialCount; ++r) {
+            SequentialProblemStats stats = new SequentialProblemStats(gaussianModel.getDim(),
+                    gaussianModel.getCovarMatrix().mat());
             double[] state = new double[gaussianModel.getDim()];
             for (int t = 0; t < gaussianModel.getTimePeriods(); ++t) {
                 DataPoint dp = gaussianModel.next();
                 int action = policy.getAction(state, dp);
+                stats.addPoint(dp, action);
                 for (int i = 0; i < gaussianModel.getDim(); ++i) {
                     state[i] += action * dp.get(i);
                 }
             }
+            stats.aggregate();
+
+            neSeq.add(stats.getNormErr());
+            effSeq.add(stats.getEfficiency());
+            perEffSeq.add(stats.getPerEfficiency());
+            aneSeq.add(stats.getApproxNormErr());
+
             values[r] = valueAt(state, sigmaInv);
         }
+        System.out.println("Approx Norm Err: " + aneSeq.getMean());
+        System.out.println("Norm Err: " + neSeq.getMean() + ", Std err: " + neSeq.getStdDev());
+        System.out.println("Efficiency: " + effSeq.getMean() + ", Std err: " + effSeq.getStdDev());
+        System.out.println("PerEfficiency: " + perEffSeq.getMean() + ", Std err: " + perEffSeq.getStdDev());
 
         double mean = 0.;
 
