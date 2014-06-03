@@ -23,7 +23,7 @@ public class SequentialProblemStats {
     }
 
     public void addPoint(DataPoint dp, int action) {
-        if (dp.getDataVector().length != dim) {
+        if (dp.getDataVector().length != dim-1) {
             throw new RuntimeException("dimension mismatch");
         }
         points.add(dp);
@@ -33,16 +33,32 @@ public class SequentialProblemStats {
     public void aggregate() {
         double[][] empCovarMatrixArr = new double[dim][dim];
         double[] state = new double[dim];
+        double valX,valY;
         for (int t = 0; t < points.size(); ++t) {
             for (int i = 0; i < dim; ++i) {
+                if (i == dim-1) {
+                    valX = 1.;
+                } else {
+                    valX = points.get(t).get(i);
+                }
                 for (int j = 0; j < dim; ++j) {
-                    empCovarMatrixArr[i][j] += points.get(t).get(i) * points.get(t).get(j);
+                    if (j == dim-1) {
+                        valY = 1.;
+                    } else {
+                        valY = points.get(t).get(j);
+                    }
+                    empCovarMatrixArr[i][j] += valX * valY;
                 }
             }
 
             for (int i = 0; i < dim; ++i) {
-                state[i] += actions.get(t) * points.get(t).get(i);
+                if (i < dim -1) {
+                    state[i] += actions.get(t) * points.get(t).get(i);
+                } else {
+                    state[i] += actions.get(t);
+                }
             }
+
         }
 
         for (int i = 0; i < dim; ++i) {
@@ -59,12 +75,6 @@ public class SequentialProblemStats {
         for (int i = 0; i < dim; ++i) {
             for (int j = 0; j < dim; ++j) {
                 normErr += state[i] * state[j] * empCovarMatrixInv.get(i, j);
-            }
-        }
-
-        for (int i = 0; i < dim; ++i) {
-            for (int j = 0; j < dim; ++j) {
-                approxNormErr += state[i] * state[j] * invCovarMatrix.get(i, j);
             }
         }
 

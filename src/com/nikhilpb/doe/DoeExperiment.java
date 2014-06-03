@@ -161,11 +161,11 @@ public class DoeExperiment extends Experiment {
         final double rho = Double.parseDouble(getPropertyOrDie(props, "rho"));
         final int timePeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
         final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
-        double[][] muArray = new double[dim][1];
+        double[][] muArray = new double[dim-1][1];
         Matrix mu = new Matrix(muArray);
-        double[][] sigmaArray = new double[dim][dim];
-        for (int i = 0; i < dim; ++i) {
-            for (int j = 0; j < dim; ++j) {
+        double[][] sigmaArray = new double[dim-1][dim-1];
+        for (int i = 0; i < dim-1; ++i) {
+            for (int j = 0; j < dim-1; ++j) {
                 if (i == j) {
                     sigmaArray[i][j] = sigma * sigma;
                 } else {
@@ -198,12 +198,14 @@ public class DoeExperiment extends Experiment {
         double[] values = new double[trialCount];
         IIDSeq neSeq = new IIDSeq(), effSeq = new IIDSeq(), perEffSeq = new IIDSeq(), aneSeq = new IIDSeq();
         for (int r = 0; r < trialCount; ++r) {
-            SequentialProblemStats stats = new SequentialProblemStats(gaussianModel.getDim(),
+            SequentialProblemStats stats = new SequentialProblemStats(gaussianModel.getDim() + 1,
                     gaussianModel.getCovarMatrix().mat());
             double[] state = new double[gaussianModel.getDim()];
+            int diff = 0;
             for (int t = 0; t < gaussianModel.getTimePeriods(); ++t) {
                 DataPoint dp = gaussianModel.next();
-                int action = policy.getAction(state, dp);
+                int action = policy.getAction(state, diff, dp);
+                diff += action;
                 stats.addPoint(dp, action);
                 for (int i = 0; i < gaussianModel.getDim(); ++i) {
                     state[i] += action * dp.get(i);
@@ -245,7 +247,7 @@ public class DoeExperiment extends Experiment {
     }
 
     public static interface Policy {
-        public int getAction(double[] state, DataPoint nextPoint);
+        public int getAction(double[] state, int diff, DataPoint nextPoint);
     }
 
     public static class MyopicPolicy implements Policy {
@@ -256,7 +258,7 @@ public class DoeExperiment extends Experiment {
         }
 
         @Override
-        public int getAction(double[] state, DataPoint nextPoint) {
+        public int getAction(double[] state, int diff, DataPoint nextPoint) {
             int action = 1;
             double addValue = 0., subValue = 0.;
             int dim = state.length;
@@ -273,6 +275,8 @@ public class DoeExperiment extends Experiment {
                     subValue += subVector[i] * subVector[j] * sigmaInv.get(i, j);
                 }
             }
+            addValue += (diff + 1) * (diff + 1);
+            subValue += (diff - 1) * (diff - 1);
             if (subValue < addValue) {
                 action = -1;
             } else {
@@ -290,7 +294,7 @@ public class DoeExperiment extends Experiment {
         }
 
         @Override
-        public int getAction(double[] state, DataPoint nextPoint) {
+        public int getAction(double[] state, int diff, DataPoint nextPoint) {
             boolean rndBool = random.nextBoolean();
             if (rndBool) {
                 return 1;
