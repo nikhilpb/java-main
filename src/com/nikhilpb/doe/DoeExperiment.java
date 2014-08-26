@@ -134,10 +134,8 @@ public class DoeExperiment extends Experiment {
     String baseName = getPropertyOrDie(props, "base_name");
     try {
       for (int i = 1; i < timePeriods; ++ i) {
-        qFuns[i].printFn(
-                                new PrintStream(new FileOutputStream("results/doe/" + baseName + "-dim-" + dim + "-tp-" + i + ".csv")),
-                                0.,
-                                printUpper);
+        qFuns[i].printFn(new PrintStream(new FileOutputStream("results/doe/" + baseName + "-dim-" + dim + "-tp-" + i + ".csv")),
+                         0., printUpper);
 
       }
     } catch (Exception e) {
@@ -267,64 +265,6 @@ public class DoeExperiment extends Experiment {
       e.printStackTrace();
     }
     return true;
-  }
-
-  public static interface Policy {
-    public int getAction(double[] state, int diff, DataPoint nextPoint);
-  }
-
-  public static class MyopicPolicy implements Policy {
-    private PSDMatrix sigmaInv;
-
-    public MyopicPolicy(PSDMatrix sigmaMatrix) {
-      sigmaInv = sigmaMatrix.inverse();
-    }
-
-    @Override
-    public int getAction(double[] state, int diff, DataPoint nextPoint) {
-      int action = 1;
-      double addValue = 0., subValue = 0.;
-      int dim = state.length;
-      double[] addVector = new double[dim], subVector = new double[dim];
-      double[] dataPointVec = nextPoint.getDataVector();
-      for (int i = 0; i < dim; ++ i) {
-        addVector[i] = state[i] + dataPointVec[i];
-        subVector[i] = state[i] - dataPointVec[i];
-      }
-
-      for (int i = 0; i < dim; ++ i) {
-        for (int j = 0; j < dim; ++ j) {
-          addValue += addVector[i] * addVector[j] * sigmaInv.get(i, j);
-          subValue += subVector[i] * subVector[j] * sigmaInv.get(i, j);
-        }
-      }
-      addValue += (diff + 1) * (diff + 1);
-      subValue += (diff - 1) * (diff - 1);
-      if (subValue < addValue) {
-        action = - 1;
-      } else {
-        action = 1;
-      }
-      return action;
-    }
-  }
-
-  public static class RandomPolicy implements Policy {
-    private Random random;
-
-    public RandomPolicy(long seed) {
-      random = new Random(seed);
-    }
-
-    @Override
-    public int getAction(double[] state, int diff, DataPoint nextPoint) {
-      boolean rndBool = random.nextBoolean();
-      if (rndBool) {
-        return 1;
-      } else {
-        return - 1;
-      }
-    }
   }
 
   private double valueAt(double[] state, PSDMatrix sigmaInv) {
