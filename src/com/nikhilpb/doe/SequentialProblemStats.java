@@ -11,7 +11,7 @@ public class SequentialProblemStats {
     private int dim;
     private ArrayList<DataPoint> points;
     private ArrayList<Integer> actions;
-    private double normErr, approxNormErr, efficiency, perEfficiency;
+    private double normErr, approxNormErr, efficiency, perEfficiency, randEff;
     private Matrix invCovarMatrix;
 
 
@@ -33,6 +33,7 @@ public class SequentialProblemStats {
     public void aggregate() {
         double[][] empCovarMatrixArr = new double[dim][dim];
         double[] state = new double[dim];
+        double[] mean = new double[dim];
         double valX,valY;
         for (int t = 0; t < points.size(); ++t) {
             for (int i = 0; i < dim; ++i) {
@@ -59,12 +60,21 @@ public class SequentialProblemStats {
                 }
             }
 
+            for (int i = 0; i < dim; ++i) {
+                if (i < dim -1) {
+                    mean[i] += points.get(t).get(i);
+                } else {
+                    mean[i] += 1.;
+                }
+            }
         }
+
 
         for (int i = 0; i < dim; ++i) {
             for (int j = 0; j < dim; ++j) {
                 empCovarMatrixArr[i][j] = empCovarMatrixArr[i][j] / points.size();
             }
+            mean[i] = mean[i] / points.size();
         }
 
 
@@ -78,6 +88,14 @@ public class SequentialProblemStats {
             }
         }
 
+        double ip = 0.;
+        for (int i = 0; i < dim; ++i) {
+            for (int j = 0; j < dim; ++j) {
+                ip += mean[i] * mean[j] * empCovarMatrixInv.get(i, j);
+            }
+        }
+
+        randEff = (1 - ((dim - ip) / (points.size() - 1)));
         efficiency = points.size() - normErr / points.size();
         perEfficiency = efficiency / points.size();
     }
@@ -97,4 +115,6 @@ public class SequentialProblemStats {
     public double getApproxNormErr() {
         return approxNormErr;
     }
+
+    public double getRandEf() { return randEff; }
 }

@@ -29,12 +29,13 @@ public class DoeExperiment extends Experiment {
     private int timePeriods;
     private OneDFunction[] qFuns;
     private GaussianModel gaussianModel;
+    private UserData userData;
 
 
     private static Experiment instance = null;
 
     public static Experiment getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new DoeExperiment();
         }
         return instance;
@@ -91,6 +92,13 @@ public class DoeExperiment extends Experiment {
         };
         registerCommand("evaluate_policy", evaluatePolicyProcessor);
 
+        CommandProcessor loadUserDataProcessor = new CommandProcessor() {
+            @Override
+            public boolean processCommand(Properties props) throws Exception {
+                return loadUserDataCommand(props);
+            }
+        };
+        registerCommand("load_data", loadUserDataProcessor);
     }
 
     public boolean modelCommand(Properties props) {
@@ -105,8 +113,7 @@ public class DoeExperiment extends Experiment {
         pointsCount = Integer.parseInt(getPropertyOrDie(props, "points_count"));
         seed = Long.parseLong(getPropertyOrDie(props, "seed"));
         QFunctionRecursion.PolicyType policyType;
-        String ptString = getPropertyOrDie(props, "policy_type");
-        if (ptString.equals("myopic")) {
+        if (getPropertyOrDie(props, "policy_type").equals("myopic")) {
             policyType = QFunctionRecursion.PolicyType.MYOPIC;
         } else {
             policyType = QFunctionRecursion.PolicyType.OPTIMAL;
@@ -196,7 +203,11 @@ public class DoeExperiment extends Experiment {
         int trialCount = Integer.parseInt(getPropertyOrDie(props, "trial_count"));
         PSDMatrix sigmaInv = gaussianModel.getCovarMatrix().inverse();
         double[] values = new double[trialCount];
-        IIDSeq neSeq = new IIDSeq(), effSeq = new IIDSeq(), perEffSeq = new IIDSeq(), aneSeq = new IIDSeq();
+        IIDSeq neSeq = new IIDSeq(),
+                effSeq = new IIDSeq(),
+                perEffSeq = new IIDSeq(),
+                aneSeq = new IIDSeq(),
+                reSeq = new IIDSeq();
         for (int r = 0; r < trialCount; ++r) {
             SequentialProblemStats stats = new SequentialProblemStats(gaussianModel.getDim() + 1,
                     gaussianModel.getCovarMatrix().mat());
@@ -217,6 +228,7 @@ public class DoeExperiment extends Experiment {
             effSeq.add(stats.getEfficiency());
             perEffSeq.add(stats.getPerEfficiency());
             aneSeq.add(stats.getApproxNormErr());
+            reSeq.add(stats.getRandEf());
 
             values[r] = valueAt(state, sigmaInv);
         }
@@ -224,6 +236,7 @@ public class DoeExperiment extends Experiment {
         System.out.println("Norm Err: " + neSeq.getMean() + ", Std err: " + neSeq.getStdDev());
         System.out.println("Efficiency: " + effSeq.getMean() + ", Std err: " + effSeq.getStdDev());
         System.out.println("PerEfficiency: " + perEffSeq.getMean() + ", Std err: " + perEffSeq.getStdDev());
+        System.out.println("RandEff: " + reSeq.getMean() + ", Std err: " + reSeq.getStdDev());
 
         double mean = 0.;
 
@@ -242,8 +255,18 @@ public class DoeExperiment extends Experiment {
 
         System.out.println("Mean: " + mean + ", Standard Error: " + stdErr);
         return true;
+    }
 
-
+    public boolean loadUserDataCommand(Properties props) {
+        String userFile = getPropertyOrDie(props, "file");
+        int userCount = Integer.parseInt(getPropertyOrDie(props, "user_count"));
+        dim = Integer.parseInt(getPropertyOrDie(props, "dim"));
+        try {
+            userData = new UserData(userFile, userCount, dim);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public static interface Policy {

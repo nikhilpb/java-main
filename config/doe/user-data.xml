@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config>
+    <load_data>
+        <file>/Users/nikhilpb/data/yahoo-clicks-data/user-data</file>
+        <user_count>100000</user_count>
+        <dim>136</dim>
+    </load_data>
+</config>

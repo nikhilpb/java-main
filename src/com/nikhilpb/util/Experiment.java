@@ -32,8 +32,6 @@ public abstract class Experiment {
     private ArrayList<Pair<String, Properties>> parseTree;
     private PrintStream oStream, eStream;
 
-
-
     public void parseXml(String xmlFileName) {
         File configFile = new File(xmlFileName);
         try {
@@ -119,9 +117,5 @@ public abstract class Experiment {
             throw new RuntimeException(tag + " is required");
         }
         return prop;
-    }
-
-    protected double getDoublePropertyOrDie(Properties props, String tag) {
-        return Double.parseDouble(getPropertyOrDie(props, tag));
     }
 }
