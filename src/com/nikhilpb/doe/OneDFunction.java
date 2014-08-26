@@ -6,9 +6,9 @@ import java.io.PrintStream;
  * Created by nikhilpb on 3/20/14.
  */
 public interface OneDFunction {
-    public double value(double x);
+  public double value(double x);
 
-    public void printFn(PrintStream stream, double low, double high);
+  public void printFn(PrintStream stream, double low, double high);
 
-    public double minAt(double searchLower, double searchUpper);
+  public double minAt(double searchLower, double searchUpper);
 }

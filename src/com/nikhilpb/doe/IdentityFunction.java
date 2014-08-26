@@ -6,23 +6,23 @@ import java.io.PrintStream;
  * Created by nikhilpb on 3/20/14.
  */
 public class IdentityFunction implements OneDFunction {
-    private static final int kPrintCount = 1000;
+  private static final int kPrintCount = 1000;
 
-    @Override
-    public double value(double x) {
-        return x;
-    }
+  @Override
+  public double value(double x) {
+    return x;
+  }
 
-    @Override
-    public void printFn(PrintStream stream, double low, double high) {
-        final double delta = (high - low) / kPrintCount;
-        for (int i = 0; i < kPrintCount + 1; ++i) {
-            stream.println((low + i * delta) + "," + (low + i * delta));
-        }
+  @Override
+  public void printFn(PrintStream stream, double low, double high) {
+    final double delta = (high - low) / kPrintCount;
+    for (int i = 0; i < kPrintCount + 1; ++ i) {
+      stream.println((low + i * delta) + "," + (low + i * delta));
     }
+  }
 
-    @Override
-    public double minAt(double searchLower, double searchUpper) {
-        return 0.;
-    }
+  @Override
+  public double minAt(double searchLower, double searchUpper) {
+    return 0.;
+  }
 }
