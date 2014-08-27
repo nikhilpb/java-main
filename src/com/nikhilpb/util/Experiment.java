@@ -136,6 +136,7 @@ public abstract class Experiment {
     Experiment experiment = experiments.get(experimentName);
     if (experiment == null) {
       System.err.println("No experiment named " + experimentName + " found");
+      System.err.println(experiments.toString());
       return;
     }
     String configFile = "config/" + experimentName + "/" + args[1] + ".xml";
