@@ -21,6 +21,12 @@ import java.util.Properties;
  */
 public abstract class Experiment {
 
+  static protected HashMap<String, Experiment> experiments;
+
+  static {
+    experiments = new HashMap<String, Experiment>();
+  }
+
   public Experiment() {
     cmdMap = new HashMap<String, CommandProcessor>();
     parseTree = new ArrayList<Pair<String, Properties>>();
@@ -126,14 +132,11 @@ public abstract class Experiment {
    * @param args Two arguments, first is the experiment to be performed and second is the path to the xml file.
    */
   public static void main(String[] args) {
-    Experiment experiment;
     String experimentName = args[0];
-    if (experimentName.equals("doe")) {
-      experiment = DoeExperiment.getInstance();
-    } else if (experimentName.equals("matching")) {
-      experiment = MatchingExperiment.getInstance();
-    } else {
-      throw new IllegalArgumentException("no experiment called " + experimentName);
+    Experiment experiment = experiments.get(experimentName);
+    if (experiment == null) {
+      System.err.println("No experiment named " + experimentName + " found");
+      return;
     }
     String configFile = "config/" + experimentName + "/" + args[1] + ".xml";
     experiment.parseXml(configFile);

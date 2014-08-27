@@ -29,6 +29,10 @@ public class MatchingExperiment extends Experiment {
     return instance;
   }
 
+  static {
+    experiments.put("matching", getInstance());
+  }
+
   private MatchingExperiment() {
     CommandProcessor modelProcessor = new CommandProcessor() {
       @Override

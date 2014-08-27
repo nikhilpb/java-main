@@ -28,6 +28,9 @@ public class DoeExperiment extends Experiment {
   private GaussianModel gaussianModel;
   private UserData userData;
 
+  static {
+    experiments.put("doe", getInstance());
+  }
 
   private static Experiment instance = null;
 
