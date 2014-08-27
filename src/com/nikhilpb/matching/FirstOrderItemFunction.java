@@ -8,25 +8,25 @@ package com.nikhilpb.matching;
  * To change this template use File | Settings | File Templates.
  */
 public class FirstOrderItemFunction implements ItemFunction {
-    private int dim;
-    private int level;
+  private int dim;
+  private int level;
 
-    public FirstOrderItemFunction(int dim, int level) {
-        this.dim = dim;
-        this.level = level;
-    }
+  public FirstOrderItemFunction(int dim, int level) {
+    this.dim = dim;
+    this.level = level;
+  }
 
-    public double evaluate(Item type) {
-        if (dim >= type.getDimensions()) {
-            System.out.println("invalid function for this type");
-            return -1.0;
-        } else if (level == type.getTypeAtDimension(dim)) {
-            return 1.0;
-        }
-        return 0.0;
+  public double evaluate(Item type) {
+    if (dim >= type.getDimensions()) {
+      System.out.println("invalid function for this type");
+      return - 1.0;
+    } else if (level == type.getTypeAtDimension(dim)) {
+      return 1.0;
     }
+    return 0.0;
+  }
 
-    public String toString() {
-        return ("First order item function, dimensions: " + dim + ", Level:" + level);
-    }
+  public String toString() {
+    return ("First order item function, dimensions: " + dim + ", Level:" + level);
+  }
 }

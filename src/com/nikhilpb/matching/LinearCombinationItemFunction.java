@@ -10,41 +10,41 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class LinearCombinationItemFunction implements ItemFunction {
-    private ArrayList<ItemFunction> functionList;
-    private double[] r;
+  private ArrayList<ItemFunction> functionList;
+  private double[] r;
 
-    public LinearCombinationItemFunction(ArrayList<ItemFunction> functionList, double[] r) {
-        if (functionList.size() == r.length) {
-            this.functionList = functionList;
-            this.r = r;
-        } else {
-            System.err.println("Dimensions of function list and r don't match");
-        }
+  public LinearCombinationItemFunction(ArrayList<ItemFunction> functionList, double[] r) {
+    if (functionList.size() == r.length) {
+      this.functionList = functionList;
+      this.r = r;
+    } else {
+      System.err.println("Dimensions of function list and r don't match");
     }
+  }
 
-    public double evaluate(Item type) {
-        double out = 0.0;
-        for (int i = 0; i < r.length; i++) {
-            out += r[i] * (functionList.get(i)).evaluate(type);
-        }
-        return out;
+  public double evaluate(Item type) {
+    double out = 0.0;
+    for (int i = 0; i < r.length; i++) {
+      out += r[i] * (functionList.get(i)).evaluate(type);
     }
+    return out;
+  }
 
-    public void scale(double scale) {
-        for (int i = 0; i < r.length; ++i) {
-            r[i] *= scale;
-        }
-        return;
+  public void scale(double scale) {
+    for (int i = 0; i < r.length; ++ i) {
+      r[i] *= scale;
     }
+    return;
+  }
 
-    public String toString() {
-        String name = "";
-        for (int i = 0; i < r.length; i++) {
-            name += (r[i] + "*f_" + i + " ");
-            if (i < r.length - 1) {
-                name += "+ ";
-            }
-        }
-        return name;
+  public String toString() {
+    String name = "";
+    for (int i = 0; i < r.length; i++) {
+      name += (r[i] + "*f_" + i + " ");
+      if (i < r.length - 1) {
+        name += "+ ";
+      }
     }
+    return name;
+  }
 }

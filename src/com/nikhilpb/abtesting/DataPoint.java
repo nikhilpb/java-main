@@ -1,11 +1,7 @@
-package com.nikhilpb.doe;
+package com.nikhilpb.abtesting;
 
 /**
- * Created with IntelliJ IDEA.
- * User: nikhilpb
- * Date: 5/5/14
- * Time: 7:07 PM
- * To change this template use File | Settings | File Templates.
+ * Created by nikhilpb on 8/27/14.
  */
 public class DataPoint {
   private final double[] dataVector;
@@ -23,10 +19,11 @@ public class DataPoint {
   }
 
   public String toString() {
-    String str = "";
+    StringBuilder builder = new StringBuilder();
     for (int i = 0; i < dataVector.length; ++ i) {
-      str += dataVector[i] + " ";
+      builder.append(dataVector[i])
+             .append(" ");
     }
-    return str;
+    return builder.toString();
   }
 }

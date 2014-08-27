@@ -1,6 +1,6 @@
 package com.nikhilpb.matching;
 
-import com.moallemi.util.data.Pair;
+import com.nikhilpb.util.Pair;
 import ilog.cplex.IloCplex;
 
 import java.io.File;
@@ -16,164 +16,165 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class SsgdSolver extends MatchingSolver {
-    private final double eps, a , b;
-    private final int sampleCount, checkPerSteps, simSteps;
-    private final long simSeed;
-    private double[] kappaSupply, kappaDemand;
-    private final ItemFunctionSet  basisSetSupply, basisSetDemand;
+  private final double eps, a, b;
+  private final int sampleCount, checkPerSteps, simSteps;
+  private final long simSeed;
+  private double[] kappaSupply, kappaDemand;
+  private final ItemFunctionSet basisSetSupply, basisSetDemand;
 
-    public SsgdSolver(MatchingModel model,
-                      ItemFunctionSet basisSetSupply,
-                      ItemFunctionSet basisSetDemand,
-                      long sampleSeed,
-                      MatchingSolver.SamplingPolicy samplingPolicy,
-                      Config config) {
-        this.eps = config.epsConfig;
-        this.a = config.aConfig;
-        this.b = config.bConfig;
-        this.checkPerSteps = config.checkPerStepsConfig;
-        this.sampleCount = config.stepCountConfig;
-        this.simSteps = config.simSteps;
-        this.simSeed = config.simSeed;
-        this.basisSetSupply = basisSetSupply;
-        this.basisSetDemand = basisSetDemand;
-        kappaSupply = new double[this.basisSetSupply.size()];
-        Arrays.fill(kappaSupply, 0.0);
-        kappaDemand = new double[this.basisSetDemand.size()];
-        Arrays.fill(kappaDemand, 0.0);
-        System.out.println();
-        System.out.println("SALP with stochastic sub-gradient method");
-        System.out.println();
-        System.out.printf("solver parameters -\neps: %f\na: %f\nb: %f\n", eps, a, b);
-        System.out.printf("sim steps: %d\nsim seed: %d", simSteps, simSeed);
-        System.out.println();
-        initParams(model, sampleSeed, samplingPolicy);
-    }
+  public SsgdSolver(MatchingModel model,
+                    ItemFunctionSet basisSetSupply,
+                    ItemFunctionSet basisSetDemand,
+                    long sampleSeed,
+                    MatchingSolver.SamplingPolicy samplingPolicy,
+                    Config config) {
+    this.eps = config.epsConfig;
+    this.a = config.aConfig;
+    this.b = config.bConfig;
+    this.checkPerSteps = config.checkPerStepsConfig;
+    this.sampleCount = config.stepCountConfig;
+    this.simSteps = config.simSteps;
+    this.simSeed = config.simSeed;
+    this.basisSetSupply = basisSetSupply;
+    this.basisSetDemand = basisSetDemand;
+    kappaSupply = new double[this.basisSetSupply.size()];
+    Arrays.fill(kappaSupply, 0.0);
+    kappaDemand = new double[this.basisSetDemand.size()];
+    Arrays.fill(kappaDemand, 0.0);
+    System.out.println();
+    System.out.println("SALP with stochastic sub-gradient method");
+    System.out.println();
+    System.out.printf("solver parameters -\neps: %f\na: %f\nb: %f\n", eps, a, b);
+    System.out.printf("sim steps: %d\nsim seed: %d", simSteps, simSeed);
+    System.out.println();
+    initParams(model, sampleSeed, samplingPolicy);
+  }
 
-    public boolean solve() {
-        double stepSize;
-        double[] sgSupply = new double[kappaSupply.length];
-        double[] sgDemand = new double[kappaDemand.length];
-        MatchingSamplePath samplePath;
-        double maxValue = 0.0;
-        try {
-            PrintStream out = new PrintStream(new File("ssgd-results.txt"));
-            Evaluator evaluator = new Evaluator(this, out, simSteps, simSeed);
-            for (int i = 0; i < sampleCount; ++i) {
-                stepSize = a / (b + (double) i);
-                if (i % checkPerSteps == 0) {
-                    double value = evaluator.evaluate("sampled instance: " + i);
-                    if (value >= maxValue) {
-                        maxValue = value;
-                    }
-                    System.out.println("sampled instance: " + i
-                            + ", step size: " + stepSize + ", value: "
-                            + value + ", max value: " + maxValue);
-                }
-                samplePath = samplePathMatched(random.nextLong());
-                findSubgrad(samplePath, sgSupply, sgDemand);
-                // Minimize objective, subtract sub-gradient
-                for (int j = 0; j < kappaSupply.length; ++j) {
-                    kappaSupply[j] -= stepSize * sgSupply[j];
-                }
-                for (int j = 0; j < kappaDemand.length; ++j) {
-                    kappaDemand[j] -= stepSize * sgDemand[j];
-                }
-            }
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+  public boolean solve() {
+    double stepSize;
+    double[] sgSupply = new double[kappaSupply.length];
+    double[] sgDemand = new double[kappaDemand.length];
+    MatchingSamplePath samplePath;
+    double maxValue = 0.0;
+    try {
+      PrintStream out = new PrintStream(new File("ssgd-results.txt"));
+      Evaluator evaluator = new Evaluator(this, out, simSteps, simSeed);
+      for (int i = 0; i < sampleCount; ++ i) {
+        stepSize = a / (b + (double) i);
+        if (i % checkPerSteps == 0) {
+          double value = evaluator.evaluate("sampled instance: " + i);
+          if (value >= maxValue) {
+            maxValue = value;
+          }
+          System.out.println("sampled instance: " + i
+                                     + ", step size: " + stepSize + ", value: "
+                                     + value + ", max value: " + maxValue);
         }
-        return true;
-    }
-
-    protected void findSubgrad(MatchingSamplePath samplePath,
-                               double[] sgSupply,
-                               double[] sgDemand) {
-        Arrays.fill(sgSupply, 0.0);
-        Arrays.fill(sgDemand, 0.0);
-        int tp = samplePath.getTimePeriods();
-        ArrayList<Item> states, supItems = new ArrayList<Item>(), demItems = new ArrayList<Item>();
-        ItemFunction supplyFunction = basisSetSupply.getLinearCombination(kappaSupply);
-        ItemFunction demandFunction = basisSetDemand.getLinearCombination(kappaDemand);
-        double mult;
-        double qs = model.getSupplyDepartureRate(), qd = model.getDemandDepartureRate();
-        try {
-            IloCplex cplex = new IloCplex();
-            cplex.setOut(null); // no printing to stdout
-            for (int t = 0; t <= tp; ++t) {
-                states = samplePath.getStates(t);
-                supItems.clear(); demItems.clear();
-                for (Item s : states) {
-                    if (s.isSod() == 1) {
-                        supItems.add(s);
-                    } else {
-                        demItems.add(s);
-                    }
-                }
-                int supplySize = supItems.size();
-                int demandSize = demItems.size();
-                double[][] w = new double[supplySize][demandSize];
-                for (int i = 0; i < supplySize; ++i) {
-                    for (int j = 0; j < demandSize; ++j) {
-                        w[i][j] = model.getRewardFunction().evaluate(supItems.get(i), demItems.get(j));
-                        if ( t < tp) {
-                            w[i][j] = w[i][j] - (1. - qs)*supplyFunction.evaluate(supItems.get(i))
-                                    - (1. - qd)*demandFunction.evaluate(demItems.get(j));
-                        }
-                    }
-                }
-                AsymmetricMatcher matcher = new AsymmetricMatcher(w, cplex);
-                if (!matcher.solve()) {
-                    throw new RuntimeException("problem solving asymmetric matcher");
-                }
-                ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairs();
-                ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
-                for (Pair<Integer, Integer> p : pairs) {
-                    matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
-                }
-                SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
-                        states, matchedPairs, t == tp);
-                double[] coeffKappaS, coeddKappaD;
-                if (!constraint.satisfied(kappaSupply, kappaDemand)) {
-                    coeffKappaS = constraint.getKappa1Coeff();
-                    coeddKappaD = constraint.getKappa2Coeff();
-                    for (int i = 0; i < sgSupply.length; ++i) {
-                        sgSupply[i] -= (1.+eps) * coeffKappaS[i];
-                    }
-                    for (int j = 0; j < sgDemand.length; ++j) {
-                        sgDemand[j] -= (1.+eps) * coeddKappaD[j];
-                    }
-                }
-                constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand, states,
-                                                samplePath.getMatchedPairs(t), (t == tp));
-                coeffKappaS = constraint.getKappa1Coeff();
-                coeddKappaD = constraint.getKappa2Coeff();
-                for (int i = 0; i < sgSupply.length; ++i) {
-                    sgSupply[i] += coeffKappaS[i];
-                }
-                for (int j = 0; j < sgDemand.length; ++j) {
-                    sgDemand[j] += coeddKappaD[j];
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        samplePath = samplePathMatched(random.nextLong());
+        findSubgrad(samplePath, sgSupply, sgDemand);
+        // Minimize objective, subtract sub-gradient
+        for (int j = 0; j < kappaSupply.length; ++ j) {
+          kappaSupply[j] -= stepSize * sgSupply[j];
         }
-    }
+        for (int j = 0; j < kappaDemand.length; ++ j) {
+          kappaDemand[j] -= stepSize * sgDemand[j];
+        }
+      }
+      out.close();
 
-    public ItemFunction getSupplyFunction() {
-        return basisSetSupply.getLinearCombination(kappaSupply);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    return true;
+  }
 
-    public ItemFunction getDemandFunction() {
-        return basisSetDemand.getLinearCombination(kappaDemand);
-    }
+  protected void findSubgrad(MatchingSamplePath samplePath,
+                             double[] sgSupply,
+                             double[] sgDemand) {
+    Arrays.fill(sgSupply, 0.0);
+    Arrays.fill(sgDemand, 0.0);
+    int tp = samplePath.getTimePeriods();
+    ArrayList<Item> states, supItems = new ArrayList<Item>(), demItems = new ArrayList<Item>();
+    ItemFunction supplyFunction = basisSetSupply.getLinearCombination(kappaSupply);
+    ItemFunction demandFunction = basisSetDemand.getLinearCombination(kappaDemand);
+    double mult;
+    double qs = model.getSupplyDepartureRate(), qd = model.getDemandDepartureRate();
+    try {
+      IloCplex cplex = new IloCplex();
+      cplex.setOut(null); // no printing to stdout
+      for (int t = 0; t <= tp; ++ t) {
+        states = samplePath.getStates(t);
+        supItems.clear();
+        demItems.clear();
+        for (Item s : states) {
+          if (s.isSod() == 1) {
+            supItems.add(s);
+          } else {
+            demItems.add(s);
+          }
+        }
+        int supplySize = supItems.size();
+        int demandSize = demItems.size();
+        double[][] w = new double[supplySize][demandSize];
+        for (int i = 0; i < supplySize; ++ i) {
+          for (int j = 0; j < demandSize; ++ j) {
+            w[i][j] = model.getRewardFunction().evaluate(supItems.get(i), demItems.get(j));
+            if (t < tp) {
+              w[i][j] = w[i][j] - (1. - qs) * supplyFunction.evaluate(supItems.get(i))
+                                - (1. - qd) * demandFunction.evaluate(demItems.get(j));
+            }
+          }
+        }
+        AsymmetricMatcher matcher = new AsymmetricMatcher(w, cplex);
+        if (! matcher.solve()) {
+          throw new RuntimeException("problem solving asymmetric matcher");
+        }
+        ArrayList<Pair<Integer, Integer>> pairs = matcher.getMatchedPairs();
+        ArrayList<Pair<Item, Item>> matchedPairs = new ArrayList<Pair<Item, Item>>();
+        for (Pair<Integer, Integer> p : pairs) {
+          matchedPairs.add(new Pair<Item, Item>(supItems.get(p.getFirst()), demItems.get(p.getSecond())));
+        }
+        SalpConstraint constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand,
+                                                              states, matchedPairs, t == tp);
+        double[] coeffKappaS, coeddKappaD;
+        if (! constraint.satisfied(kappaSupply, kappaDemand)) {
+          coeffKappaS = constraint.getKappa1Coeff();
+          coeddKappaD = constraint.getKappa2Coeff();
+          for (int i = 0; i < sgSupply.length; ++ i) {
+            sgSupply[i] -= (1. + eps) * coeffKappaS[i];
+          }
+          for (int j = 0; j < sgDemand.length; ++ j) {
+            sgDemand[j] -= (1. + eps) * coeddKappaD[j];
+          }
+        }
+        constraint = new SalpConstraint(model, basisSetSupply, basisSetDemand, states,
+                                               samplePath.getMatchedPairs(t), (t == tp));
+        coeffKappaS = constraint.getKappa1Coeff();
+        coeddKappaD = constraint.getKappa2Coeff();
+        for (int i = 0; i < sgSupply.length; ++ i) {
+          sgSupply[i] += coeffKappaS[i];
+        }
+        for (int j = 0; j < sgDemand.length; ++ j) {
+          sgDemand[j] += coeddKappaD[j];
+        }
 
-    public static class Config {
-        public double epsConfig, aConfig, bConfig;
-        public int stepCountConfig, checkPerStepsConfig, simSteps;
-        public long simSeed;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
+
+  public ItemFunction getSupplyFunction() {
+    return basisSetSupply.getLinearCombination(kappaSupply);
+  }
+
+  public ItemFunction getDemandFunction() {
+    return basisSetDemand.getLinearCombination(kappaDemand);
+  }
+
+  public static class Config {
+    public double epsConfig, aConfig, bConfig;
+    public int stepCountConfig, checkPerStepsConfig, simSteps;
+    public long simSeed;
+  }
 }

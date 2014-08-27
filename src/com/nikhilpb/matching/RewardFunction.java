@@ -9,5 +9,5 @@ package com.nikhilpb.matching;
  */
 public interface RewardFunction {
 
-    public double evaluate(Item type1, Item type2);
+  public double evaluate(Item type1, Item type2);
 }

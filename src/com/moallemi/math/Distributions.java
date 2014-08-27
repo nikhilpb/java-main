@@ -2,9 +2,6 @@ package com.moallemi.math;
 
 import java.util.Random;
 
-import com.moallemi.math.stats.SampleStatistics;
-import com.moallemi.util.*;
-
 /**
  * Package for sampling from various random distributions.
  *
@@ -256,53 +253,5 @@ public class Distributions {
         }
 
         return k;
-    }
-
-
-    // testing harness
-    private static class TestMain extends CommandLineMain {
-        private int count = 100;
-        private SampleStatistics stats = new SampleStatistics();
-        protected boolean processCommand(CommandLineIterator cmd) {
-            String base = cmd.next();
-
-            if (base.equals("count")) 
-                count = cmd.nextInt();
-
-            else if (base.equals("testmv")) {
-                // test mean and variance
-                String distType = cmd.next();
-                stats.clear();
-
-                if (distType.equals("binomial")) {
-                    int n = cmd.nextInt();
-                    double p = cmd.nextDouble();
-                    Random r = getRandom();
-                    for (int i = 0; i < count; i++) 
-                        stats.addSample(nextBinomial(r, n, p));
-                }
-                else
-                    throw new IllegalArgumentException("unknown distribution: "
-                                                       + distType);
-                
-                System.out.println("mean = " 
-                                   + stats.getMean()
-                                   + " stddev = "
-                                   + stats.getStandardDeviation());
-                System.out.println("min = " 
-                                   + stats.getMinimum()
-                                   + " max = "
-                                   + stats.getMaximum());
-            }
-
-            else
-                return false;
-
-            return true;
-        }
-    }
-
-    public static void main(String[] argv) throws Exception {
-        (new TestMain()).run(argv);
     }
 }

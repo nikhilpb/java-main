@@ -2,15 +2,12 @@ package com.nikhilpb.doe;
 
 import Jama.Matrix;
 import com.nikhilpb.util.Experiment;
-import com.nikhilpb.util.XmlParser;
 import com.nikhilpb.util.math.IIDSeq;
 import com.nikhilpb.util.math.PSDMatrix;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.

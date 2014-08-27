@@ -20,18 +20,18 @@ import com.nikhilpb.matching.MatchingExperiment;
  */
 public class ExperimentMain {
 
-    public static void main(String[] args) {
-        Experiment experiment;
-        String experimentName = args[0];
-        if (experimentName.equals("doe")) {
-            experiment = DoeExperiment.getInstance();
-        } else if (experimentName.equals("matching")) {
-            experiment = MatchingExperiment.getInstance();
-        } else {
-            throw new IllegalArgumentException("no experiment called " + experimentName);
-        }
-        String configFile = "config/" +  experimentName + "/" + args[1] + ".xml";
-        experiment.parseXml(configFile);
-        experiment.executeCommands();
+  public static void main(String[] args) {
+    Experiment experiment;
+    String experimentName = args[0];
+    if (experimentName.equals("doe")) {
+      experiment = DoeExperiment.getInstance();
+    } else if (experimentName.equals("matching")) {
+      experiment = MatchingExperiment.getInstance();
+    } else {
+      throw new IllegalArgumentException("no experiment called " + experimentName);
     }
+    String configFile = "config/" + experimentName + "/" + args[1] + ".xml";
+    experiment.parseXml(configFile);
+    experiment.executeCommands();
+  }
 }

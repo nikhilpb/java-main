@@ -14,12 +14,12 @@ import java.util.ArrayList;
  */
 
 public class FirstOrderItemFunctionTest extends TestCase {
-    @Test
-    public void testEvaluate() throws Exception {
-        ArrayList<Item> items = TestFactory.fakeItems();
-        FirstOrderItemFunction foif = new FirstOrderItemFunction(0, TestFactory.kArr1[0]);
-        assertEquals(foif.evaluate(items.get(0)), 1.0);
-        foif = new FirstOrderItemFunction(0, TestFactory.kArr1[0] + 1);
-        assertEquals(foif.evaluate(items.get(0)), 0.0);
-    }
+  @Test
+  public void testEvaluate() throws Exception {
+    ArrayList<Item> items = TestFactory.fakeItems();
+    FirstOrderItemFunction foif = new FirstOrderItemFunction(0, TestFactory.kArr1[0]);
+    assertEquals(foif.evaluate(items.get(0)), 1.0);
+    foif = new FirstOrderItemFunction(0, TestFactory.kArr1[0] + 1);
+    assertEquals(foif.evaluate(items.get(0)), 0.0);
+  }
 }

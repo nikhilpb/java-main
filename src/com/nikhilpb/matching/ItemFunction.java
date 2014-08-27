@@ -8,5 +8,5 @@ package com.nikhilpb.matching;
  * To change this template use File | Settings | File Templates.
  */
 public interface ItemFunction {
-    public double evaluate(Item type);
+  public double evaluate(Item type);
 }

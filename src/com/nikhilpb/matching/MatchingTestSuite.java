@@ -14,7 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(value = Suite.class)
-@SuiteClasses(value = { MultiIndependentDistTest.class,
-                        FirstOrderItemFunctionTest.class,
-                        SimpleItemFunctionTest.class })
-public class MatchingTestSuite { }
+@SuiteClasses(value = {MultiIndependentDistTest.class,
+                              FirstOrderItemFunctionTest.class,
+                              SimpleItemFunctionTest.class})
+public class MatchingTestSuite {
+}

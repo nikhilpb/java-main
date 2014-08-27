@@ -9,17 +9,17 @@ package com.nikhilpb.matching;
  */
 public class ConstantItemFunction implements ItemFunction {
 
-    private double value;
+  private double value;
 
-    public ConstantItemFunction(double value) {
-        this.value = value;
-    }
+  public ConstantItemFunction(double value) {
+    this.value = value;
+  }
 
-    public double evaluate(Item type) {
-        return value;
-    }
+  public double evaluate(Item type) {
+    return value;
+  }
 
-    public String toString() {
-        return ("constant function that returns " + value);
-    }
+  public String toString() {
+    return ("constant function that returns " + value);
+  }
 }

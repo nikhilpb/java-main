@@ -9,24 +9,24 @@ package com.nikhilpb.matching;
  */
 public class GreedySolver extends MatchingSolver {
 
-    public GreedySolver(MatchingModel model,
+  public GreedySolver(MatchingModel model,
                       long sampleSeed,
                       MatchingSolver.SamplingPolicy samplingPolicy) {
-        System.out.println();
-        System.out.println("creating a greedy solver");
-        System.out.println();
-        initParams(model, sampleSeed, samplingPolicy);
-    }
+    System.out.println();
+    System.out.println("creating a greedy solver");
+    System.out.println();
+    initParams(model, sampleSeed, samplingPolicy);
+  }
 
-    public boolean solve() {
-        return true;
-    }
+  public boolean solve() {
+    return true;
+  }
 
-    public ItemFunction getSupplyFunction() {
-        return new ConstantItemFunction(0.0);
-    }
+  public ItemFunction getSupplyFunction() {
+    return new ConstantItemFunction(0.0);
+  }
 
-    public ItemFunction getDemandFunction() {
-        return new ConstantItemFunction(0.0);
-    }
+  public ItemFunction getDemandFunction() {
+    return new ConstantItemFunction(0.0);
+  }
 }

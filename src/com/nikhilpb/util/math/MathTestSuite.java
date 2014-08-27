@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
  * To change this template use File | Settings | File Templates.
  */
 @RunWith(value = Suite.class)
-@Suite.SuiteClasses(value = { DistributionsTest.class,
-        PSDMatrixTest.class,
-        RegressionTest.class })
-public class MathTestSuite { }
+@Suite.SuiteClasses(value = {DistributionsTest.class,
+                                    PSDMatrixTest.class,
+                                    RegressionTest.class})
+public class MathTestSuite {
+}
