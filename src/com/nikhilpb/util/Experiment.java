@@ -1,6 +1,8 @@
 package com.nikhilpb.util;
 
-import com.nikhilpb.util.Pair;
+import com.nikhilpb.doe.DoeExperiment;
+import com.nikhilpb.matching.MatchingExperiment;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -117,5 +119,24 @@ public abstract class Experiment {
       throw new RuntimeException(tag + " is required");
     }
     return prop;
+  }
+
+  /**
+   *
+   * @param args Two arguments, first is the experiment to be performed and second is the path to the xml file.
+   */
+  public static void main(String[] args) {
+    Experiment experiment;
+    String experimentName = args[0];
+    if (experimentName.equals("doe")) {
+      experiment = DoeExperiment.getInstance();
+    } else if (experimentName.equals("matching")) {
+      experiment = MatchingExperiment.getInstance();
+    } else {
+      throw new IllegalArgumentException("no experiment called " + experimentName);
+    }
+    String configFile = "config/" + experimentName + "/" + args[1] + ".xml";
+    experiment.parseXml(configFile);
+    experiment.executeCommands();
   }
 }

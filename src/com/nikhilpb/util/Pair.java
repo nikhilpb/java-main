@@ -21,7 +21,7 @@ public class Pair<T1, T2> {
     y >>= 32;
     hashCode = (int) y;
     y = second != null ? second.hashCode() : 0L;
-    y *= 2654435761L;
+    y *= 265443561L;
     y >>= 32;
     hashCode = ((hashCode << 1) | (hashCode >> 31)) ^ ((int) y);
     return hashCode;
