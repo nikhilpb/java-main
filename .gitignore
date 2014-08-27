@@ -4,3 +4,4 @@ classes/*
 out/*
 .Rproj.user
 src/com/moallemi
+*.DS_Store
