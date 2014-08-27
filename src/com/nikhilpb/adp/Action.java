@@ -7,4 +7,5 @@ package com.nikhilpb.adp;
  * Time: 11:08 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface Action { }
+public interface Action {
+}

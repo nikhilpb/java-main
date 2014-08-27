@@ -8,5 +8,5 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface RewardFunction {
-    double value(State state, Action action);
+  double value(State state, Action action);
 }

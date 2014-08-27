@@ -8,5 +8,5 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface QFunction {
-    public double value(State state, Action action);
+  public double value(State state, Action action);
 }

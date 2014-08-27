@@ -15,45 +15,45 @@ import java.util.Arrays;
  * To change this template use File | Settings | File Templates.
  */
 public class GaussianTransition implements StateDistribution {
-    Distributions.GaussianVectorGen gen;
-    double[] baseState;
-    int timePeriod;
+  Distributions.GaussianVectorGen gen;
+  double[] baseState;
+  int timePeriod;
 
-    public GaussianTransition(Distributions.GaussianVectorGen gen,
-                              double[] baseState,
-                              int timePeriod) {
-        this.gen = gen;
-        if (gen.size() != baseState.length) {
-            throw new IllegalArgumentException("the base state must be the same size as the generator");
-        }
-        this.baseState = baseState;
-        this.timePeriod = timePeriod;
+  public GaussianTransition(Distributions.GaussianVectorGen gen,
+                            double[] baseState,
+                            int timePeriod) {
+    this.gen = gen;
+    if (gen.size() != baseState.length) {
+      throw new IllegalArgumentException("the base state must be the same size as the generator");
     }
+    this.baseState = baseState;
+    this.timePeriod = timePeriod;
+  }
 
-    public double expectedValue(StateFunction s) {
-        return 0.0;
-    }
+  public double expectedValue(StateFunction s) {
+    return 0.0;
+  }
 
-    public State nextSample() {
-        double[] nextState = gen.nextValue();
-        for (int i = 0; i < nextState.length; ++i) {
-            nextState[i] += baseState[i];
-        }
-        return new StoppingState(nextState, timePeriod);
+  public State nextSample() {
+    double[] nextState = gen.nextValue();
+    for (int i = 0; i < nextState.length; ++ i) {
+      nextState[i] += baseState[i];
     }
+    return new StoppingState(nextState, timePeriod);
+  }
 
-    public double[] getMean() {
-        double[][] meanArray = gen.getMean().getArray();
-        double[] mean = new double[meanArray.length];
-        for (int i = 0; i < mean.length; ++i) {
-            mean[i] = baseState[i] + meanArray[i][0];
-        }
-        return mean;
+  public double[] getMean() {
+    double[][] meanArray = gen.getMean().getArray();
+    double[] mean = new double[meanArray.length];
+    for (int i = 0; i < mean.length; ++ i) {
+      mean[i] = baseState[i] + meanArray[i][0];
     }
+    return mean;
+  }
 
-    @Override
-    public String toString() {
-        return "gaussian transition";
-    }
+  @Override
+  public String toString() {
+    return "gaussian transition";
+  }
 
 }

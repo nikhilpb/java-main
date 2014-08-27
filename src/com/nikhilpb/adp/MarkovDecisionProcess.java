@@ -8,23 +8,25 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class MarkovDecisionProcess {
-    protected RewardFunction rewardFunction;
-    protected double alpha;
-    protected boolean isInfHorizon;
+  protected RewardFunction rewardFunction;
+  protected double alpha;
+  protected boolean isInfHorizon;
 
-    public abstract State getBaseState();
-    public abstract StateDistribution getDistribution(State state, Action action);
-    public abstract void reset(long seed);
+  public abstract State getBaseState();
 
-    public RewardFunction getRewardFunction() {
-        return rewardFunction;
-    }
+  public abstract StateDistribution getDistribution(State state, Action action);
 
-    public double getAlpha() {
-        return alpha;
-    }
+  public abstract void reset(long seed);
 
-    public boolean isInfHorizon() {
-        return isInfHorizon;
-    }
+  public RewardFunction getRewardFunction() {
+    return rewardFunction;
+  }
+
+  public double getAlpha() {
+    return alpha;
+  }
+
+  public boolean isInfHorizon() {
+    return isInfHorizon;
+  }
 }

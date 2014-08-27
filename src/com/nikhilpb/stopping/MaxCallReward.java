@@ -12,30 +12,33 @@ import com.nikhilpb.adp.State;
  * To change this template use File | Settings | File Templates.
  */
 public class MaxCallReward implements RewardFunction {
-    private double K, r;
+  private double K, r;
 
-    public MaxCallReward(double K, double r) { this.K = K; this.r = r; }
+  public MaxCallReward(double K, double r) {
+    this.K = K;
+    this.r = r;
+  }
 
-    @Override
-    public double value(State state, Action action) {
-        double value = 0.;
-        StoppingState stoppingState = (StoppingState) state;
-        StoppingAction stoppingAction = (StoppingAction) action;
-        if (stoppingAction == StoppingAction.CONTINUE) {
-            return value;
-        }
-        int n = stoppingState.vector.length;
-        double max = Double.MIN_VALUE;
-        for (int i = 0; i < n; ++i) {
-            double stockPrice = Math.exp(stoppingState.vector[i]);
-            if (stockPrice > max) {
-                max = stockPrice;
-            }
-        }
-        value = max - K;
-        if (value < 0.) {
-            return 0.;
-        }
-        return value / Math.pow((1+r), stoppingState.time);
+  @Override
+  public double value(State state, Action action) {
+    double value = 0.;
+    StoppingState stoppingState = (StoppingState) state;
+    StoppingAction stoppingAction = (StoppingAction) action;
+    if (stoppingAction == StoppingAction.CONTINUE) {
+      return value;
     }
+    int n = stoppingState.vector.length;
+    double max = Double.MIN_VALUE;
+    for (int i = 0; i < n; ++ i) {
+      double stockPrice = Math.exp(stoppingState.vector[i]);
+      if (stockPrice > max) {
+        max = stockPrice;
+      }
+    }
+    value = max - K;
+    if (value < 0.) {
+      return 0.;
+    }
+    return value / Math.pow((1 + r), stoppingState.time);
+  }
 }

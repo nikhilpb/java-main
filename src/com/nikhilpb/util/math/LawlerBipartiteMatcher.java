@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
  * <i>w<sub>ij</sub></i>.  A BipartiteMatcher takes the number
  * <i>n</i> and the weights <i>w<sub>ij</sub></i>, and finds a perfect
  * matching of maximum weight.
- *
+ * <p/>
  * It uses the Hungarian algorithm of Kuhn (1955), as improved and
  * presented by Lawler (1976).  The running time is
  * O(<i>n</i><sup>3</sup>).  The weights can be any finite real
@@ -32,7 +32,7 @@ import java.util.StringTokenizer;
  * running the algorithm.  This increases the weight of every perfect
  * matching by <i>nc</i>, which doesn't change which perfect matchings have
  * maximum weight.
- *
+ * <p/>
  * If a weight is set to Double.NEGATIVE_INFINITY, then the algorithm will
  * behave as if that edge were not in the graph.  If all the edges incident on
  * a given node have weight Double.NEGATIVE_INFINITY, then the final result
@@ -51,8 +51,8 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
   private int[] sMatches;
   private int[] tMatches;
 
-  static final int NO_LABEL = -1;
-  static final int EMPTY_LABEL = -2;
+  static final int NO_LABEL = - 1;
+  static final int EMPTY_LABEL = - 2;
 
   private int[] sLabels;
   private int[] tLabels;
@@ -74,16 +74,16 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
    */
   public LawlerBipartiteMatcher(int n) {
     this.n = n;
-    weights = new double [n][n];
-    sMatches = new int [n];
-    tMatches = new int [n];
-    sLabels = new int [n];
-    tLabels = new int [n];
-    u = new double [n];
-    v = new double [n];
-    pi = new double [n];
-    eligibleS = new int [n];
-    eligibleT = new int [n];
+    weights = new double[n][n];
+    sMatches = new int[n];
+    tMatches = new int[n];
+    sLabels = new int[n];
+    tLabels = new int[n];
+    u = new double[n];
+    v = new double[n];
+    pi = new double[n];
+    eligibleS = new int[n];
+    eligibleT = new int[n];
   }
 
   /**
@@ -142,7 +142,7 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
     double minWeight = Double.POSITIVE_INFINITY;
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        double v = -w[i][j];
+        double v = - w[i][j];
         if ((v > Double.NEGATIVE_INFINITY)
                     && (v < minWeight))
           minWeight = v;
@@ -154,10 +154,10 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
 
     // copy the weights and adjust them to ensure positivity
     weightOffset = minWeight - 1.0;
-    weightSign = -1.0;
+    weightSign = - 1.0;
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        double v = -w[i][j];
+        double v = - w[i][j];
         if (v > Double.NEGATIVE_INFINITY)
           weights[i][j] = v - weightOffset;
         else
@@ -174,8 +174,8 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
     eligibleSCnt = 0;
     eligibleTCnt = 0;
     for (int i = 0; i < n; i++) {
-      sMatches[i] = -1;
-      tMatches[i] = -1;
+      sMatches[i] = - 1;
+      tMatches[i] = - 1;
 
       // u[i] = max_j weights[i][j]
       u[i] = 0;
@@ -202,7 +202,7 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
       while (true) {
         // Steps 1.1-1.4: Find an augmenting path
         int lastNode = findAugmentingPath();
-        if (lastNode == -1) {
+        if (lastNode == - 1) {
           break; // no augmenting path
         }
 
@@ -217,7 +217,7 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
         // This is Step 1.0
         eligibleSCnt = 0;
         for (int i = 0; i < n; i++) {
-          if (sMatches[i] == -1) {
+          if (sMatches[i] == - 1) {
             sLabels[i] = EMPTY_LABEL;
             eligibleS[eligibleSCnt++] = i;
           }
@@ -290,14 +290,14 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
    */
   public int[] getMatchingSource() {
     if (n == 0) {
-      return new int [0];
+      return new int[0];
     }
     return sMatches;
   }
 
   public int[] getMatchingDest() {
     if (n == 0) {
-      return new int [0];
+      return new int[0];
     }
     return tMatches;
   }
@@ -323,7 +323,7 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
   private int findAugmentingPath() {
     while ((eligibleSCnt > 0) || (eligibleTCnt > 0)) {
       if (eligibleSCnt > 0) {
-        int i = eligibleS[--eligibleSCnt];
+        int i = eligibleS[-- eligibleSCnt];
         for (int j = 0; j < n; j++) {
           if (sMatches[i] == j) continue;
 
@@ -342,8 +342,8 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
           }
         }
       } else {
-        int j = eligibleT[--eligibleTCnt];
-        if (tMatches[j] == -1) {
+        int j = eligibleT[-- eligibleTCnt];
+        if (tMatches[j] == - 1) {
           return j; // we've found an augmenting path
         }
         int i = tMatches[j];
@@ -354,7 +354,7 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
       }
     }
 
-    return -1;
+    return - 1;
   }
 
   /**
@@ -425,7 +425,7 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
     BufferedReader reader = new BufferedReader(new FileReader(fileName));
     StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
     int n = Integer.parseInt(tokenizer.nextToken());
-    double[][] w = new double [n][n];
+    double[][] w = new double[n][n];
 
     for (int i = 0; i < n; i++) {
       String weightStr = reader.readLine();
@@ -439,6 +439,6 @@ public class LawlerBipartiteMatcher implements BipartiteMatcher {
     bm.dumpWeights(System.out);
     int[] match = bm.getMatchingSource();
     for (int i = 0; i < n; i++)
-      System.out.println((i+1) + " " + (match[i]+1));
+      System.out.println((i + 1) + " " + (match[i] + 1));
   }
 }

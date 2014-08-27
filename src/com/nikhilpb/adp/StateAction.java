@@ -8,19 +8,19 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public class StateAction {
-    private final State state;
-    private final Action action;
+  private final State state;
+  private final Action action;
 
-    public StateAction(State state, Action action) {
-        this.state = state;
-        this.action = action;
-    }
+  public StateAction(State state, Action action) {
+    this.state = state;
+    this.action = action;
+  }
 
-    public State getState() {
-        return state;
-    }
+  public State getState() {
+    return state;
+  }
 
-    public Action getAction() {
-        return action;
-    }
+  public Action getAction() {
+    return action;
+  }
 }

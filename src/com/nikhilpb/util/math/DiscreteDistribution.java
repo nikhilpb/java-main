@@ -30,17 +30,17 @@ public class DiscreteDistribution {
                                                    + probability[i]);
     }
 
-    cumulative = new double [probability.length];
+    cumulative = new double[probability.length];
     cumulative[0] = probability[0];
     for (int i = 1; i < cumulative.length; i++)
-      cumulative[i] = cumulative[i-1] + probability[i];
+      cumulative[i] = cumulative[i - 1] + probability[i];
 
-    if (Math.abs(cumulative[cumulative.length-1] - 1.0) > EPSILON)
+    if (Math.abs(cumulative[cumulative.length - 1] - 1.0) > EPSILON)
       throw new IllegalArgumentException("not a probability "
                                                  + "distribution: "
                                                  + "sum is "
                                                  + cumulative[cumulative
-                                                                      .length-1]);
+                                                                      .length - 1]);
 
   }
 
@@ -49,7 +49,9 @@ public class DiscreteDistribution {
    *
    * @return the size
    */
-  public int size() { return probability.length; }
+  public int size() {
+    return probability.length;
+  }
 
   /**
    * Get the probability of an index.
@@ -57,7 +59,9 @@ public class DiscreteDistribution {
    * @param i the index
    * @return the probability
    */
-  public double getProbability(int i) { return probability[i]; }
+  public double getProbability(int i) {
+    return probability[i];
+  }
 
   /**
    * Sample according to the distribution.
@@ -74,9 +78,8 @@ public class DiscreteDistribution {
       // deal with zero probability entries
       while (value > 0 && probability[value] == 0.0)
         value--;
-    }
-    else
-      value = -(index+1);
+    } else
+      value = - (index + 1);
     if (value < 0 || value > probability.length)
       throw new IllegalStateException("bad sample index");
 

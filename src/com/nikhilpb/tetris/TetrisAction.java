@@ -12,34 +12,34 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class TetrisAction implements Action {
-    public static final ArrayList<TetrisAction> ALLACTIONS;
+  public static final ArrayList<TetrisAction> ALLACTIONS;
 
-    static {
-        ALLACTIONS = new ArrayList<TetrisAction>();
-        for (int i = -2; i < TetrisState.kRows; ++i) {
-            for (int j = -2; j < TetrisState.kColumns; ++j) {
-                for (int k = 0; k < 4; ++k) {
-                    ALLACTIONS.add(new TetrisAction(i, j, k));
-                }
-            }
-
+  static {
+    ALLACTIONS = new ArrayList<TetrisAction>();
+    for (int i = - 2; i < TetrisState.kRows; ++ i) {
+      for (int j = - 2; j < TetrisState.kColumns; ++ j) {
+        for (int k = 0; k < 4; ++ k) {
+          ALLACTIONS.add(new TetrisAction(i, j, k));
         }
-    }
+      }
 
-    public final int rowInd;
-    public final int colInd;
-    public final int rotation;
-
-    private TetrisAction(int rowInd, int colInd, int rotation) {
-        this.rowInd = rowInd;
-        this.colInd = colInd;
-        this.rotation = rotation;
     }
+  }
 
-    @Override
-    public String toString() {
-        return "row index: " + rowInd +
-               ", column index: " + colInd +
-               ", rotation: " + rotation;
-    }
+  public final int rowInd;
+  public final int colInd;
+  public final int rotation;
+
+  private TetrisAction(int rowInd, int colInd, int rotation) {
+    this.rowInd = rowInd;
+    this.colInd = colInd;
+    this.rotation = rotation;
+  }
+
+  @Override
+  public String toString() {
+    return "row index: " + rowInd +
+                   ", column index: " + colInd +
+                   ", rotation: " + rotation;
+  }
 }

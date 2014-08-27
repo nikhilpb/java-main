@@ -132,7 +132,7 @@ public class DoeExperiment extends Experiment {
     try {
       for (int i = 1; i < timePeriods; ++ i) {
         qFuns[i].printFn(new PrintStream(new FileOutputStream("results/doe/" + baseName + "-dim-" + dim + "-tp-" + i + ".csv")),
-                         0., printUpper);
+                                0., printUpper);
 
       }
     } catch (Exception e) {

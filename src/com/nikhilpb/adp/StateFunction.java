@@ -8,5 +8,5 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface StateFunction {
-    public double value(State state);
+  public double value(State state);
 }

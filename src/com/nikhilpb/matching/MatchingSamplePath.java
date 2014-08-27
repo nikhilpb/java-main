@@ -87,7 +87,7 @@ public class MatchingSamplePath {
   }
 
   public double offlineMatch() {
-    if (!isSampled) {
+    if (! isSampled) {
       System.out.println("the instance is not yet sampled");
       return 0.0;
     }

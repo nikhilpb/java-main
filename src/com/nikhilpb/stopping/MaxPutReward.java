@@ -12,30 +12,32 @@ import com.nikhilpb.adp.State;
  * To change this template use File | Settings | File Templates.
  */
 public class MaxPutReward implements RewardFunction {
-    private double K;
+  private double K;
 
-    public MaxPutReward(double K) { this.K = K; }
+  public MaxPutReward(double K) {
+    this.K = K;
+  }
 
-    @Override
-    public double value(State state, Action action) {
-        double value = 0.;
-        StoppingState stoppingState = (StoppingState) state;
-        StoppingAction stoppingAction = (StoppingAction) action;
-        if (stoppingAction == StoppingAction.CONTINUE) {
-            return value;
-        }
-        int n = stoppingState.vector.length;
-        double min = Double.MAX_VALUE;
-        for (int i = 0; i < n; ++i) {
-            double stockPrice = Math.exp(stoppingState.vector[i]);
-            if (stockPrice < min) {
-                min = stockPrice;
-            }
-        }
-        value = K - min;
-        if (value < 0.) {
-            return 0.;
-        }
-        return value;
+  @Override
+  public double value(State state, Action action) {
+    double value = 0.;
+    StoppingState stoppingState = (StoppingState) state;
+    StoppingAction stoppingAction = (StoppingAction) action;
+    if (stoppingAction == StoppingAction.CONTINUE) {
+      return value;
     }
+    int n = stoppingState.vector.length;
+    double min = Double.MAX_VALUE;
+    for (int i = 0; i < n; ++ i) {
+      double stockPrice = Math.exp(stoppingState.vector[i]);
+      if (stockPrice < min) {
+        min = stockPrice;
+      }
+    }
+    value = K - min;
+    if (value < 0.) {
+      return 0.;
+    }
+    return value;
+  }
 }

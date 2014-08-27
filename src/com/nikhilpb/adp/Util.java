@@ -8,7 +8,7 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public final class Util {
-    public static enum DistType {
-        CONTINUOUS, DISCRETE
-    }
+  public static enum DistType {
+    CONTINUOUS, DISCRETE
+  }
 }

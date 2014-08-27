@@ -8,5 +8,5 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface StateKernel {
-    double value(State state1, State state2);
+  double value(State state1, State state2);
 }

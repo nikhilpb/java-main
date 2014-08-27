@@ -7,5 +7,6 @@ import com.nikhilpb.util.math.PSDMatrix;
  */
 public interface DataModel {
   public DataPoint next();
+
   public PSDMatrix getSigma();
 }

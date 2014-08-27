@@ -11,22 +11,22 @@ import com.nikhilpb.adp.StateFunction;
  * To change this template use File | Settings | File Templates.
  */
 public class PolyStateFunction implements StateFunction {
-    private int degree;
-    private int index;
+  private int degree;
+  private int index;
 
-    public PolyStateFunction(int degree, int index) {
-        this.degree = degree;
-        this.index = index;
-    }
+  public PolyStateFunction(int degree, int index) {
+    this.degree = degree;
+    this.index = index;
+  }
 
-    @Override
-    public double value(State state) {
-        StoppingState stoppingState = (StoppingState) state;
-        return Math.pow(stoppingState.vector[index], (double) degree);
-    }
+  @Override
+  public double value(State state) {
+    StoppingState stoppingState = (StoppingState) state;
+    return Math.pow(stoppingState.vector[index], (double) degree);
+  }
 
-    @Override
-    public String toString() {
-        return  "poly_" + degree + "," + index;
-    }
+  @Override
+  public String toString() {
+    return "poly_" + degree + "," + index;
+  }
 }

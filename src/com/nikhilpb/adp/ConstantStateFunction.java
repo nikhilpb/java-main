@@ -8,17 +8,19 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public class ConstantStateFunction implements StateFunction {
-    private double val;
+  private double val;
 
-    public ConstantStateFunction(double val) { this.val = val; }
+  public ConstantStateFunction(double val) {
+    this.val = val;
+  }
 
-    @Override
-    public double value(State state) {
-        return val;
-    }
+  @Override
+  public double value(State state) {
+    return val;
+  }
 
-    @Override
-    public String toString() {
-        return  "const_" + val;
-    }
+  @Override
+  public String toString() {
+    return "const_" + val;
+  }
 }

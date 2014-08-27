@@ -13,43 +13,45 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class StoppingState implements State {
-    public double[] vector;
-    public int time;
-    private final static ArrayList<Action> actionList;
+  public double[] vector;
+  public int time;
+  private final static ArrayList<Action> actionList;
 
-    static {
-        actionList = new ArrayList<Action>();
-        actionList.add((Action) StoppingAction.CONTINUE);
-        actionList.add((Action) StoppingAction.STOP);
+  static {
+    actionList = new ArrayList<Action>();
+    actionList.add((Action) StoppingAction.CONTINUE);
+    actionList.add((Action) StoppingAction.STOP);
+  }
+
+  public ArrayList<Action> getActions() {
+    return actionList;
+  }
+
+  public StoppingState(double[] vector, int time) {
+    this.vector = vector;
+    this.time = time;
+  }
+
+  public String toString() {
+    String str = "time: " + time + ", vector: [";
+    for (int i = 0; i < vector.length; ++ i) {
+      str += vector[i];
+      if (i < vector.length - 1) {
+        str += " ";
+      }
     }
+    str += "]";
+    return str;
+  }
 
-    public ArrayList<Action> getActions() { return actionList; }
-
-    public StoppingState(double[] vector, int time) {
-        this.vector = vector;
-        this.time = time;
+  public double[] getDifference(StoppingState oState) {
+    if (oState.vector.length != this.vector.length) {
+      throw new RuntimeException("vector lengths don't match");
     }
-
-    public String toString() {
-        String str = "time: " + time + ", vector: [";
-        for (int i = 0; i < vector.length; ++i) {
-            str += vector[i];
-            if (i < vector.length-1) {
-                str += " ";
-            }
-        }
-        str += "]";
-        return str;
+    double[] diff = new double[oState.vector.length];
+    for (int i = 0; i < diff.length; ++ i) {
+      diff[i] = oState.vector[i] - this.vector[i];
     }
-
-    public double[] getDifference(StoppingState oState) {
-        if (oState.vector.length != this.vector.length) {
-            throw new RuntimeException("vector lengths don't match");
-        }
-        double[] diff = new double[oState.vector.length];
-        for (int i = 0; i < diff.length; ++i) {
-            diff[i] = oState.vector[i] - this.vector[i];
-        }
-        return diff;
-    }
+    return diff;
+  }
 }

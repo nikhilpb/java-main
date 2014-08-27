@@ -12,5 +12,5 @@ import com.nikhilpb.adp.State;
  * To change this template use File | Settings | File Templates.
  */
 public enum StoppingAction implements Action {
-    STOP, CONTINUE;
+  STOP, CONTINUE;
 }

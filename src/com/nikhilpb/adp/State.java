@@ -10,5 +10,5 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public interface State {
-    public ArrayList<Action> getActions();
+  public ArrayList<Action> getActions();
 }

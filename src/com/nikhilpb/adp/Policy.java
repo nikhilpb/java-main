@@ -8,5 +8,5 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface Policy {
-    public Action getAction(State state);
+  public Action getAction(State state);
 }

@@ -22,7 +22,7 @@ public class DataPoint {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < dataVector.length; ++ i) {
       builder.append(dataVector[i])
-             .append(" ");
+              .append(" ");
     }
     return builder.toString();
   }

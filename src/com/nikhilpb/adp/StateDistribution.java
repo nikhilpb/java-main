@@ -10,6 +10,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public interface StateDistribution {
-    public State nextSample();
-    public double expectedValue(StateFunction sf);
+  public State nextSample();
+
+  public double expectedValue(StateFunction sf);
 }

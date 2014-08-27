@@ -14,6 +14,7 @@ public class GaussianKernelDoubleE {
 
   /**
    * Class constructor.
+   *
    * @param sigma
    * @param rho
    * @param peak
@@ -24,13 +25,14 @@ public class GaussianKernelDoubleE {
 
   /**
    * E k(X, Y)
+   *
    * @param xStatePrev
    * @param yStatePrev
    * @return
    */
   public double eval(StoppingState xStatePrev, StoppingState yStatePrev) {
     double[] diff = new double[xStatePrev.vector.length];
-    for (int i = 0; i < diff.length; ++i) {
+    for (int i = 0; i < diff.length; ++ i) {
       diff[i] = xStatePrev.vector[i] - yStatePrev.vector[i];
     }
     return meanGaussianKernel.eval(diff);

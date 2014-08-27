@@ -14,7 +14,7 @@ package com.nikhilpb.util.math;
  * <i>w<sub>ij</sub></i>.  A BipartiteMatcher takes the number
  * <i>n</i> and the weights <i>w<sub>ij</sub></i>, and finds a perfect
  * matching of maximum weight.
- *
+ * <p/>
  * If a weight is set to Double.NEGATIVE_INFINITY, then the algorithm will
  * behave as if that edge were not in the graph.  If all the edges incident on
  * a given node have weight Double.NEGATIVE_INFINITY, then the final result

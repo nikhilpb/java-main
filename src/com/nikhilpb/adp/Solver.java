@@ -8,6 +8,7 @@ package com.nikhilpb.adp;
  * To change this template use File | Settings | File Templates.
  */
 public interface Solver {
-    public boolean solve() throws Exception;
-    public Policy getPolicy();
+  public boolean solve() throws Exception;
+
+  public Policy getPolicy();
 }
