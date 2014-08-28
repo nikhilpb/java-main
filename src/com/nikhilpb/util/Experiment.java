@@ -21,10 +21,16 @@ import java.util.Properties;
  */
 public abstract class Experiment {
 
-  static protected HashMap<String, Experiment> experiments;
+  static protected HashMap<String, Experiment> experiments = new HashMap<String, Experiment>();
 
-  static {
-    experiments = new HashMap<String, Experiment>();
+  /**
+   * Registers an experiment with a name.
+   * @param name
+   * @param experiment
+   */
+  static protected void registerExperiment(String name, Experiment experiment) {
+    if (experiments.containsKey(name)) throw new RuntimeException("name " + name + " already exists");
+    experiments.put(name, experiment);
   }
 
   public Experiment() {
@@ -32,6 +38,9 @@ public abstract class Experiment {
     parseTree = new ArrayList<Pair<String, Properties>>();
   }
 
+  /**
+   * Callback used to associate logic with a command.
+   */
   protected interface CommandProcessor {
     boolean processCommand(Properties props) throws Exception;
   }
@@ -40,6 +49,10 @@ public abstract class Experiment {
   private ArrayList<Pair<String, Properties>> parseTree;
   private PrintStream oStream, eStream;
 
+  /**
+   * From the filename parse the commands to be executed.
+   * @param xmlFileName
+   */
   public void parseXml(String xmlFileName) {
     File configFile = new File(xmlFileName);
     try {
@@ -76,10 +89,19 @@ public abstract class Experiment {
     return;
   }
 
+  /**
+   * Associates a name with the callback processor.
+   * @param name
+   * @param processor
+   */
   protected void registerCommand(String name, CommandProcessor processor) {
     cmdMap.put(name, processor);
   }
 
+  /**
+   * Runs all commands given in the config file.
+   * @return
+   */
   protected boolean executeCommands() {
     if (oStream == null) {
       oStream = System.out;
@@ -119,6 +141,12 @@ public abstract class Experiment {
     return failedCommands.isEmpty();
   }
 
+  /**
+   * From the Properties retrieve tag or fail.
+   * @param props
+   * @param tag
+   * @return
+   */
   protected String getPropertyOrDie(Properties props, String tag) {
     String prop = props.getProperty(tag);
     if (prop == null) {
@@ -132,13 +160,11 @@ public abstract class Experiment {
    * @param args Two arguments, first is the experiment to be performed and second is the path to the xml file.
    */
   public static void main(String[] args) {
+    DoeExperiment.register();
+    MatchingExperiment.register();
     String experimentName = args[0];
     Experiment experiment = experiments.get(experimentName);
-    if (experiment == null) {
-      System.err.println("No experiment named " + experimentName + " found");
-      System.err.println(experiments.toString());
-      return;
-    }
+    if (experiment == null) throw new RuntimeException("No experiment named: " + experimentName);
     String configFile = "config/" + experimentName + "/" + args[1] + ".xml";
     experiment.parseXml(configFile);
     experiment.executeCommands();

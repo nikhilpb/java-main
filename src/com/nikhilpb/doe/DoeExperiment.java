@@ -28,17 +28,18 @@ public class DoeExperiment extends Experiment {
   private GaussianModel gaussianModel;
   private UserData userData;
 
-  static {
-    experiments.put("doe", getInstance());
-  }
-
   private static Experiment instance = null;
+  private static String name = "doe";
 
   public static Experiment getInstance() {
     if (instance == null) {
       instance = new DoeExperiment();
     }
     return instance;
+  }
+
+  public static void register() {
+    registerExperiment(name, getInstance());
   }
 
   private DoeExperiment() {

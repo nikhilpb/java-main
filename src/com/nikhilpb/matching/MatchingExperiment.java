@@ -21,6 +21,7 @@ public class MatchingExperiment extends Experiment {
   private ArrayList<MatchingSolver> solvers;
 
   private static Experiment instance = null;
+  private static String name = "matching";
 
   public static Experiment getInstance() {
     if (instance == null) {
@@ -29,8 +30,8 @@ public class MatchingExperiment extends Experiment {
     return instance;
   }
 
-  static {
-    experiments.put("matching", getInstance());
+  public static void register() {
+    registerExperiment(name, getInstance());
   }
 
   private MatchingExperiment() {
