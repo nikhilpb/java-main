@@ -11,7 +11,6 @@ import java.util.Properties;
 /**
  * Created by nikhilpb on 8/27/14.
  *
- *
  */
 public class ABTestingExperiment extends Experiment {
   private static Experiment instance = null;
@@ -64,7 +63,11 @@ public class ABTestingExperiment extends Experiment {
     if (type.equals("gaussian")) {
       dataModel = getGaussianModel(props);
     } else if (type.equals("yahoo")) {
-      dataModel = null; //TODO(nikhilpb): finish this.
+      String trainFile = getPropertyOrDie(props, "train_file");
+      String testFile = getPropertyOrDie(props, "test_file");
+      int userCount = Integer.parseInt(getPropertyOrDie(props, "user_count"));
+      final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
+      dataModel = null;
     } else {
       throw new RuntimeException("No model type: " + type + " found.");
     }
@@ -136,8 +139,8 @@ public class ABTestingExperiment extends Experiment {
     Matrix mu = new Matrix(muArray);
     double[][] sigmaArray = new double[dim - 1][dim - 1];
     // Construct the covariance matrix.
-    for (int i = 0; i < dim - 1; ++ i) {
-      for (int j = 0; j < dim - 1; ++ j) {
+    for (int i = 0; i < dim - 1; ++i) {
+      for (int j = 0; j < dim - 1; ++j) {
         if (i == j) {
           sigmaArray[i][j] = sigma * sigma;
         } else {
@@ -148,4 +151,5 @@ public class ABTestingExperiment extends Experiment {
     PSDMatrix sigmaMatrix = new PSDMatrix(sigmaArray);
     return new GaussianModel(mu, sigmaMatrix, seed);
   }
+
 }
