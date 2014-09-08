@@ -1,8 +1,10 @@
 package com.nikhilpb.abtesting;
 
 import Jama.Matrix;
+import com.nikhilpb.doe.*;
 import com.nikhilpb.util.Experiment;
 import com.nikhilpb.util.math.PSDMatrix;
+import com.nikhilpb.util.math.Series;
 
 import java.util.Properties;
 
@@ -16,6 +18,7 @@ public class ABTestingExperiment extends Experiment {
   private static String name = "abtesting";
 
   private DataModel model;
+  private ABPolicy policy;
 
   public static Experiment getInstance() {
     if (instance == null) {
@@ -38,6 +41,22 @@ public class ABTestingExperiment extends Experiment {
       }
     };
     registerCommand("model", modelProcessor);
+
+    CommandProcessor policyProcessor = new CommandProcessor() {
+      @Override
+      public boolean processCommand(Properties props) throws Exception {
+        return policyCommand(props);
+      }
+    };
+    registerCommand("policy", policyProcessor);
+
+    CommandProcessor evalProcessor = new CommandProcessor() {
+      @Override
+      public boolean processCommand(Properties props) throws Exception {
+        return evalCommand(props);
+      }
+    };
+    registerCommand("eval", evalProcessor);
   }
 
   protected boolean modelCommand(Properties props) {
@@ -49,6 +68,55 @@ public class ABTestingExperiment extends Experiment {
     } else {
       throw new RuntimeException("No model type: " + type + " found.");
     }
+    return true;
+  }
+
+  protected boolean policyCommand(Properties props) {
+    final String type = getPropertyOrDie(props, "type");
+    if (type.equals("random")) {
+      final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
+      policy = new RandomPolicy(seed);
+    } else {
+      policy = null; //TODO(nikhilpb): finish this
+    }
+    return true;
+  }
+
+  protected boolean evalCommand(Properties props) {
+    assert model != null;
+    assert policy != null;
+
+    final int trialCount = Integer.parseInt(getPropertyOrDie(props, "trial_count"));
+    final int timePeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
+    SequentialProblemStats stats;
+    Series neSeq = new Series(),
+            effSeq = new Series(),
+            perEffSeq = new Series(),
+            aneSeq = new Series(),
+            reSeq = new Series();
+    ABTestingDP abTestingDP = new ABTestingDP(model);
+    ABState state = abTestingDP.getBase();
+    for (int i = 0; i < trialCount; ++i) {
+      stats = new SequentialProblemStats(model);
+      for (int t = 0; t < timePeriods; ++t) {
+        ABAction action = policy.getAction(state);
+        stats.addPoint(state.getDp(), action);
+        state = abTestingDP.next(state, action);
+      }
+      stats.aggregate();
+
+      neSeq.add(stats.getNormErr());
+      effSeq.add(stats.getEfficiency());
+      perEffSeq.add(stats.getPerEfficiency());
+      aneSeq.add(stats.getApproxNormErr());
+      reSeq.add(stats.getRandEf());
+    }
+
+    System.out.println("Approx Norm Err: " + aneSeq.getMean());
+    System.out.println("Norm Err: " + neSeq.getMean() + ", Std err: " + neSeq.getStdDev());
+    System.out.println("Efficiency: " + effSeq.getMean() + ", Std err: " + effSeq.getStdDev());
+    System.out.println("PerEfficiency: " + perEffSeq.getMean() + ", Std err: " + perEffSeq.getStdDev());
+    System.out.println("RandEff: " + reSeq.getMean() + ", Std err: " + reSeq.getStdDev());
     return true;
   }
 

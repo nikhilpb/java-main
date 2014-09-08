@@ -44,4 +44,8 @@ public class GaussianModel implements DataModel {
   public PSDMatrix getSigma() {
     return covarMatrix;
   }
+
+
+  @Override
+  public int dim() { return dim + 1; }
 }

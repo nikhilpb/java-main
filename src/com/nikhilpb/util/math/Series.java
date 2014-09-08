@@ -5,10 +5,10 @@ import java.util.ArrayList;
 /**
  * Created by nikhilpb on 5/22/14.
  */
-public class IIDSeq {
+public class Series {
   ArrayList<Double> seq;
 
-  public IIDSeq() {
+  public Series() {
     seq = new ArrayList<Double>();
   }
 

@@ -19,7 +19,7 @@ public class RandomPolicy implements ABPolicy {
    * @return
    */
   @Override
-  public ABAction getAction(ABState state, DataPoint nextPoint) {
+  public ABAction getAction(ABState state) {
     if (random.nextBoolean()) {
       return ABAction.PLUS;
     } else {

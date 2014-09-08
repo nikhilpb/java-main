@@ -8,4 +8,12 @@
         <time_periods>100</time_periods>
         <seed>123</seed>
     </model>
+    <policy>
+        <type>random</type>
+        <seed>456</seed>
+    </policy>
+    <eval>
+        <trial_count>10000</trial_count>
+        <time_periods>100</time_periods>
+    </eval>
 </config>

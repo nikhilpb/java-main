@@ -2,7 +2,7 @@ package com.nikhilpb.doe;
 
 import Jama.Matrix;
 import com.nikhilpb.util.Experiment;
-import com.nikhilpb.util.math.IIDSeq;
+import com.nikhilpb.util.math.Series;
 import com.nikhilpb.util.math.PSDMatrix;
 
 import java.io.FileOutputStream;
@@ -202,11 +202,11 @@ public class DoeExperiment extends Experiment {
     int trialCount = Integer.parseInt(getPropertyOrDie(props, "trial_count"));
     PSDMatrix sigmaInv = gaussianModel.getCovarMatrix().inverse();
     double[] values = new double[trialCount];
-    IIDSeq neSeq = new IIDSeq(),
-            effSeq = new IIDSeq(),
-            perEffSeq = new IIDSeq(),
-            aneSeq = new IIDSeq(),
-            reSeq = new IIDSeq();
+    Series neSeq = new Series(),
+            effSeq = new Series(),
+            perEffSeq = new Series(),
+            aneSeq = new Series(),
+            reSeq = new Series();
     for (int r = 0; r < trialCount; ++ r) {
       SequentialProblemStats stats = new SequentialProblemStats(gaussianModel.getDim() + 1,
                                                                        gaussianModel.getCovarMatrix().mat());
