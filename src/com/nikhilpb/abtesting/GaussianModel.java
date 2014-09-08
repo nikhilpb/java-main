@@ -9,20 +9,13 @@ import com.nikhilpb.util.math.PSDMatrix;
  */
 public class GaussianModel implements DataModel {
   private Distributions.GaussianVectorGen gaussianVectorGen;
-  private int timePeriods;
-  private Matrix mu;
   private PSDMatrix covarMatrix;
-  private long seed;
   private int dim;
 
   public GaussianModel(Matrix mu,
                        PSDMatrix covarMatrix,
-                       int timePeriods,
                        long seed) {
     gaussianVectorGen = new Distributions.GaussianVectorGen(mu, covarMatrix, seed);
-    this.timePeriods = timePeriods;
-    this.seed = seed;
-    this.mu = mu;
     this.covarMatrix = covarMatrix;
     this.dim = covarMatrix.mat().getColumnDimension();
   }

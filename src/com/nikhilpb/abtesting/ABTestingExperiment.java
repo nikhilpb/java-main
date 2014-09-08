@@ -1,7 +1,7 @@
 package com.nikhilpb.abtesting;
 
 import Jama.Matrix;
-import com.nikhilpb.doe.*;
+
 import com.nikhilpb.util.Experiment;
 import com.nikhilpb.util.math.PSDMatrix;
 import com.nikhilpb.util.math.Series;
@@ -76,8 +76,10 @@ public class ABTestingExperiment extends Experiment {
     if (type.equals("random")) {
       final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
       policy = new RandomPolicy(seed);
+    } else if (type.equals("myopic")) {
+      policy = new MyopicPolicy(dataModel.getSigma().inverse());
     } else {
-      policy = null; //TODO(nikhilpb): finish this
+      policy = null;
     }
     return true;
   }
@@ -94,14 +96,14 @@ public class ABTestingExperiment extends Experiment {
             perEffSeq = new Series(),
             aneSeq = new Series(),
             reSeq = new Series();
-    ABTestingDP abTestingDP = new ABTestingDP(dataModel);
-    ABState state = abTestingDP.getBase();
+    ABModel abModel = new ABModel(dataModel);
+    ABState state = abModel.getBase();
     for (int i = 0; i < trialCount; ++i) {
       stats = new SequentialProblemStats(dataModel);
       for (int t = 0; t < timePeriods; ++t) {
         ABAction action = policy.getAction(state);
         stats.addPoint(state.getDp(), action);
-        state = abTestingDP.next(state, action);
+        state = abModel.next(state, action);
       }
       stats.aggregate();
 
@@ -129,7 +131,6 @@ public class ABTestingExperiment extends Experiment {
     final int dim = Integer.parseInt(getPropertyOrDie(props, "dim"));
     final double sigma = Double.parseDouble(getPropertyOrDie(props, "sigma"));
     final double rho = Double.parseDouble(getPropertyOrDie(props, "rho"));
-    final int timePeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
     final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
     double[][] muArray = new double[dim - 1][1];
     Matrix mu = new Matrix(muArray);
@@ -145,6 +146,6 @@ public class ABTestingExperiment extends Experiment {
       }
     }
     PSDMatrix sigmaMatrix = new PSDMatrix(sigmaArray);
-    return new GaussianModel(mu, sigmaMatrix, timePeriods, seed);
+    return new GaussianModel(mu, sigmaMatrix, seed);
   }
 }

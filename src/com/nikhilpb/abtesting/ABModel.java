@@ -5,10 +5,10 @@ import java.util.Arrays;
 /**
  * Created by nikhilpb on 9/8/14.
  */
-public class ABTestingDP {
+public class ABModel {
   private DataModel model;
 
-  public ABTestingDP(DataModel model) {
+  public ABModel(DataModel model) {
     this.model = model;
   }
 
