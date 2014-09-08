@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+    <model>
+        <type>gaussian</type>
+        <dim>20</dim>
+        <sigma>1.</sigma>
+        <rho>0.1</rho>
+        <time_periods>100</time_periods>
+        <seed>123</seed>
+    </model>
+</config>

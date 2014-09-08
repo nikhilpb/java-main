@@ -1,5 +1,6 @@
 package com.nikhilpb.util;
 
+import com.nikhilpb.abtesting.ABTestingExperiment;
 import com.nikhilpb.doe.DoeExperiment;
 import com.nikhilpb.matching.MatchingExperiment;
 
@@ -160,8 +161,11 @@ public abstract class Experiment {
    * @param args Two arguments, first is the experiment to be performed and second is the path to the xml file.
    */
   public static void main(String[] args) {
+    // Register all subclasses
     DoeExperiment.register();
     MatchingExperiment.register();
+    ABTestingExperiment.register();
+
     String experimentName = args[0];
     Experiment experiment = experiments.get(experimentName);
     if (experiment == null) throw new RuntimeException("No experiment named: " + experimentName);
