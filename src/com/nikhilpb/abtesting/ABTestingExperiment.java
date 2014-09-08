@@ -17,7 +17,7 @@ public class ABTestingExperiment extends Experiment {
   private static Experiment instance = null;
   private static String name = "abtesting";
 
-  private DataModel model;
+  private DataModel dataModel;
   private ABPolicy policy;
 
   public static Experiment getInstance() {
@@ -62,9 +62,9 @@ public class ABTestingExperiment extends Experiment {
   protected boolean modelCommand(Properties props) {
     final String type = getPropertyOrDie(props, "type");
     if (type.equals("gaussian")) {
-      model = getGaussianModel(props);
+      dataModel = getGaussianModel(props);
     } else if (type.equals("yahoo")) {
-      model = null; //TODO(nikhilpb): finish this.
+      dataModel = null; //TODO(nikhilpb): finish this.
     } else {
       throw new RuntimeException("No model type: " + type + " found.");
     }
@@ -83,7 +83,7 @@ public class ABTestingExperiment extends Experiment {
   }
 
   protected boolean evalCommand(Properties props) {
-    assert model != null;
+    assert dataModel != null;
     assert policy != null;
 
     final int trialCount = Integer.parseInt(getPropertyOrDie(props, "trial_count"));
@@ -94,10 +94,10 @@ public class ABTestingExperiment extends Experiment {
             perEffSeq = new Series(),
             aneSeq = new Series(),
             reSeq = new Series();
-    ABTestingDP abTestingDP = new ABTestingDP(model);
+    ABTestingDP abTestingDP = new ABTestingDP(dataModel);
     ABState state = abTestingDP.getBase();
     for (int i = 0; i < trialCount; ++i) {
-      stats = new SequentialProblemStats(model);
+      stats = new SequentialProblemStats(dataModel);
       for (int t = 0; t < timePeriods; ++t) {
         ABAction action = policy.getAction(state);
         stats.addPoint(state.getDp(), action);
