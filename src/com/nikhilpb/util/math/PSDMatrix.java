@@ -98,10 +98,9 @@ public class PSDMatrix {
     EigenvalueDecomposition eig = mat.eig();
     Matrix dMat = eig.getD(), vMat = eig.getV();
     for (int i = 0; i < n; ++ i) {
-      if (dMat.get(i, i) < 0.) {
-        System.out.println();
+      if (dMat.get(i, i) < -kTol) {
+        System.out.println(dMat.get(i, i));
         throw new IllegalArgumentException("matrix is not PSD");
-
       }
       dMat.set(i, i, Math.sqrt(dMat.get(i, i)));
     }
@@ -135,6 +134,19 @@ public class PSDMatrix {
     }
     Matrix psdMat = vMat.times(dMat).times(vMat.transpose());
     return psdMat.getArray();
+  }
+
+  /**
+   * Adds delta to the diagonal of the matrix.
+   * @param matArray
+   * @param delta
+   */
+  public static void perturb(double[][] matArray, double delta) {
+    for (int i = 0; i < matArray.length; ++i) {
+      for (int j = 0; j < matArray[i].length; ++j) {
+        if (i == j) matArray[i][j] += delta;
+      }
+    }
   }
 
   public PSDMatrix inverse() {

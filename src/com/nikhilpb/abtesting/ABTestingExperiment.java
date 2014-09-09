@@ -62,12 +62,17 @@ public class ABTestingExperiment extends Experiment {
     final String type = getPropertyOrDie(props, "type");
     if (type.equals("gaussian")) {
       dataModel = getGaussianModel(props);
-    } else if (type.equals("yahoo")) {
-      String trainFile = getPropertyOrDie(props, "train_file");
-      String testFile = getPropertyOrDie(props, "test_file");
-      int userCount = Integer.parseInt(getPropertyOrDie(props, "user_count"));
+    } else if (type.equals("click")) {
+      final String trainFile = getPropertyOrDie(props, "train_file");
+      final String testFile = getPropertyOrDie(props, "test_file");
+      final int userCount = Integer.parseInt(getPropertyOrDie(props, "user_count"));
+      final int dim = Integer.parseInt(getPropertyOrDie(props, "dim"));
       final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
-      dataModel = null;
+      try {
+        dataModel = new ClickDataModel(trainFile, testFile, userCount, dim, seed);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } else {
       throw new RuntimeException("No model type: " + type + " found.");
     }
