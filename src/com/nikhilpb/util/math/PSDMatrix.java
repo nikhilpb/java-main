@@ -136,19 +136,6 @@ public class PSDMatrix {
     return psdMat.getArray();
   }
 
-  /**
-   * Adds delta to the diagonal of the matrix.
-   * @param matArray
-   * @param delta
-   */
-  public static void perturb(double[][] matArray, double delta) {
-    for (int i = 0; i < matArray.length; ++i) {
-      for (int j = 0; j < matArray[i].length; ++j) {
-        if (i == j) matArray[i][j] += delta;
-      }
-    }
-  }
-
   public PSDMatrix inverse() {
     return new PSDMatrix(mat.inverse());
   }

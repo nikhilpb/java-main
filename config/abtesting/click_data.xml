@@ -8,7 +8,6 @@
         <user_count>100000</user_count>
         <seed>1</seed>
     </model>
-    <!--
     <policy>
         <type>myopic</type>
         <seed>456</seed>
@@ -16,5 +15,5 @@
     <eval>
         <trial_count>10000</trial_count>
         <time_periods>200</time_periods>
-    </eval>   -->
+    </eval>
 </config>

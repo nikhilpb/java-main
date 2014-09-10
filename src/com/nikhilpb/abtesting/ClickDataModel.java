@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  * Created by nikhilpb on 9/9/14.
  *
- * ClickDataModel reads Yahoo's click data obtained from Webscape and returns
+ * ClickDataModel reads Yahoo's click data obtained from Webscape and returns data points.
  */
 public class ClickDataModel implements DataModel {
 
@@ -20,10 +20,11 @@ public class ClickDataModel implements DataModel {
   private ArrayList<DataPoint> dataPoints;
   private Random random;
   private PSDMatrix sigma;
-  private static final double kTol = 1E-5;
+  private static final double kTol = 1E-3;
   private HashSet<Integer> excludeSet;
   private HashMap<Integer, Integer> indexMap;
   private double[] mu;
+  private static final int kMaxCount = 100000;
 
   /**
    *
@@ -83,7 +84,10 @@ public class ClickDataModel implements DataModel {
       br.close();
     }
     for (int i = 0; i < muArray.length; ++i) {
-      if (muArray[i] / count < kTol) set.add(i+1);
+      double mean = muArray[i] / count;
+      if (mean < kTol || mean > 1-kTol)  {
+        set.add(i+1);
+      }
     }
     set.add(0); // Exclude the constant constant covariate
     return set;
@@ -104,7 +108,9 @@ public class ClickDataModel implements DataModel {
     double[] vector = new double[dim];
     for (int i = 1; i < numString.length; ++ i) {
       int ind = Integer.parseInt(numString[i]);
-      vector[ind - 1] = 1.;
+      if (dim >= ind) {
+        vector[ind - 1] = 1.;
+      }
     }
     return vector;
   }
@@ -142,7 +148,7 @@ public class ClickDataModel implements DataModel {
     double[][] sigmaArray = new double[dim - 1][dim - 1];
     try {
       String line = br.readLine();
-      while (line != null && count < 100000) {
+      while (line != null && count < kMaxCount) {
         double[] dp = parseVector(line, originalDim);
         for (int i = 0; i < dp.length; ++i) {
           if (indexMap.containsKey(i+1)) {
@@ -156,6 +162,9 @@ public class ClickDataModel implements DataModel {
           }
         }
         count++;
+        if (count % 10000 == 0) {
+          System.out.printf("%d data points read\n", count);
+        }
         line = br.readLine();
       }
     } catch (Exception e) {
@@ -163,7 +172,6 @@ public class ClickDataModel implements DataModel {
     } finally {
       br.close();
     }
-    System.out.printf("%d data points read\n", count);
     for (int i = 0; i < dim - 1; ++i) {
       mu[i] = mu[i] / count;
       for (int j = 0; j < dim - 1; ++j) {
