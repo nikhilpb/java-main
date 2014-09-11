@@ -1,8 +1,10 @@
 package com.nikhilpb.abtesting;
 
 import Jama.Matrix;
+import Jama.SingularValueDecomposition;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by nikhilpb on 9/8/14.
@@ -12,13 +14,12 @@ public class SequentialProblemStats {
   private ArrayList<DataPoint> points;
   private ArrayList<ABAction> actions;
   private double normErr, approxNormErr, efficiency, perEfficiency, randEff;
-  private Matrix invCovarMatrix;
+  private static final double kTol = 1E-3;
 
   public SequentialProblemStats(final DataModel model) {
     this.dim = model.dim();
     points = new ArrayList<DataPoint>();
     actions = new ArrayList<ABAction>();
-    invCovarMatrix = model.getSigma().mat().inverse();
   }
 
   public void addPoint(DataPoint dp, ABAction action) {
@@ -29,7 +30,52 @@ public class SequentialProblemStats {
     actions.add(action);
   }
 
-  public void aggregate() {
+  public void excludeRedundantCovariates() {
+    double[][] sigma = new double[dim - 1][dim - 1];
+    for (DataPoint dp : points) {
+      for (int i = 0; i < dim - 1; ++i) {
+        for (int j = 0; j < dim - 1; ++j) {
+          sigma[i][j] += dp.get(i) * dp.get(j);
+        }
+      }
+    }
+    HashSet<Integer> excludeSet = new HashSet<Integer>();
+    for (int i = 0; i < dim - 1; ++i) {
+      for (int j = 0; j < dim - 1; ++j) {
+        System.out.printf("%.3f ", sigma[i][j]);
+      }
+      System.out.println();
+      if (sigma[i][i] < kTol) {
+        System.out.println("Added 1: " + i);
+        excludeSet.add(i);
+        continue;
+      }
+      for (int j = 0; j < i; ++j) {
+        if (Math.abs(sigma[i][j] - sigma[i][i]) + Math.abs(sigma[i][j] - sigma[j][j]) < kTol) {
+          System.out.println("Added 2: " + i + "," + j);
+          excludeSet.add(i);
+        }
+      }
+    }
+
+    final int newDim = dim - 1 - excludeSet.size();
+    ArrayList<DataPoint> newPoints = new ArrayList<DataPoint>();
+    for (DataPoint dp : points) {
+      double[] newVector = new double[newDim], oldVector = dp.getDataVector();
+      int cur = 0;
+      for (int i = 0; i < oldVector.length; ++i) {
+        if (!excludeSet.contains(i)) {
+          newVector[cur] = oldVector[i];
+        }
+      }
+      newPoints.add(new DataPoint(newVector));
+    }
+    points = newPoints;
+    dim = newDim + 1;
+  }
+
+  public boolean aggregate() {
+    // excludeRedundantCovariates();
     double[][] empCovarMatrixArr = new double[dim][dim];
     double[] state = new double[dim];
     double[] mean = new double[dim];
@@ -68,16 +114,19 @@ public class SequentialProblemStats {
       }
     }
 
-
     for (int i = 0; i < dim; ++ i) {
       for (int j = 0; j < dim; ++ j) {
         empCovarMatrixArr[i][j] = empCovarMatrixArr[i][j] / points.size();
       }
       mean[i] = mean[i] / points.size();
     }
-
-    Matrix empCovarMatrixInv = (new Matrix(empCovarMatrixArr)).inverse();
-
+    Matrix empCovarMat = (new Matrix(empCovarMatrixArr));
+    Matrix empCovarMatrixInv;
+    try {
+      empCovarMatrixInv = empCovarMat.inverse();
+    } catch (RuntimeException r) {
+      return false;
+    }
     normErr = 0.;
     for (int i = 0; i < dim; ++ i) {
       for (int j = 0; j < dim; ++ j) {
@@ -95,6 +144,23 @@ public class SequentialProblemStats {
     randEff = (1 - ((dim - ip) / (points.size() - 1)));
     efficiency = points.size() - normErr / points.size();
     perEfficiency = efficiency / points.size();
+    return true;
+  }
+
+  public void aggregate2() {
+    double[][] xArr = new double[points.size()][dim + 1];
+    for (int i = 0; i < points.size(); ++i) {
+      xArr[i][0] = actions.get(i).toInt();
+      xArr[i][1] = 1.;
+      for (int j = 0; j < dim - 1; ++j) {
+        xArr[i][j+2] = points.get(i).get(j);
+      }
+    }
+    Matrix xMat = new Matrix(xArr);
+    xMat.transpose().times(xMat).print(xMat.getColumnDimension(), xMat.getColumnDimension());
+    SingularValueDecomposition svd = xMat.svd();
+    Matrix sMat = svd.getS();
+    sMat.print(sMat.getRowDimension(), sMat.getColumnDimension());
   }
 
   public double getNormErr() {

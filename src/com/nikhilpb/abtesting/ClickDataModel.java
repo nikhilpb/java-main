@@ -20,7 +20,7 @@ public class ClickDataModel implements DataModel {
   private ArrayList<DataPoint> dataPoints;
   private Random random;
   private PSDMatrix sigma;
-  private static final double kTol = 1E-3;
+  private static final double kTol = 1E-2;
   private HashSet<Integer> excludeSet;
   private HashMap<Integer, Integer> indexMap;
   private double[] mu;
@@ -67,6 +67,7 @@ public class ClickDataModel implements DataModel {
     HashSet<Integer> set = new HashSet<Integer>();
     BufferedReader br = new BufferedReader(new FileReader(trainFile));
     double[] muArray = new double[dim];
+    double[][] sigmaArray = new double[dim][dim];
     int count = 0;
     try {
       String line = br.readLine();
@@ -74,6 +75,9 @@ public class ClickDataModel implements DataModel {
         double[] dp = parseVector(line, dim);
         for (int i = 0; i < dp.length; ++i) {
           muArray[i] += dp[i];
+          for (int j = 0; j < dp.length; ++j) {
+            sigmaArray[i][j] += dp[i] * dp[j];
+          }
         }
         count++;
         line = br.readLine();
@@ -84,12 +88,26 @@ public class ClickDataModel implements DataModel {
       br.close();
     }
     for (int i = 0; i < muArray.length; ++i) {
-      double mean = muArray[i] / count;
-      if (mean < kTol || mean > 1-kTol)  {
+      muArray[i] = muArray[i] / count;
+      if (muArray[i]  < kTol || muArray[i] > 1-kTol)  {
         set.add(i+1);
       }
     }
-    set.add(0); // Exclude the constant constant covariate
+
+    for (int i = 0; i < dim; ++i) {
+      for (int j = 0; j < dim; ++j) {
+        sigmaArray[i][j] = (sigmaArray[i][j] / count) - muArray[i] * muArray[j];
+      }
+    }
+
+    for (int i = 0; i < dim; ++i) {
+      for (int j = 0; j < i; ++j) {
+        if (Math.abs(sigmaArray[i][j] - sigmaArray[i][i]) + Math.abs(sigmaArray[i][j] - sigmaArray[j][j]) < kTol) {
+          set.add(i);
+        }
+      }
+    }
+
     return set;
   }
 

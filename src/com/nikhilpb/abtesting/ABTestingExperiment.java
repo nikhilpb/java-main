@@ -106,21 +106,27 @@ public class ABTestingExperiment extends Experiment {
             reSeq = new Series();
     ABModel abModel = new ABModel(dataModel);
     ABState state = abModel.getBase();
-    for (int i = 0; i < trialCount; ++i) {
+    int count = 0, failCount = 0;
+    while (count < trialCount) {
       stats = new SequentialProblemStats(dataModel);
       for (int t = 0; t < timePeriods; ++t) {
         ABAction action = policy.getAction(state);
         stats.addPoint(state.getDp(), action);
         state = abModel.next(state, action);
       }
-      stats.aggregate();
+      if (!stats.aggregate()) {
+        failCount++;
+        continue;
+      }
 
       neSeq.add(stats.getNormErr());
       effSeq.add(stats.getEfficiency());
       perEffSeq.add(stats.getPerEfficiency());
       aneSeq.add(stats.getApproxNormErr());
       reSeq.add(stats.getRandEf());
+      count++;
     }
+    System.out.println(failCount + " no of failed attempts");
 
     System.out.println("Approx Norm Err: " + aneSeq.getMean());
     System.out.println("Norm Err: " + neSeq.getMean() + ", Std err: " + neSeq.getStdDev());
