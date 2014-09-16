@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <cont_value>
+        <dim>10</dim>
+        <time_periods>20</time_periods>
+        <lambda_max>1000.</lambda_max>
+        <sim_points_count>100</sim_points_count>
+        <discrete_points_count>1000</discrete_points_count>
+    </cont_value>
+</config>

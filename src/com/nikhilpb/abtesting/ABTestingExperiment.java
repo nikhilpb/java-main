@@ -18,6 +18,7 @@ public class ABTestingExperiment extends Experiment {
 
   private DataModel dataModel;
   private ABPolicy policy;
+  private ContinuationValueCollection continuationValue;
 
   public static Experiment getInstance() {
     if (instance == null) {
@@ -48,6 +49,14 @@ public class ABTestingExperiment extends Experiment {
       }
     };
     registerCommand("policy", policyProcessor);
+
+    CommandProcessor continuationValueProcessor = new CommandProcessor() {
+      @Override
+      public boolean processCommand(Properties props) throws Exception {
+        return continuationValueProcessor(props);
+      }
+    };
+    registerCommand("cont_value", continuationValueProcessor);
 
     CommandProcessor evalProcessor = new CommandProcessor() {
       @Override
@@ -133,6 +142,18 @@ public class ABTestingExperiment extends Experiment {
     System.out.println("Efficiency: " + effSeq.getMean() + ", Std err: " + effSeq.getStdDev());
     System.out.println("PerEfficiency: " + perEffSeq.getMean() + ", Std err: " + perEffSeq.getStdDev());
     System.out.println("RandEff: " + reSeq.getMean() + ", Std err: " + reSeq.getStdDev());
+    return true;
+  }
+
+  private boolean continuationValueProcessor(Properties props) {
+    final int dimension = Integer.parseInt(getPropertyOrDie(props, "dim"));
+    final int timePeriods = Integer.parseInt(getPropertyOrDie(props, "time_periods"));
+    final double lambdaMax = Double.parseDouble(getPropertyOrDie(props, "lambda_max"));
+    final int discretePointsCount = Integer.parseInt(getPropertyOrDie(props, "discrete_points_count"));
+    final int simPointsCount = Integer.parseInt(getPropertyOrDie(props, "sim_points_count"));
+    continuationValue =
+            new ContinuationValueCollection(dimension, timePeriods, lambdaMax, discretePointsCount, simPointsCount);
+    continuationValue.evaluate();
     return true;
   }
 

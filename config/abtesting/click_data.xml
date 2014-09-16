@@ -2,7 +2,7 @@
 <config>
     <model>
         <type>click</type>
-        <dim>50</dim>
+        <dim>70</dim>
         <train_file>/Users/nikhilpb/data/yahoo-clicks-data/user-data-train</train_file>
         <test_file>/Users/nikhilpb/data/yahoo-clicks-data/user-data-test</test_file>
         <user_count>100000</user_count>
@@ -14,6 +14,6 @@
     </policy>
     <eval>
         <trial_count>10000</trial_count>
-        <time_periods>100</time_periods>
+        <time_periods>150</time_periods>
     </eval>
 </config>
