@@ -4,7 +4,8 @@
         <dim>10</dim>
         <time_periods>20</time_periods>
         <lambda_max>1000.</lambda_max>
-        <sim_points_count>100</sim_points_count>
+        <sim_points_count>10000</sim_points_count>
         <discrete_points_count>1000</discrete_points_count>
+        <seed>789</seed>
     </cont_value>
 </config>

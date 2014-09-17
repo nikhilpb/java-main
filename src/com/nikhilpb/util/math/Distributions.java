@@ -58,4 +58,13 @@ public final class Distributions {
       return mean;
     }
   }
+
+  public static double nextChiSquared(Random random, final int df) {
+    double ret = 0.;
+    for (int i = 0; i < df; ++i) {
+      double norm = random.nextGaussian();
+      ret += norm * norm;
+    }
+    return ret;
+  }
 }

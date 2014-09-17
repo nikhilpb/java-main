@@ -1,33 +1,43 @@
 package com.nikhilpb.abtesting;
 
+import com.nikhilpb.util.Pair;
+import com.nikhilpb.util.math.Distributions;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by nikhilpb on 9/16/14.
  */
 public class ContinuationValueCollection {
-  private int dimension;
   private int timePeriods;
   private double lambdaMax;
   private int discretePointsCount;
-  private int simPointsCount;
   private ArrayList<HashMap<Integer, OneDFunction>> functions;
+  private ArrayList<Pair<Double, Double>> sampledPoints;
 
   public ContinuationValueCollection(int dimension,
                                      int timePeriods,
                                      double lambdaMax,
                                      int discretePointsCount,
-                                     int simPointsCount) {
-    this.dimension = dimension;
+                                     int simPointsCount,
+                                     long seed) {
     this.timePeriods = timePeriods;
     this.lambdaMax = lambdaMax;
     this.discretePointsCount = discretePointsCount;
-    this.simPointsCount = simPointsCount;
 
     functions = new ArrayList<HashMap<Integer, OneDFunction>>();
     for (int t = 0; t <= timePeriods; ++t) {
       functions.add(new HashMap<Integer, OneDFunction>());
+    }
+
+    System.out.println("Sampling points");
+    sampledPoints = new ArrayList<Pair<Double, Double>>();
+    Random random = new Random(seed);
+    for (int i = 0; i < simPointsCount; ++i) {
+      sampledPoints.add(new Pair<Double, Double>(random.nextGaussian(),
+                                                 Distributions.nextChiSquared(random, dimension - 2)));
     }
   }
 
@@ -37,6 +47,17 @@ public class ContinuationValueCollection {
       if (t == timePeriods) {
         terminalContFunction(functions.get(t), t);
         continue;
+      }
+      for (int i = -t; i <= t; i = i + 2) {
+        OneDFunction plusFun = functions.get(t+1).get(i+1),
+                     minusFun = functions.get(t+1).get(i-1);
+        System.out.println("m = " + i);
+        DiscretizedFunction df = new DiscretizedFunction(lambdaMax, discretePointsCount);
+        double[] pts = df.points();
+        for (int j = 0; j < pts.length; ++j) {
+          df.setValue(j, evalMC(df.getPoint(j), plusFun, minusFun));
+        }
+        functions.get(t).put(i, df);
       }
     }
   }
@@ -57,5 +78,15 @@ public class ContinuationValueCollection {
       throw new RuntimeException("No integer index " + m);
     }
     return thisFun.get(m).value(lambda);
+  }
+
+  private double evalMC(double lambda, OneDFunction plusFun, OneDFunction minusFun) {
+    double estimate = 0.;
+    for (Pair<Double, Double> p : sampledPoints) {
+      double pValue = plusFun.value(Math.pow(Math.sqrt(lambda) + p.getFirst(), 2) + p.getSecond()),
+             mValue = minusFun.value(Math.pow(Math.sqrt(lambda) - p.getFirst(), 2) + p.getSecond());
+      estimate += Math.min(pValue, mValue);
+    }
+    return estimate / sampledPoints.size();
   }
 }

@@ -151,8 +151,10 @@ public class ABTestingExperiment extends Experiment {
     final double lambdaMax = Double.parseDouble(getPropertyOrDie(props, "lambda_max"));
     final int discretePointsCount = Integer.parseInt(getPropertyOrDie(props, "discrete_points_count"));
     final int simPointsCount = Integer.parseInt(getPropertyOrDie(props, "sim_points_count"));
+    final long seed = Long.parseLong(getPropertyOrDie(props, "seed"));
     continuationValue =
-            new ContinuationValueCollection(dimension, timePeriods, lambdaMax, discretePointsCount, simPointsCount);
+            new ContinuationValueCollection(dimension, timePeriods, lambdaMax,
+                                            discretePointsCount, simPointsCount, seed);
     continuationValue.evaluate();
     return true;
   }
